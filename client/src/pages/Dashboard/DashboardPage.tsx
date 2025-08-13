@@ -138,20 +138,52 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-fitness-500 to-fitness-600 rounded-2xl p-8 text-white shadow-lg">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="text-4xl font-bold mb-3">
-            Welcome back, {user?.firstName}! 👋
-          </h1>
-          <p className="text-xl text-fitness-100">
-            Ready to crush your fitness goals today? You're on a <span className="font-semibold">{user?.streakDays || 0}-day streak</span>!
-          </p>
-        </motion.div>
-      </div>
+      <motion.div 
+        className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl p-8 text-white shadow-2xl relative overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        whileHover={{ scale: 1.02 }}
+      >
+        {/* Animated background elements */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 animate-pulse"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 -translate-x-12"></div>
+        
+        <div className="relative z-10">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <h1 className="text-4xl font-bold mb-3 flex items-center">
+              Welcome back, {user?.firstName}! 
+              <motion.span 
+                className="ml-3 text-3xl"
+                animate={{ rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}
+              >
+                👋
+              </motion.span>
+            </h1>
+          </motion.div>
+          <motion.p 
+            className="text-xl text-white/90"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            Ready to crush your fitness goals today? You're on a{' '}
+            <motion.span 
+              className="font-bold text-yellow-300 inline-block"
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
+            >
+              {user?.streakDays || 0}-day streak
+            </motion.span>!
+          </motion.p>
+        </div>
+      </motion.div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -161,61 +193,131 @@ const DashboardPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
+            whileHover={{ 
+              scale: 1.05,
+              y: -5,
+              transition: { duration: 0.2 }
+            }}
+            className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 group cursor-pointer"
           >
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-600 mb-1">{stat.title}</p>
-                <p className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</p>
-                <p className={`text-xs font-medium ${
+                <p className="text-sm font-medium text-gray-600 mb-2 group-hover:text-gray-800 transition-colors">{stat.title}</p>
+                <motion.p 
+                  className="text-3xl font-bold text-gray-900 mb-2"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 5 }}
+                >
+                  {stat.value}
+                </motion.p>
+                <p className={`text-xs font-medium flex items-center ${
                   stat.changeType === 'positive' ? 'text-green-600' : 
                   stat.changeType === 'negative' ? 'text-red-600' : 'text-gray-600'
                 }`}>
+                  <motion.span
+                    animate={{ x: [0, 2, 0] }}
+                    transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
+                    className="mr-1"
+                  >
+                    {stat.changeType === 'positive' ? '↗' : stat.changeType === 'negative' ? '↘' : '→'}
+                  </motion.span>
                   {stat.change} from last week
                 </p>
               </div>
-              <div className={`p-4 rounded-xl ${stat.color} text-white shadow-md`}>
+              <motion.div 
+                className={`p-4 rounded-xl ${stat.color} text-white shadow-lg group-hover:shadow-xl transition-all duration-300`}
+                whileHover={{ rotate: 5, scale: 1.1 }}
+              >
                 {stat.icon}
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         ))}
       </div>
 
       {/* Quick Actions */}
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+          <motion.span
+            animate={{ rotate: [0, 5, -5, 0] }}
+            transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
+            className="mr-3"
+          >
+            ⚡
+          </motion.span>
+          Quick Actions
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {quickActions.map((action, index) => (
             <motion.div
               key={action.title}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              whileHover={{ 
+                scale: 1.05,
+                y: -8,
+                transition: { duration: 0.2 }
+              }}
+              whileTap={{ scale: 0.95 }}
             >
               <Link to={action.href} className="block">
-                <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all duration-200 text-center group">
-                  <div className={`inline-flex p-4 rounded-xl ${action.color} text-white mb-4 shadow-md group-hover:scale-110 transition-transform`}>
-                    {action.icon}
+                <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 text-center group relative overflow-hidden">
+                  {/* Gradient overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  <div className="relative z-10">
+                    <motion.div 
+                      className={`inline-flex p-4 rounded-xl ${action.color} text-white mb-4 shadow-lg group-hover:shadow-xl transition-all duration-300`}
+                      whileHover={{ 
+                        scale: 1.15,
+                        rotate: 5,
+                        transition: { duration: 0.2 }
+                      }}
+                    >
+                      {action.icon}
+                    </motion.div>
+                    <h3 className="font-bold text-gray-900 mb-3 text-lg group-hover:text-gray-800 transition-colors">{action.title}</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors">{action.description}</p>
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{action.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{action.description}</p>
+                  
+                  {/* Animated border */}
+                  <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-blue-200 transition-all duration-300"></div>
                 </div>
               </Link>
             </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+      <motion.div 
+        className="grid grid-cols-1 xl:grid-cols-2 gap-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
         {/* Recent Workouts */}
-        <div className="bg-white rounded-xl shadow-md border border-gray-100">
-          <div className="flex items-center justify-between p-6 border-b border-gray-100">
-            <h2 className="text-xl font-bold text-gray-900">Recent Workouts</h2>
-            <Link to="/workouts" className="text-fitness-600 hover:text-fitness-700 text-sm font-medium transition-colors">
+        <motion.div 
+          className="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
+          whileHover={{ y: -5 }}
+        >
+          <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-blue-50">
+            <h2 className="text-xl font-bold text-gray-900 flex items-center">
+              <motion.span
+                animate={{ rotate: [0, 10, 0] }}
+                transition={{ duration: 1, repeat: Infinity, repeatDelay: 3 }}
+                className="mr-2"
+              >
+                🏋️
+              </motion.span>
+              Recent Workouts
+            </h2>
+            <Link to="/workouts" className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors hover:underline">
               View all →
             </Link>
           </div>
@@ -227,38 +329,61 @@ const DashboardPage: React.FC = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  whileHover={{ 
+                    scale: 1.02,
+                    x: 5,
+                    transition: { duration: 0.2 }
+                  }}
+                  className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-blue-50 hover:to-blue-100 transition-all duration-300 cursor-pointer group"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className={`w-4 h-4 rounded-full ${
-                      workout.completed ? 'bg-green-500' : 'bg-gray-300'
-                    }`} />
+                    <motion.div 
+                      className={`w-4 h-4 rounded-full ${
+                        workout.completed ? 'bg-green-500' : 'bg-gray-300'
+                      }`}
+                      animate={workout.completed ? { scale: [1, 1.2, 1] } : {}}
+                      transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}
+                    />
                     <div>
-                      <h3 className="font-medium text-gray-900">{workout.name}</h3>
-                      <p className="text-sm text-gray-600">{workout.date}</p>
+                      <h3 className="font-semibold text-gray-900 group-hover:text-blue-800 transition-colors">{workout.name}</h3>
+                      <p className="text-sm text-gray-600 group-hover:text-gray-700 transition-colors">{workout.date}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium text-gray-900">{workout.duration}min</p>
-                    <p className="text-xs text-gray-600">{workout.calories} cal</p>
+                    <p className="text-sm font-bold text-gray-900 group-hover:text-blue-800 transition-colors">{workout.duration}min</p>
+                    <p className="text-xs text-gray-600 group-hover:text-gray-700 transition-colors">{workout.calories} cal</p>
                   </div>
                 </motion.div>
               ))}
             </div>
             <div className="mt-6 pt-4 border-t border-gray-100">
-              <Link to="/workouts" className="w-full bg-fitness-500 hover:bg-fitness-600 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center transition-colors">
-                <Plus className="w-4 h-4 mr-2" />
-                Start New Workout
-              </Link>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link to="/workouts" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Start New Workout
+                </Link>
+              </motion.div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Upcoming Workouts */}
-        <div className="bg-white rounded-xl shadow-md border border-gray-100">
-          <div className="flex items-center justify-between p-6 border-b border-gray-100">
-            <h2 className="text-xl font-bold text-gray-900">Upcoming Workouts</h2>
-            <Link to="/workouts" className="text-fitness-600 hover:text-fitness-700 text-sm font-medium transition-colors">
+        <motion.div 
+          className="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
+          whileHover={{ y: -5 }}
+        >
+          <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-purple-50">
+            <h2 className="text-xl font-bold text-gray-900 flex items-center">
+              <motion.span
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
+                className="mr-2"
+              >
+                📅
+              </motion.span>
+              Upcoming Workouts
+            </h2>
+            <Link to="/workouts" className="text-purple-600 hover:text-purple-700 text-sm font-medium transition-colors hover:underline">
               Schedule →
             </Link>
           </div>
@@ -270,59 +395,101 @@ const DashboardPage: React.FC = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  whileHover={{ 
+                    scale: 1.02,
+                    x: -5,
+                    transition: { duration: 0.2 }
+                  }}
+                  className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-purple-50 hover:to-purple-100 transition-all duration-300 cursor-pointer group"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-fitness-100 rounded-xl flex items-center justify-center">
-                      <Calendar className="w-6 h-6 text-fitness-600" />
-                    </div>
+                    <motion.div 
+                      className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center group-hover:from-purple-200 group-hover:to-purple-300 transition-all duration-300"
+                      whileHover={{ rotate: 5, scale: 1.1 }}
+                    >
+                      <Calendar className="w-6 h-6 text-purple-600" />
+                    </motion.div>
                     <div>
-                      <h3 className="font-medium text-gray-900">{workout.name}</h3>
-                      <p className="text-sm text-gray-600">{workout.time}</p>
+                      <h3 className="font-semibold text-gray-900 group-hover:text-purple-800 transition-colors">{workout.name}</h3>
+                      <p className="text-sm text-gray-600 group-hover:text-gray-700 transition-colors">{workout.time}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium text-gray-900 mb-1">{workout.duration}min</p>
-                    <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${
-                      workout.difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
-                      workout.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
+                    <p className="text-sm font-bold text-gray-900 mb-1 group-hover:text-purple-800 transition-colors">{workout.duration}min</p>
+                    <motion.span 
+                      className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${
+                        workout.difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
+                        workout.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }`}
+                      whileHover={{ scale: 1.05 }}
+                    >
                       {workout.difficulty}
-                    </span>
+                    </motion.span>
                   </div>
                 </motion.div>
               ))}
             </div>
             <div className="mt-6 pt-4 border-t border-gray-100">
-              <Link to="/workouts" className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-lg flex items-center justify-center transition-colors">
-                <Calendar className="w-4 h-4 mr-2" />
-                Schedule Workout
-              </Link>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link to="/workouts" className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Schedule Workout
+                </Link>
+              </motion.div>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Motivation Section */}
-      <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-8 text-white shadow-lg">
+      <motion.div 
+        className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 rounded-2xl p-8 text-white shadow-2xl relative overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        whileHover={{ scale: 1.02 }}
+      >
+        {/* Animated background elements */}
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-orange-500/20 animate-pulse"></div>
+        <div className="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 -translate-x-16"></div>
+        <div className="absolute bottom-0 right-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 translate-x-12"></div>
+        
         <motion.div
+          className="text-center relative z-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-center"
+          transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <Trophy className="w-16 h-16 mx-auto mb-6" />
-          <h3 className="text-2xl font-bold mb-3">You're doing great!</h3>
-          <p className="text-lg text-purple-100 mb-6 max-w-2xl mx-auto leading-relaxed">
+          <motion.div
+            animate={{ 
+              rotate: [0, 5, -5, 0],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+          >
+            <Trophy className="w-16 h-16 mx-auto mb-6 drop-shadow-lg" />
+          </motion.div>
+          <h3 className="text-3xl font-bold mb-4">You're doing great! 🎉</h3>
+          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
             Consistency is the key to success. Keep pushing forward and you'll reach your goals!
           </p>
-          <Link to="/progress" className="inline-flex items-center bg-white text-purple-600 px-6 py-3 rounded-xl font-medium hover:bg-gray-100 transition-colors shadow-md">
-            View Progress
-            <TrendingUp className="w-5 h-5 ml-2" />
-          </Link>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Link to="/progress" className="inline-flex items-center bg-white text-purple-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl">
+              View Progress
+              <motion.span
+                animate={{ x: [0, 3, 0] }}
+                transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 1 }}
+              >
+                <TrendingUp className="w-5 h-5 ml-2" />
+              </motion.span>
+            </Link>
+          </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 };
