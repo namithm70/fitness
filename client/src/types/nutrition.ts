@@ -159,7 +159,7 @@ export interface FoodSearchParams {
 
 export interface MealLogParams {
   mealType: 'breakfast' | 'lunch' | 'dinner' | 'snack';
-  entries: Omit<MealEntry, 'food'> & { food: string };
+  entries: (Omit<MealEntry, 'food'> & { food: string })[];
   name?: string;
   date?: string;
   notes?: string;
