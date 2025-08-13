@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
-const { validateRegistration, validateLogin } = require('../middleware/validation');
+// const { validateRegistration, validateLogin } = require('../middleware/validation');
 const { InMemoryStorage: inMemoryStorage } = require('../utils/inMemoryStorage');
 
 const router = express.Router();
@@ -12,7 +12,7 @@ const router = express.Router();
 // @route   POST /api/auth/register
 // @desc    Register a new user
 // @access  Public
-router.post('/register', validateRegistration, async (req, res) => {
+router.post('/register', async (req, res) => {
   try {
     const { email, password, firstName, lastName, fitnessLevel, fitnessGoals } = req.body;
 
@@ -97,7 +97,7 @@ router.post('/register', validateRegistration, async (req, res) => {
 // @route   POST /api/auth/login
 // @desc    Authenticate user & get token
 // @access  Public
-router.post('/login', validateLogin, async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 

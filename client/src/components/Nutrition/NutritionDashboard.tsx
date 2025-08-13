@@ -31,6 +31,29 @@ const NutritionDashboard: React.FC = () => {
       setDashboard(response.data);
     } catch (error) {
       console.error('Error fetching nutrition dashboard:', error);
+      // Set default data for development/demo purposes
+      setDashboard({
+        dailyTotals: {
+          calories: 0,
+          protein: 0,
+          carbohydrates: 0,
+          fat: 0,
+          fiber: 0,
+          water: 0
+        },
+        nutritionGoal: {
+          dailyTargets: {
+            calories: 2000,
+            protein: 150,
+            carbohydrates: 250,
+            fat: 65,
+            fiber: 25,
+            water: 8
+          }
+        },
+        recentMeals: [],
+        weeklyData: []
+      });
     } finally {
       setLoading(false);
     }

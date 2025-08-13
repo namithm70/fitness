@@ -34,6 +34,22 @@ const ProgressDashboard: React.FC = () => {
       setDashboard(response.data);
     } catch (error) {
       console.error('Error fetching progress dashboard:', error);
+      // Set default data for development/demo purposes
+      setDashboard({
+        recentEntries: [],
+        weightTrend: [],
+        activeGoals: [],
+        recentAchievements: [],
+        workoutStats: { totalWorkouts: 0, totalDuration: 0, avgDuration: 0 },
+        bmi: null,
+        measurementTrend: [],
+        summary: {
+          totalEntries: 0,
+          totalGoals: 0,
+          completedGoals: 0,
+          totalAchievements: 0
+        }
+      });
     } finally {
       setLoading(false);
     }

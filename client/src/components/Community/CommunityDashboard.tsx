@@ -38,6 +38,21 @@ const CommunityDashboard: React.FC = () => {
       setDashboard(response.data);
     } catch (error) {
       console.error('Error fetching dashboard:', error);
+      // Set default data for development/demo purposes
+      setDashboard({
+        posts: [],
+        trendingPosts: [],
+        activeChallenges: [],
+        upcomingEvents: [],
+        recommendedGroups: [],
+        userStats: {
+          totalPosts: 0,
+          totalLikes: 0,
+          totalComments: 0,
+          followers: 0,
+          following: 0
+        }
+      });
     } finally {
       setLoading(false);
     }
