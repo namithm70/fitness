@@ -52,7 +52,8 @@ const CommunityDashboard: React.FC = () => {
           reputation: 0,
           level: 1,
           experience: 0
-        }
+        },
+        hasMore: false
       });
     } finally {
       setLoading(false);
