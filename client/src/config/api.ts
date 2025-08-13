@@ -1,7 +1,7 @@
 // API Configuration for different environments
 const API_BASE_URL = process.env.REACT_APP_API_URL || 
   (process.env.NODE_ENV === 'production' 
-    ? 'https://fitness-backend.onrender.com' // Update this with your actual backend URL
+    ? 'https://fitness-fkct.onrender.com' // Your actual backend URL
     : 'http://localhost:5000'
   );
 
