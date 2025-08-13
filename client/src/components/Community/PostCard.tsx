@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { 
   Heart, MessageSquare, Share2, Bookmark, MoreHorizontal, 
   Clock, MapPin, Eye, ThumbsUp, Award, Target, Calendar,

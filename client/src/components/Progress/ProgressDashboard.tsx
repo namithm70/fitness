@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { 
   Target, TrendingUp, Plus, Search, Bell, Settings,
-  Activity, Award, Clock
+  Activity, Award, Clock, Trophy, BarChart3
 } from 'lucide-react';
 import { ProgressDashboard as ProgressDashboardType } from '../../types/progress';
 import { api } from '../../config/api';

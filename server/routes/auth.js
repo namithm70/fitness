@@ -5,8 +5,7 @@ const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
 const { validateRegistration, validateLogin } = require('../middleware/validation');
-const { InMemoryStorage } = require('../utils/inMemoryStorage');
-const inMemoryStorage = InMemoryStorage;
+const { InMemoryStorage: inMemoryStorage } = require('../utils/inMemoryStorage');
 
 const router = express.Router();
 

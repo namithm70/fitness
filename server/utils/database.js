@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-const { InMemoryStorage } = require('./inMemoryStorage');
+const { InMemoryStorage: inMemoryStorage } = require('./inMemoryStorage');
 
 class DatabaseManager {
   constructor() {
     this.isConnected = false;
-    this.inMemoryStorage = InMemoryStorage;
+    this.inMemoryStorage = inMemoryStorage;
     this.retryAttempts = 0;
     this.maxRetries = 3;
   }
