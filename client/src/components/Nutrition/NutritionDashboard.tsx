@@ -44,6 +44,8 @@ const NutritionDashboard: React.FC = () => {
           water: 0
         },
         nutritionGoal: {
+          _id: 'default-goal',
+          user: 'default-user',
           dailyTargets: {
             calories: 2000,
             protein: 150,
@@ -53,7 +55,28 @@ const NutritionDashboard: React.FC = () => {
             sugar: 50,
             sodium: 2300,
             water: 8
-          }
+          },
+          macroRatios: {
+            proteinPercentage: 30,
+            carbPercentage: 50,
+            fatPercentage: 20
+          },
+          weightGoal: 'maintain',
+          weeklyWeightChange: 0,
+          mealTiming: {
+            breakfastTime: '08:00',
+            lunchTime: '12:00',
+            dinnerTime: '18:00',
+            snackTimes: ['10:00', '15:00']
+          },
+          reminders: {
+            mealReminders: true,
+            waterReminders: true,
+            weightReminders: false
+          },
+          isActive: true,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
         },
         recentMeals: [],
         weeklyData: []
