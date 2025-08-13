@@ -85,7 +85,7 @@ const MeasurementChart: React.FC<MeasurementChartProps> = ({ data }) => {
           {availableMeasurements.slice(0, 3).map((type, index) => {
             const measurements = sortedData
               .map(entry => entry.measurements?.[type as keyof typeof entry.measurements])
-              .filter(m => m !== undefined);
+              .filter((m): m is number => m !== undefined);
             
             if (measurements.length < 2) return null;
 
