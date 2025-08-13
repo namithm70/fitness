@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { X, Search, Plus, Clock } from 'lucide-react';
 import { Food } from '../../types/nutrition';
 
@@ -36,7 +36,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
   ];
 
   // Sample foods for demonstration
-  const sampleFoods: Food[] = [
+  const sampleFoods: Food[] = useMemo(() => [
     {
       _id: '1',
       name: 'Banana',
@@ -152,7 +152,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     }
-  ];
+  ], []);
 
   useEffect(() => {
     if (isOpen) {
@@ -161,7 +161,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
     }
   }, [isOpen, sampleFoods]);
 
-  const searchFoods = async () => {
+  const searchFoods = useCallback(async () => {
     try {
       setLoading(true);
       // In a real app, this would call the API
@@ -184,7 +184,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [sampleFoods, searchQuery, selectedCategory]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
