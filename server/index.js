@@ -36,13 +36,36 @@ app.use(limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/fitness-app', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+// Database connection - using in-memory for development
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/fitness-app';
+
+// For development, we'll use in-memory storage if MongoDB is not available
+let isConnected = false;
+
+// Initialize connection status
+app.locals.dbConnected = isConnected;
+
+// Try to connect to MongoDB, but don't fail if it's not available
+mongoose.connect(MONGODB_URI)
+.then(() => {
+  console.log('Connected to MongoDB');
+  isConnected = true;
+  app.locals.dbConnected = isConnected;
 })
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('MongoDB connection error:', err));
+.catch(err => {
+  console.error('MongoDB connection error:', err);
+  console.log('Starting server with in-memory storage for development...');
+  isConnected = false;
+  app.locals.dbConnected = isConnected;
+});
+
+// Start the server regardless of MongoDB connection status
+const PORT = process.env.PORT || 5000;
+
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+});
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -103,13 +126,6 @@ app.use((err, req, res, next) => {
 // 404 handler
 app.use('*', (req, res) => {
   res.status(404).json({ error: 'Route not found' });
-});
-
-const PORT = process.env.PORT || 5000;
-
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
 module.exports = { app, io };

@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
+const inMemoryStorage = require('../utils/inMemoryStorage');
 
 const router = express.Router();
 
@@ -24,50 +25,78 @@ router.post('/register', [
 
     const { email, password, firstName, lastName, fitnessLevel, fitnessGoals } = req.body;
 
-    // Check if user already exists
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ error: 'User already exists' });
-    }
+    // Check if database is connected
+    const isConnected = req.app.locals.dbConnected;
 
-    // Create new user
-    user = new User({
-      email,
-      password,
-      firstName,
-      lastName,
-      fitnessLevel: fitnessLevel || 'beginner',
-      fitnessGoals: fitnessGoals || []
-    });
-
-    await user.save();
-
-    // Create JWT token
-    const payload = {
-      user: {
-        id: user.id
+    if (isConnected) {
+      // Use MongoDB
+      let user = await User.findOne({ email });
+      if (user) {
+        return res.status(400).json({ error: 'User already exists' });
       }
-    };
 
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '7d' },
-      (err, token) => {
-        if (err) throw err;
+      user = new User({
+        email,
+        password,
+        firstName,
+        lastName,
+        fitnessLevel: fitnessLevel || 'beginner',
+        fitnessGoals: fitnessGoals || []
+      });
+
+      await user.save();
+
+      const payload = {
+        user: {
+          id: user.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET || 'your-secret-key',
+        { expiresIn: '7d' },
+        (err, token) => {
+          if (err) throw err;
+          res.json({
+            token,
+            user: {
+              id: user.id,
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              fitnessLevel: user.fitnessLevel,
+              fitnessGoals: user.fitnessGoals
+            }
+          });
+        }
+      );
+    } else {
+      // Use in-memory storage
+      try {
+        const user = await inMemoryStorage.createUser({
+          email,
+          password,
+          firstName,
+          lastName,
+          fitnessLevel,
+          fitnessGoals
+        });
+
+        const token = inMemoryStorage.generateToken(user);
+        const publicUser = inMemoryStorage.getUserPublicData(user);
+
         res.json({
           token,
-          user: {
-            id: user.id,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            fitnessLevel: user.fitnessLevel,
-            fitnessGoals: user.fitnessGoals
-          }
+          user: publicUser
         });
+      } catch (error) {
+        if (error.message === 'User already exists') {
+          return res.status(400).json({ error: 'User already exists' });
+        }
+        throw error;
       }
-    );
+    }
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({ error: 'Server error' });
@@ -89,45 +118,67 @@ router.post('/login', [
 
     const { email, password } = req.body;
 
-    // Check if user exists
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ error: 'Invalid credentials' });
-    }
+    // Check if database is connected
+    const isConnected = req.app.locals.dbConnected;
 
-    // Check password
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-      return res.status(400).json({ error: 'Invalid credentials' });
-    }
-
-    // Create JWT token
-    const payload = {
-      user: {
-        id: user.id
+    if (isConnected) {
+      // Use MongoDB
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(400).json({ error: 'Invalid credentials' });
       }
-    };
 
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '7d' },
-      (err, token) => {
-        if (err) throw err;
-        res.json({
-          token,
-          user: {
-            id: user.id,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            fitnessLevel: user.fitnessLevel,
-            fitnessGoals: user.fitnessGoals,
-            profilePicture: user.profilePicture
-          }
-        });
+      const isMatch = await user.comparePassword(password);
+      if (!isMatch) {
+        return res.status(400).json({ error: 'Invalid credentials' });
       }
-    );
+
+      const payload = {
+        user: {
+          id: user.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET || 'your-secret-key',
+        { expiresIn: '7d' },
+        (err, token) => {
+          if (err) throw err;
+          res.json({
+            token,
+            user: {
+              id: user.id,
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              fitnessLevel: user.fitnessLevel,
+              fitnessGoals: user.fitnessGoals,
+              profilePicture: user.profilePicture
+            }
+          });
+        }
+      );
+    } else {
+      // Use in-memory storage
+      const user = await inMemoryStorage.findUserByEmail(email);
+      if (!user) {
+        return res.status(400).json({ error: 'Invalid credentials' });
+      }
+
+      const isMatch = await inMemoryStorage.comparePassword(email, password);
+      if (!isMatch) {
+        return res.status(400).json({ error: 'Invalid credentials' });
+      }
+
+      const token = inMemoryStorage.generateToken(user);
+      const publicUser = inMemoryStorage.getUserPublicData(user);
+
+      res.json({
+        token,
+        user: publicUser
+      });
+    }
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ error: 'Server error' });
@@ -139,8 +190,19 @@ router.post('/login', [
 // @access  Private
 router.get('/user', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    res.json(user);
+    const isConnected = req.app.locals.dbConnected;
+
+    if (isConnected) {
+      const user = await User.findById(req.user.id).select('-password');
+      res.json(user);
+    } else {
+      const user = await inMemoryStorage.findUserById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      const publicUser = inMemoryStorage.getUserPublicData(user);
+      res.json(publicUser);
+    }
   } catch (error) {
     console.error('Get user error:', error);
     res.status(500).json({ error: 'Server error' });
