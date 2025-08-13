@@ -1,5 +1,4 @@
 import React from 'react';
-import { Scale, Target, Calendar } from 'lucide-react';
 
 interface BMICardProps {
   bmi: string;

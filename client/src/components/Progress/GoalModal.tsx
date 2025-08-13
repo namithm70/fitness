@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { X, Target, Calendar, Award, Clock } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Target, Calendar, Award } from 'lucide-react';
 import { GoalCreate } from '../../types/progress';
 import { api } from '../../config/api';
 

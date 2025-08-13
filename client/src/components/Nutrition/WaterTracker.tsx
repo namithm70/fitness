@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Droplets, Target, Calendar, TrendingUp } from 'lucide-react';
+import React, { useState } from 'react';
+import { Droplets } from 'lucide-react';
 
 interface WaterTrackerProps {
   current: number;

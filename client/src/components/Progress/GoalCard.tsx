@@ -8,13 +8,6 @@ interface GoalCardProps {
 }
 
 const GoalCard: React.FC<GoalCardProps> = ({ goal, onUpdate }) => {
-  const getProgressColor = (percentage: number) => {
-    if (percentage >= 80) return 'text-green-600';
-    if (percentage >= 60) return 'text-yellow-600';
-    if (percentage >= 40) return 'text-orange-600';
-    return 'text-red-600';
-  };
-
   const getStatusIcon = () => {
     if (goal.status === 'completed') return <Award className="w-4 h-4 text-green-600" />;
     if (goal.isOverdue) return <Clock className="w-4 h-4 text-red-600" />;
