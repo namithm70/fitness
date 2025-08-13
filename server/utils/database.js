@@ -4,7 +4,7 @@ const { InMemoryStorage } = require('./inMemoryStorage');
 class DatabaseManager {
   constructor() {
     this.isConnected = false;
-    this.inMemoryStorage = new InMemoryStorage();
+    this.inMemoryStorage = InMemoryStorage;
     this.retryAttempts = 0;
     this.maxRetries = 3;
   }
