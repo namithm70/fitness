@@ -1,8 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { 
-  Calendar, MapPin, Users, Clock, Star, Award, Target,
-  Video, Globe, DollarSign, CheckCircle, XCircle, HelpCircle
+  Calendar, Clock, MapPin, Users, Target, Award, 
+  TrendingUp, Star
 } from 'lucide-react';
 import { Event } from '../../types/community';
 
@@ -16,7 +15,6 @@ const EventCard: React.FC<EventCardProps> = ({ event, compact = false }) => {
     title,
     description,
     type,
-    category,
     startDate,
     endDate,
     locationName,
@@ -25,8 +23,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, compact = false }) => {
     maxAttendees,
     isFree,
     price,
-    difficulty,
-    status
+    difficulty
   } = event;
 
   const getTypeIcon = () => {
@@ -95,7 +92,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, compact = false }) => {
             <h4 className="font-medium text-gray-900 text-sm truncate">{title}</h4>
             <div className="flex items-center space-x-2 mt-1 text-xs text-gray-500">
               {isOnline ? (
-                <Globe className="w-3 h-3" />
+                <TrendingUp className="w-3 h-3" />
               ) : (
                 <MapPin className="w-3 h-3" />
               )}
@@ -111,9 +108,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, compact = false }) => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+    <div
       className="card hover:shadow-lg transition-shadow"
     >
       {/* Header */}
@@ -155,7 +150,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, compact = false }) => {
         </div>
         <div className="flex items-center space-x-3 text-sm">
           {isOnline ? (
-            <Globe className="w-4 h-4 text-gray-400" />
+            <TrendingUp className="w-4 h-4 text-gray-400" />
           ) : (
             <MapPin className="w-4 h-4 text-gray-400" />
           )}
@@ -192,7 +187,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, compact = false }) => {
           {getDaysUntilEvent() === 0 ? 'Join Now' : 'RSVP'}
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

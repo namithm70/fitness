@@ -1,9 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { 
-  Users, UserPlus, FileText, Award, TrendingUp, Star,
-  Heart, MessageSquare, Share2, Target, Calendar, Group
-} from 'lucide-react';
+import { Users, Target, Award, Clock, MapPin } from 'lucide-react';
 
 interface UserStatsProps {
   stats: {

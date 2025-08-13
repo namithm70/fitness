@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X, Plus, Search, Trash2 } from 'lucide-react';
 import { Food, MealLogParams } from '../../types/nutrition';
 import { api } from '../../config/api';

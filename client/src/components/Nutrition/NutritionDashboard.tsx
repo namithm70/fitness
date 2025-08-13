@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Apple, 
-  Plus, 
-  Search, 
-  Target, 
-  TrendingUp, 
-  Droplets, 
-  Calendar,
-  Clock,
-  BarChart3,
-  Utensils
+  Target, Calendar, Plus, Search, Bell, Settings,
+  Utensils, Droplets, Scale, Activity
 } from 'lucide-react';
-import { NutritionDashboard as NutritionDashboardType, DailyTotals, NutritionGoal } from '../../types/nutrition';
+import { NutritionDashboard as NutritionDashboardType } from '../../types/nutrition';
 import { api } from '../../config/api';
 import CalorieCircle from './CalorieCircle';
 import MacroChart from './MacroChart';
@@ -142,7 +134,7 @@ const NutritionDashboard: React.FC = () => {
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-gray-900">Macros</h2>
-            <BarChart3 className="w-5 h-5 text-gray-500" />
+            <Scale className="w-5 h-5 text-gray-500" />
           </div>
           <MacroChart 
             protein={dailyTotals.protein}
@@ -235,7 +227,7 @@ const NutritionDashboard: React.FC = () => {
               <div key={meal._id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-blue-600" />
+                    <Activity className="w-5 h-5 text-blue-600" />
                   </div>
                   <div>
                     <p className="font-medium text-gray-900 capitalize">{meal.mealType}</p>
@@ -255,7 +247,7 @@ const NutritionDashboard: React.FC = () => {
           </div>
         ) : (
           <div className="text-center py-8">
-            <Apple className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+            <Activity className="w-12 h-12 text-gray-400 mx-auto mb-3" />
             <p className="text-gray-600">No meals logged yet</p>
             <button 
               onClick={() => setShowMealLog(true)}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, TrendingUp, TrendingDown } from 'lucide-react';
+import { Scale, Target, Calendar } from 'lucide-react';
 
 interface BMICardProps {
   bmi: string;

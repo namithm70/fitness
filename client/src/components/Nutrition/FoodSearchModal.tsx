@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, Search, Plus, Filter } from 'lucide-react';
+import { X, Search, Plus, Clock, Star } from 'lucide-react';
 import { Food } from '../../types/nutrition';
-import { api } from '../../config/api';
 
 interface FoodSearchModalProps {
   isOpen: boolean;
@@ -18,7 +17,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
   const [selectedCategory, setSelectedCategory] = useState('');
   const [foods, setFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(false);
-  const [recentFoods, setRecentFoods] = useState<Food[]>([]);
+
 
   const categories = [
     { value: '', label: 'All Categories' },

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { 
   Heart, MessageSquare, Share2, Bookmark, MoreHorizontal, 
-  Clock, MapPin, Eye, ThumbsUp, User, Award, Target, Calendar,
+  Clock, MapPin, Eye, ThumbsUp, Award, Target, Calendar,
   Utensils, TrendingUp, Image, Video, FileText
 } from 'lucide-react';
-import { Post, User as UserType } from '../../types/community';
+import { Post } from '../../types/community';
 import { api } from '../../config/api';
 import { useAuth } from '../../contexts/AuthContext';
 

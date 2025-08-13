@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, Target, Trophy, BarChart3, Activity, Calendar, Users, Clock } from 'lucide-react';
+import { Target, Award, Clock, Activity } from 'lucide-react';
 
 interface ProgressSummaryProps {
   summary: {
@@ -20,7 +20,7 @@ const ProgressSummary: React.FC<ProgressSummaryProps> = ({ summary, workoutStats
     {
       title: 'Progress Entries',
       value: summary.totalEntries,
-      icon: <BarChart3 className="w-5 h-5" />,
+      icon: <Activity className="w-5 h-5" />,
       color: 'bg-blue-500',
       bgColor: 'bg-blue-50',
       textColor: 'text-blue-600'
@@ -36,7 +36,7 @@ const ProgressSummary: React.FC<ProgressSummaryProps> = ({ summary, workoutStats
     {
       title: 'Completed Goals',
       value: summary.completedGoals,
-      icon: <Trophy className="w-5 h-5" />,
+      icon: <Award className="w-5 h-5" />,
       color: 'bg-yellow-500',
       bgColor: 'bg-yellow-50',
       textColor: 'text-yellow-600'
@@ -44,7 +44,7 @@ const ProgressSummary: React.FC<ProgressSummaryProps> = ({ summary, workoutStats
     {
       title: 'Achievements',
       value: summary.totalAchievements,
-      icon: <Trophy className="w-5 h-5" />,
+      icon: <Award className="w-5 h-5" />,
       color: 'bg-purple-500',
       bgColor: 'bg-purple-50',
       textColor: 'text-purple-600'

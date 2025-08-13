@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target, Calendar, TrendingUp, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { Target, Calendar, Award, Clock } from 'lucide-react';
 import { Goal } from '../../types/progress';
 
 interface GoalCardProps {
@@ -16,8 +16,8 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, onUpdate }) => {
   };
 
   const getStatusIcon = () => {
-    if (goal.status === 'completed') return <CheckCircle className="w-4 h-4 text-green-600" />;
-    if (goal.isOverdue) return <AlertCircle className="w-4 h-4 text-red-600" />;
+    if (goal.status === 'completed') return <Award className="w-4 h-4 text-green-600" />;
+    if (goal.isOverdue) return <Clock className="w-4 h-4 text-red-600" />;
     return <Clock className="w-4 h-4 text-blue-600" />;
   };
 

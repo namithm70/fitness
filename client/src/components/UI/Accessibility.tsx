@@ -285,7 +285,7 @@ export const useFocusManagement = () => {
   return { trapFocus };
 };
 
-export default {
+const AccessibilityComponents = {
   SkipToContentLink,
   ScreenReaderText,
   FocusTrap,
@@ -298,3 +298,5 @@ export default {
   useKeyboardNavigation,
   useFocusManagement
 };
+
+export default AccessibilityComponents;

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { 
-  Users, MessageCircle, TrendingUp, Target, Calendar, Users as GroupIcon, 
-  Plus, Search, Bell, Filter, Heart, MessageSquare, Share2, Bookmark,
-  MoreHorizontal, Clock, MapPin, Trophy, Award, Star, Eye, ThumbsUp
+  MessageCircle, TrendingUp, Target, Calendar, Users as GroupIcon, 
+  Plus, Search, Bell
 } from 'lucide-react';
-import { CommunityDashboard as CommunityDashboardType, Post, Challenge, Event, Group, User } from '../../types/community';
+import { CommunityDashboard as CommunityDashboardType, User } from '../../types/community';
 import { api } from '../../config/api';
 import PostCard from './PostCard';
 import ChallengeCard from './ChallengeCard';

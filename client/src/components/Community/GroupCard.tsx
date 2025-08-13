@@ -21,7 +21,6 @@ const GroupCard: React.FC<GroupCardProps> = ({ group, compact = false }) => {
     maxMembers,
     stats,
     tags,
-    coverImage,
     avatar,
     isVerified
   } = group;

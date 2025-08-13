@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { TrendingUp, Target, Trophy, BarChart3, Plus, Calendar, Activity, Award, Users, Clock } from 'lucide-react';
+import { 
+  Target, TrendingUp, Plus, Search, Bell, Settings,
+  Activity, Award, Clock
+} from 'lucide-react';
 import { ProgressDashboard as ProgressDashboardType } from '../../types/progress';
 import { api } from '../../config/api';
 import WeightChart from './WeightChart';

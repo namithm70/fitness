@@ -1,8 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { 
-  Target, Users, Calendar, Trophy, Award, Clock, MapPin,
-  TrendingUp, Star, Users as GroupIcon, Award as Medal
+  Target, Calendar, Trophy, Award, Clock,
+  TrendingUp, Star
 } from 'lucide-react';
 import { Challenge } from '../../types/community';
 
@@ -16,7 +15,6 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge, compact = fals
     title,
     description,
     type,
-    category,
     targetValue,
     unit,
     duration,
@@ -26,8 +24,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge, compact = fals
     maxParticipants,
     difficulty,
     rewards,
-    tags,
-    coverImage
+    tags
   } = challenge;
 
   const getTypeIcon = () => {

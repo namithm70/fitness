@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, Save, Target, Calendar, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Target, Calendar, Award, Clock } from 'lucide-react';
 import { GoalCreate } from '../../types/progress';
 import { api } from '../../config/api';
 
@@ -295,7 +295,7 @@ const GoalModal: React.FC<GoalModalProps> = ({
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
               ) : (
                 <>
-                  <Save className="w-4 h-4 mr-2" />
+                  <Award className="w-4 h-4 mr-2" />
                   Create Goal
                 </>
               )}
