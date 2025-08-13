@@ -14,7 +14,7 @@ import {
   Bookmark,
   TrendingUp
 } from 'lucide-react';
-import { Workout, Exercise } from '../../types/workout';
+import { Workout } from '../../types/workout';
 
 interface WorkoutCardProps {
   workout: Workout;

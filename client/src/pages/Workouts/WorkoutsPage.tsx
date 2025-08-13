@@ -4,7 +4,6 @@ import {
   Dumbbell, 
   Plus, 
   Search, 
-  Filter, 
   Clock, 
   Target, 
   Heart, 
@@ -12,14 +11,13 @@ import {
   Users, 
   Timer,
   TrendingUp,
-  Star,
-  Bookmark
+  Star
 } from 'lucide-react';
 import CreateWorkoutModal from '../../components/Workouts/CreateWorkoutModal';
 import WorkoutCard from '../../components/Workouts/WorkoutCard';
 import WorkoutTimer from '../../components/Workouts/WorkoutTimer';
 import toast from 'react-hot-toast';
-import { Workout, Exercise } from '../../types/workout';
+import { Workout } from '../../types/workout';
 
 const WorkoutsPage: React.FC = () => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
@@ -29,6 +27,7 @@ const WorkoutsPage: React.FC = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
+
   const [currentWorkout, setCurrentWorkout] = useState<Workout | null>(null);
   const [bookmarkedWorkouts, setBookmarkedWorkouts] = useState<string[]>([]);
 
@@ -112,7 +111,7 @@ const WorkoutsPage: React.FC = () => {
     // Load sample workouts
     setWorkouts(sampleWorkouts);
     setFilteredWorkouts(sampleWorkouts);
-  }, []);
+  }, [sampleWorkouts]);
 
   useEffect(() => {
     // Filter workouts based on search and filters

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { 
   Play, 
   Pause, 
@@ -12,7 +12,7 @@ import {
   Volume2,
   VolumeX
 } from 'lucide-react';
-import { Workout, Exercise } from '../../types/workout';
+import { Workout } from '../../types/workout';
 
 interface WorkoutTimerProps {
   workout: Workout;
@@ -93,6 +93,12 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
     };
   }, [isRunning, timeLeft, currentState, currentExerciseIndex, currentSet]);
 
+  const playSound = useCallback(() => {
+    if (audioRef.current && !isMuted) {
+      audioRef.current.play().catch(() => {});
+    }
+  }, [isMuted]);
+
   useEffect(() => {
     if (isRunning && startTime) {
       const interval = setInterval(() => {
@@ -102,11 +108,31 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
     }
   }, [isRunning, startTime]);
 
-  const playSound = () => {
-    if (audioRef.current && !isMuted) {
-      audioRef.current.play().catch(() => {});
+  useEffect(() => {
+    if (timeLeft === 0 && isRunning) {
+      playSound();
+      if (currentState === 'exercise') {
+        if (isLastSet) {
+          if (isLastExercise) {
+            setCurrentState('completed');
+            setIsRunning(false);
+          } else {
+            setCurrentState('rest');
+            setCurrentExerciseIndex(prev => prev + 1);
+            setCurrentSet(1);
+            setTimeLeft(currentExercise.restTime);
+          }
+        } else {
+          setCurrentState('rest');
+          setCurrentSet(prev => prev + 1);
+          setTimeLeft(currentExercise.restTime);
+        }
+      } else if (currentState === 'rest') {
+        setCurrentState('exercise');
+        setTimeLeft(currentExercise.duration || 30);
+      }
     }
-  };
+  }, [timeLeft, isRunning, currentState, isLastSet, isLastExercise, currentExerciseIndex, currentSet, currentExercise, playSound]);
 
   const startWorkout = () => {
     setCurrentState('exercise');
