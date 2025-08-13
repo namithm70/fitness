@@ -1,252 +1,316 @@
-# FitLife - Health & Fitness Gym Website
+# FitLife - Comprehensive Fitness Platform
 
-A comprehensive health and fitness website that serves as a digital platform for gym members and fitness enthusiasts to track their progress, access workout plans, and engage with fitness content.
+A modern, full-stack fitness application built with React, Node.js, and MongoDB. This platform helps users track workouts, manage nutrition, monitor progress, and connect with a fitness community.
 
-## 🚀 Features
+## 🚀 Recent Bug Fixes & Improvements
 
-### Core Features
-- **User Registration & Profile Management** - Complete user profiles with fitness preferences
-- **Workout Library & Plans** - Browse and track exercise routines
-- **Progress Tracking** - Monitor fitness journey with analytics
-- **Nutrition & Meal Planning** - Track nutrition and plan meals
-- **Community Features** - Connect with other fitness enthusiasts
-- **Educational Content** - Fitness and nutrition articles
-- **Gym Integration** - Find and review local gyms
+### Critical Fixes Applied:
+- ✅ **API Configuration Consistency** - Fixed duplicate axios configuration
+- ✅ **User Authentication** - Improved token handling and user ID management
+- ✅ **Error Boundaries** - Added comprehensive error handling
+- ✅ **Input Validation** - Enhanced security with input sanitization
+- ✅ **Socket.io Security** - Improved connection handling and cleanup
+- ✅ **Accessibility** - Added ARIA labels, keyboard navigation, and screen reader support
+- ✅ **Performance** - Implemented code splitting and lazy loading
+- ✅ **Type Safety** - Fixed TypeScript inconsistencies
 
-### Technical Features
-- **Modern UI/UX** - Beautiful, responsive design with Tailwind CSS
-- **Real-time Updates** - Socket.io for live features
-- **Authentication** - JWT-based auth with social login support
-- **API Integration** - Ready for third-party fitness APIs
-- **Mobile Responsive** - Optimized for all devices
-- **Progressive Web App** - Offline capabilities
+### Security Enhancements:
+- 🔒 JWT secret validation and strength requirements
+- 🔒 Input sanitization and validation
+- 🔒 Rate limiting and CORS protection
+- 🔒 Secure password requirements
+- 🔒 Token cleanup and expiration handling
 
 ## 🛠️ Tech Stack
 
 ### Frontend
 - **React 18** with TypeScript
+- **React Router** for navigation
 - **Tailwind CSS** for styling
 - **Framer Motion** for animations
-- **React Router** for navigation
+- **Axios** for API communication
 - **React Query** for state management
-- **React Hook Form** for forms
-- **Lucide React** for icons
+- **Socket.io Client** for real-time features
 
 ### Backend
 - **Node.js** with Express
 - **MongoDB** with Mongoose
 - **JWT** for authentication
-- **Socket.io** for real-time features
-- **bcryptjs** for password hashing
-- **Express Validator** for validation
+- **Socket.io** for real-time communication
+- **Bcrypt** for password hashing
+- **Express Validator** for input validation
+- **Helmet** for security headers
 
-### Third-Party Integrations (Planned)
-- **Auth0/Firebase** for authentication
-- **Stripe** for payments
-- **YouTube API** for exercise videos
-- **Unsplash API** for images
-- **Google Maps API** for gym locator
-- **Edamam/Spoonacular** for nutrition data
-- **SendGrid** for emails
-- **Cloudinary** for file storage
+## 📋 Prerequisites
 
-## 📦 Installation
-
-### Prerequisites
 - Node.js (v16 or higher)
-- MongoDB (local or cloud)
 - npm or yarn
+- MongoDB (local or Atlas)
+- Git
 
-### Setup Instructions
+## 🚀 Quick Start
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd fitness
-   ```
+### 1. Clone the Repository
+```bash
+git clone <repository-url>
+cd fitness
+```
 
-2. **Install dependencies**
-   ```bash
-   # Install root dependencies
-   npm install
-   
-   # Install backend dependencies
-   cd server && npm install
-   
-   # Install frontend dependencies
-   cd ../client && npm install
-   ```
+### 2. Install Dependencies
+```bash
+# Install root dependencies
+npm install
 
-3. **Environment Configuration**
-   
-   Create `.env` file in the server directory:
-   ```env
-   NODE_ENV=development
-   PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/fitness-app
-   JWT_SECRET=your-super-secret-jwt-key
-   CLIENT_URL=http://localhost:3000
-   
-   # Optional: Third-party API keys
-   CLOUDINARY_CLOUD_NAME=your-cloudinary-name
-   CLOUDINARY_API_KEY=your-cloudinary-key
-   CLOUDINARY_API_SECRET=your-cloudinary-secret
-   STRIPE_SECRET_KEY=your-stripe-secret
-   SENDGRID_API_KEY=your-sendgrid-key
-   ```
+# Install client dependencies
+cd client
+npm install
 
-4. **Start the development servers**
-   ```bash
-   # From the root directory
-   npm run dev
-   
-   # Or start them separately:
-   # Backend: npm run server
-   # Frontend: npm run client
-   ```
+# Install server dependencies
+cd ../server
+npm install
+```
 
-5. **Access the application**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
+### 3. Environment Setup
+
+#### Client Environment (.env in client directory)
+```env
+REACT_APP_API_URL=http://localhost:5000
+REACT_APP_SOCKET_URL=http://localhost:5000
+```
+
+#### Server Environment (.env in server directory)
+```env
+# Server Configuration
+PORT=5000
+NODE_ENV=development
+
+# Database
+MONGODB_URI=mongodb://localhost:27017/fitness-app
+
+# JWT Configuration
+JWT_SECRET=your-super-secret-jwt-key-change-in-production
+JWT_EXPIRES_IN=7d
+
+# CORS Configuration
+CLIENT_URL=http://localhost:3000
+ALLOWED_ORIGINS=http://localhost:3000,https://yourdomain.com
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX=100
+
+# Security
+BCRYPT_ROUNDS=12
+```
+
+### 4. Database Setup
+
+#### Option A: Local MongoDB
+```bash
+# Install MongoDB locally
+# Start MongoDB service
+mongod
+```
+
+#### Option B: MongoDB Atlas
+1. Create a MongoDB Atlas account
+2. Create a new cluster
+3. Get your connection string
+4. Update `MONGODB_URI` in your .env file
+
+### 5. Start the Application
+
+#### Development Mode
+```bash
+# Terminal 1 - Start the server
+cd server
+npm run dev
+
+# Terminal 2 - Start the client
+cd client
+npm start
+```
+
+#### Production Mode
+```bash
+# Build the client
+cd client
+npm run build
+
+# Start the server
+cd ../server
+npm start
+```
 
 ## 🏗️ Project Structure
 
 ```
 fitness/
 ├── client/                 # React frontend
-│   ├── public/            # Static files
 │   ├── src/
-│   │   ├── components/    # Reusable components
-│   │   ├── contexts/      # React contexts
+│   │   ├── components/     # Reusable components
 │   │   ├── pages/         # Page components
-│   │   ├── hooks/         # Custom hooks
+│   │   ├── contexts/      # React contexts
+│   │   ├── types/         # TypeScript definitions
+│   │   ├── config/        # Configuration files
 │   │   └── utils/         # Utility functions
-│   └── package.json
+│   └── public/            # Static assets
 ├── server/                # Node.js backend
-│   ├── models/           # MongoDB models
-│   ├── routes/           # API routes
-│   ├── middleware/       # Express middleware
-│   ├── utils/            # Utility functions
-│   └── package.json
-├── package.json          # Root package.json
-└── README.md
+│   ├── routes/            # API routes
+│   ├── models/            # Database models
+│   ├── middleware/        # Express middleware
+│   ├── utils/             # Utility functions
+│   └── config/            # Configuration files
+└── docs/                  # Documentation
 ```
 
-## 🔧 API Endpoints
+## 🔧 Key Features
 
-### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `GET /api/auth/user` - Get current user
-- `POST /api/auth/social-login` - Social media login
+### User Management
+- User registration and authentication
+- Profile management
+- Social login integration
+- Password reset functionality
 
-### Users
-- `GET /api/users/profile` - Get user profile
-- `PUT /api/users/profile` - Update user profile
-- `GET /api/users/stats` - Get user statistics
-- `GET /api/users/search` - Search users
+### Workout Tracking
+- Create and manage workouts
+- Exercise library
+- Progress tracking
+- Workout history
 
-### Workouts
-- `GET /api/workouts` - Get all workouts
-- `GET /api/workouts/:id` - Get workout by ID
-- `POST /api/workouts` - Create workout
-- `PUT /api/workouts/:id` - Update workout
-- `DELETE /api/workouts/:id` - Delete workout
-- `POST /api/workouts/:id/rate` - Rate workout
-- `GET /api/workouts/recommended` - Get recommended workouts
+### Nutrition Management
+- Food logging
+- Calorie tracking
+- Macro monitoring
+- Meal planning
 
-### Other Features
-- `GET /api/nutrition` - Nutrition data (coming soon)
-- `GET /api/progress` - Progress tracking (coming soon)
-- `GET /api/community` - Community features (coming soon)
-- `GET /api/gyms` - Gym integration (coming soon)
+### Progress Monitoring
+- Weight tracking
+- Body measurements
+- Progress photos
+- Goal setting
 
-## 🎨 UI Components
+### Community Features
+- Social feed
+- User connections
+- Challenges and events
+- Real-time messaging
 
-The application includes a comprehensive set of reusable components:
+## 🛡️ Security Features
 
-- **Layout Components** - Navigation, sidebar, footer
-- **Form Components** - Inputs, buttons, validation
-- **Card Components** - Workout cards, user cards
-- **Chart Components** - Progress charts, analytics
-- **Modal Components** - Dialogs, confirmations
-- **Loading Components** - Spinners, skeletons
+- JWT-based authentication
+- Password hashing with bcrypt
+- Input validation and sanitization
+- Rate limiting
+- CORS protection
+- Security headers with Helmet
+- XSS protection
+- CSRF protection
 
-## 🔒 Security Features
+## ♿ Accessibility Features
 
-- **JWT Authentication** - Secure token-based auth
-- **Password Hashing** - bcrypt for password security
-- **Input Validation** - Server-side validation
-- **Rate Limiting** - API rate limiting
-- **CORS Protection** - Cross-origin resource sharing
-- **Helmet Security** - Security headers
+- ARIA labels and roles
+- Keyboard navigation support
+- Screen reader compatibility
+- Focus management
+- Skip to content links
+- High contrast support
+- Semantic HTML structure
 
-## 📱 Mobile Responsiveness
+## 🧪 Testing
 
-The application is fully responsive and optimized for:
-- Desktop (1024px+)
-- Tablet (768px - 1023px)
-- Mobile (320px - 767px)
-
-## 🚀 Deployment
-
-### Frontend Deployment (Vercel/Netlify)
 ```bash
+# Run client tests
 cd client
-npm run build
+npm test
+
+# Run server tests
+cd server
+npm test
 ```
 
-### Backend Deployment (Heroku/Railway)
-```bash
-cd server
-npm start
-```
+## 📦 Deployment
+
+### Vercel (Frontend)
+1. Connect your GitHub repository to Vercel
+2. Set environment variables
+3. Deploy automatically on push
+
+### Render (Backend)
+1. Connect your GitHub repository to Render
+2. Set environment variables
+3. Configure build and start commands
 
 ### Environment Variables for Production
-Set the following environment variables in your production environment:
-- `NODE_ENV=production`
-- `MONGODB_URI` (production MongoDB connection)
-- `JWT_SECRET` (strong secret key)
-- `CLIENT_URL` (production frontend URL)
+```env
+NODE_ENV=production
+MONGODB_URI=your-mongodb-atlas-uri
+JWT_SECRET=your-strong-jwt-secret
+CLIENT_URL=https://yourdomain.com
+ALLOWED_ORIGINS=https://yourdomain.com
+```
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **MongoDB Connection Error**
+   - Check if MongoDB is running
+   - Verify connection string
+   - Check network connectivity
+
+2. **JWT Secret Error**
+   - Ensure JWT_SECRET is set in production
+   - Use a strong, unique secret
+
+3. **CORS Errors**
+   - Verify ALLOWED_ORIGINS configuration
+   - Check client URL settings
+
+4. **Port Conflicts**
+   - Change PORT in .env file
+   - Check if ports are available
+
+### Development Tips
+
+- Use the in-memory storage for development without MongoDB
+- Enable debug logging in development
+- Use React Developer Tools for frontend debugging
+- Use Postman or similar for API testing
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🆘 Support
 
-For support, email support@fitlife.com or create an issue in the repository.
+For support and questions:
+- Create an issue in the repository
+- Check the documentation
+- Review the troubleshooting section
 
-## 🔮 Roadmap
+## 🔄 Changelog
 
-### Phase 1 (Current)
-- ✅ User authentication and profiles
-- ✅ Basic workout management
-- ✅ Dashboard and navigation
-- ✅ Responsive design
+### v1.1.0 (Latest)
+- Fixed API configuration inconsistencies
+- Added comprehensive error boundaries
+- Improved input validation and security
+- Enhanced accessibility features
+- Implemented code splitting for better performance
+- Added loading states and better UX
+- Fixed TypeScript type issues
+- Improved Socket.io error handling
 
-### Phase 2 (Next)
-- 🔄 Complete workout library
-- 🔄 Progress tracking
-- 🔄 Nutrition tracking
-- 🔄 Community features
-
-### Phase 3 (Future)
-- 📋 Gym integration
-- 📋 Mobile app
-- 📋 AI-powered recommendations
-- 📋 Advanced analytics
-- 📋 Social features
-- 📋 Premium subscriptions
-
----
-
-**Built with ❤️ for fitness enthusiasts everywhere**
+### v1.0.0
+- Initial release
+- Basic fitness tracking features
+- User authentication
+- Workout and nutrition management

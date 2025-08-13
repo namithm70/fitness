@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Post, User as UserType } from '../../types/community';
 import { api } from '../../config/api';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface PostCardProps {
   post: Post;
@@ -14,15 +15,14 @@ interface PostCardProps {
 }
 
 const PostCard: React.FC<PostCardProps> = ({ post, onInteraction }) => {
+  const { user: currentUser } = useAuth();
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const [isLiked, setIsLiked] = useState(post.likes.includes(localStorage.getItem('userId') || ''));
-  const [isBookmarked, setIsBookmarked] = useState(post.bookmarks.includes(localStorage.getItem('userId') || ''));
+  const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser?.id || ''));
+  const [isBookmarked, setIsBookmarked] = useState(post.bookmarks.includes(currentUser?.id || ''));
   const [likeCount, setLikeCount] = useState(post.likes.length);
   const [commentCount, setCommentCount] = useState(post.comments.length);
   const [shareCount, setShareCount] = useState(post.shares.length);
-
-  const currentUserId = localStorage.getItem('userId');
 
   const handleLike = async () => {
     try {

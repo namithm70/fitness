@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import toast from 'react-hot-toast';
-import API_CONFIG from '../config/api';
+import { api } from '../config/api';
 
 interface User {
   id: string;
@@ -55,29 +54,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Set up axios defaults
-  useEffect(() => {
-    // Set base URL for axios
-    axios.defaults.baseURL = API_CONFIG.baseURL;
-    axios.defaults.timeout = API_CONFIG.timeout;
-    
-    const token = localStorage.getItem('token');
-    if (token) {
-      axios.defaults.headers.common['x-auth-token'] = token;
-    }
-  }, []);
-
   // Check if user is logged in on app start
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await axios.get('/api/auth/user');
+          const response = await api.get('/api/auth/user');
           setUser(response.data);
         } catch (error) {
           localStorage.removeItem('token');
-          delete axios.defaults.headers.common['x-auth-token'];
         }
       }
       setLoading(false);
@@ -88,11 +74,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await axios.post('/api/auth/login', { email, password });
+      const response = await api.post('/api/auth/login', { email, password });
       const { token, user } = response.data;
       
       localStorage.setItem('token', token);
-      axios.defaults.headers.common['x-auth-token'] = token;
       setUser(user);
       
       toast.success('Welcome back!');
@@ -105,11 +90,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const register = async (userData: RegisterData) => {
     try {
-      const response = await axios.post('/api/auth/register', userData);
+      const response = await api.post('/api/auth/register', userData);
       const { token, user } = response.data;
       
       localStorage.setItem('token', token);
-      axios.defaults.headers.common['x-auth-token'] = token;
       setUser(user);
       
       toast.success('Account created successfully!');
@@ -122,14 +106,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     localStorage.removeItem('token');
-    delete axios.defaults.headers.common['x-auth-token'];
     setUser(null);
     toast.success('Logged out successfully');
   };
 
   const updateUser = async (userData: Partial<User>) => {
     try {
-      const response = await axios.put('/api/users/profile', userData);
+      const response = await api.put('/api/users/profile', userData);
       setUser(response.data);
       toast.success('Profile updated successfully');
     } catch (error: any) {
@@ -141,14 +124,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const socialLogin = async (provider: string, socialData: any) => {
     try {
-      const response = await axios.post('/api/auth/social-login', {
+      const response = await api.post('/api/auth/social-login', {
         provider,
         ...socialData
       });
       const { token, user } = response.data;
       
       localStorage.setItem('token', token);
-      axios.defaults.headers.common['x-auth-token'] = token;
       setUser(user);
       
       toast.success(`Welcome! You've signed in with ${provider}`);

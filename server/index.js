@@ -108,21 +108,69 @@ io.on('connection', (socket) => {
 
   // Join user to their personal room
   socket.on('join-user-room', (userId) => {
-    socket.join(`user-${userId}`);
+    if (userId && typeof userId === 'string') {
+      socket.join(`user-${userId}`);
+      console.log(`User ${userId} joined their room`);
+    } else {
+      console.warn('Invalid userId provided for join-user-room:', userId);
+    }
   });
 
   // Handle workout tracking
   socket.on('workout-started', (data) => {
-    socket.broadcast.to(`user-${data.userId}`).emit('workout-update', data);
+    if (data && data.userId) {
+      socket.broadcast.to(`user-${data.userId}`).emit('workout-update', data);
+    } else {
+      console.warn('Invalid workout data received:', data);
+    }
   });
 
   // Handle real-time messaging
   socket.on('send-message', (data) => {
-    io.to(data.roomId).emit('new-message', data);
+    if (data && data.roomId) {
+      io.to(data.roomId).emit('new-message', data);
+    } else {
+      console.warn('Invalid message data received:', data);
+    }
   });
 
-  socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
+  // Handle errors
+  socket.on('error', (error) => {
+    console.error('Socket error:', error);
+  });
+
+  socket.on('disconnect', (reason) => {
+    console.log('User disconnected:', socket.id, 'Reason:', reason);
+    
+    // Clean up any user-specific data
+    socket.rooms.forEach(room => {
+      if (room.startsWith('user-')) {
+        socket.leave(room);
+      }
+    });
+  });
+});
+
+// Graceful shutdown handling
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully...');
+  server.close(() => {
+    console.log('HTTP server closed');
+    io.close(() => {
+      console.log('Socket.io server closed');
+      process.exit(0);
+    });
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, shutting down gracefully...');
+  server.close(() => {
+    console.log('HTTP server closed');
+    io.close(() => {
+      console.log('Socket.io server closed');
+      process.exit(0);
+    });
   });
 });
 

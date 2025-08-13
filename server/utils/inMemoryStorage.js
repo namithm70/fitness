@@ -6,11 +6,28 @@ class InMemoryStorage {
   constructor() {
     this.users = new Map();
     this.nextUserId = 1;
+    this.tokens = new Map(); // Store valid tokens
   }
 
   async createUser(userData) {
     const { email, password, firstName, lastName, fitnessLevel, fitnessGoals } = userData;
     
+    // Validate required fields
+    if (!email || !password || !firstName || !lastName) {
+      throw new Error('Missing required fields');
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      throw new Error('Invalid email format');
+    }
+
+    // Validate password strength
+    if (password.length < 6) {
+      throw new Error('Password must be at least 6 characters long');
+    }
+
     // Check if user already exists
     if (this.users.has(email)) {
       throw new Error('User already exists');
@@ -23,10 +40,10 @@ class InMemoryStorage {
     // Create user object
     const user = {
       id: this.nextUserId.toString(),
-      email,
+      email: email.toLowerCase(),
       password: hashedPassword,
-      firstName,
-      lastName,
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
       fitnessLevel: fitnessLevel || 'beginner',
       fitnessGoals: fitnessGoals || [],
       profilePicture: null,
@@ -39,6 +56,7 @@ class InMemoryStorage {
       totalWorkoutTime: 0,
       streakDays: 0,
       lastWorkoutDate: null,
+      isEmailVerified: false,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -50,12 +68,14 @@ class InMemoryStorage {
   }
 
   async findUserByEmail(email) {
-    return this.users.get(email) || null;
+    if (!email) return null;
+    return this.users.get(email.toLowerCase()) || null;
   }
 
   async findUserById(id) {
+    if (!id) return null;
     for (const user of this.users.values()) {
-      if (user.id === id) {
+      if (user.id === id.toString()) {
         return user;
       }
     }
@@ -63,40 +83,83 @@ class InMemoryStorage {
   }
 
   async updateUser(id, updates) {
-    for (const [email, user] of this.users.entries()) {
-      if (user.id === id) {
-        const updatedUser = { ...user, ...updates, updatedAt: new Date() };
-        this.users.set(email, updatedUser);
-        return updatedUser;
+    const user = await this.findUserById(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Validate updates
+    const allowedFields = [
+      'firstName', 'lastName', 'fitnessLevel', 'fitnessGoals', 
+      'profilePicture', 'totalWorkouts', 'totalWorkoutTime', 
+      'streakDays', 'lastWorkoutDate', 'isEmailVerified'
+    ];
+
+    const validUpdates = {};
+    for (const [key, value] of Object.entries(updates)) {
+      if (allowedFields.includes(key)) {
+        validUpdates[key] = value;
       }
     }
-    return null;
+
+    const updatedUser = { 
+      ...user, 
+      ...validUpdates, 
+      updatedAt: new Date() 
+    };
+
+    // Update in storage
+    this.users.set(user.email, updatedUser);
+    return updatedUser;
   }
 
   async comparePassword(email, password) {
-    const user = this.users.get(email);
+    if (!email || !password) return false;
+    
+    const user = this.users.get(email.toLowerCase());
     if (!user) return false;
     
     return await bcrypt.compare(password, user.password);
   }
 
   generateToken(user) {
+    if (!user || !user.id) {
+      throw new Error('Invalid user data for token generation');
+    }
+
     const payload = {
       user: {
         id: user.id
       }
     };
 
-    return jwt.sign(
+    const token = jwt.sign(
       payload,
       process.env.JWT_SECRET || 'your-secret-key',
       { expiresIn: '7d' }
     );
+
+    // Store token for validation
+    this.tokens.set(token, {
+      userId: user.id,
+      createdAt: new Date(),
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
+    });
+
+    return token;
   }
 
   verifyToken(token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+      
+      // Check if token is in our storage
+      const storedToken = this.tokens.get(token);
+      if (!storedToken || storedToken.expiresAt < new Date()) {
+        this.tokens.delete(token);
+        return null;
+      }
+
       return decoded.user.id;
     } catch (error) {
       return null;
@@ -104,9 +167,43 @@ class InMemoryStorage {
   }
 
   getUserPublicData(user) {
+    if (!user) return null;
+    
     const { password, ...publicData } = user;
     return publicData;
   }
+
+  // Clean up expired tokens
+  cleanupExpiredTokens() {
+    const now = new Date();
+    for (const [token, tokenData] of this.tokens.entries()) {
+      if (tokenData.expiresAt < now) {
+        this.tokens.delete(token);
+      }
+    }
+  }
+
+  // Get storage statistics
+  getStats() {
+    return {
+      totalUsers: this.users.size,
+      totalTokens: this.tokens.size,
+      nextUserId: this.nextUserId
+    };
+  }
+
+  // Clear all data (for testing)
+  clear() {
+    this.users.clear();
+    this.tokens.clear();
+    this.nextUserId = 1;
+  }
 }
 
-module.exports = { InMemoryStorage };
+// Run cleanup every hour
+const storage = new InMemoryStorage();
+setInterval(() => {
+  storage.cleanupExpiredTokens();
+}, 60 * 60 * 1000); // 1 hour
+
+module.exports = { InMemoryStorage: storage };

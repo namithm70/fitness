@@ -43,14 +43,38 @@ const config = {
   }
 };
 
-// Validation
-if (!config.jwtSecret || config.jwtSecret === 'your-super-secret-jwt-key-change-in-production') {
-  console.warn('⚠️ Warning: Using default JWT secret. Please set JWT_SECRET environment variable in production.');
-}
+// Security validation
+const validateSecurity = () => {
+  // JWT Secret validation
+  if (!config.jwtSecret || config.jwtSecret === 'your-super-secret-jwt-key-change-in-production') {
+    if (config.nodeEnv === 'production') {
+      console.error('❌ CRITICAL: JWT_SECRET is required in production environment.');
+      console.error('💡 Please set a strong JWT_SECRET environment variable.');
+      process.exit(1);
+    } else {
+      console.warn('⚠️ Warning: Using default JWT secret. Please set JWT_SECRET environment variable in production.');
+    }
+  }
 
-if (config.nodeEnv === 'production' && !process.env.JWT_SECRET) {
-  console.error('❌ Error: JWT_SECRET is required in production environment.');
-  process.exit(1);
-}
+  // JWT Secret strength validation
+  if (config.jwtSecret && config.jwtSecret.length < 32) {
+    console.warn('⚠️ Warning: JWT_SECRET should be at least 32 characters long for security.');
+  }
+
+  // MongoDB URI validation
+  if (config.nodeEnv === 'production' && (!config.mongodbUri || config.mongodbUri === 'mongodb://localhost:27017/fitness-app')) {
+    console.error('❌ CRITICAL: MONGODB_URI is required in production environment.');
+    console.error('💡 Please set a valid MongoDB connection string.');
+    process.exit(1);
+  }
+
+  // CORS validation
+  if (config.nodeEnv === 'production' && config.allowedOrigins.includes('http://localhost:3000')) {
+    console.warn('⚠️ Warning: localhost is included in allowed origins in production.');
+  }
+};
+
+// Run security validation
+validateSecurity();
 
 module.exports = config;
