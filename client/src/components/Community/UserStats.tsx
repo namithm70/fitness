@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, Target, Award, Clock, MapPin, UserPlus, FileText, Star, Heart, MessageSquare, Share2 } from 'lucide-react';
+import { Users, Target, Award, UserPlus, FileText, Star, Heart, MessageSquare, Share2 } from 'lucide-react';
 
 interface UserStatsProps {
   stats: {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Search, Plus, Clock, Star } from 'lucide-react';
+import { X, Search, Plus, Clock } from 'lucide-react';
 import { Food } from '../../types/nutrition';
 
 interface FoodSearchModalProps {
@@ -159,7 +159,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
       setFoods(sampleFoods);
       setRecentFoods(sampleFoods.slice(0, 5));
     }
-  }, [isOpen]);
+  }, [isOpen, sampleFoods]);
 
   const searchFoods = async () => {
     try {
@@ -194,7 +194,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, searchFoods]);
 
   const handleFoodSelect = (food: Food) => {
     onFoodSelected(food);

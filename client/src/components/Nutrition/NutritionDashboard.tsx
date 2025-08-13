@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Target, Calendar, Plus, Search, Bell, Settings,
+  Target, Plus, Search,
   Utensils, Droplets, Scale, Activity
 } from 'lucide-react';
 import { NutritionDashboard as NutritionDashboardType } from '../../types/nutrition';

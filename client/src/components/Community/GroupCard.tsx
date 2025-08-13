@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Users, MapPin, Calendar, MessageSquare, Target, Star,
+  Users, Calendar, MessageSquare, Target, Star,
   Shield, Lock, Globe, TrendingUp, Award, Users as GroupIcon
 } from 'lucide-react';
 import { Group } from '../../types/community';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Calendar, Users, Target, Award, Eye, Heart, MessageSquare } from 'lucide-react';
+import { TrendingUp, Eye, Heart, MessageSquare } from 'lucide-react';
 import { Post } from '../../types/community';
 
 interface TrendingSectionProps {
