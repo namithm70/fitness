@@ -1,29 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Clock, Target, Dumbbell, Heart, Zap, Users, Timer, Save } from 'lucide-react';
-
-interface Exercise {
-  id: string;
-  name: string;
-  sets: number;
-  reps: number;
-  weight?: number;
-  duration?: number; // in seconds
-  restTime: number; // in seconds
-  notes?: string;
-}
-
-interface Workout {
-  id: string;
-  name: string;
-  type: 'strength' | 'cardio' | 'hiit' | 'yoga' | 'flexibility' | 'endurance';
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
-  duration: number; // in minutes
-  exercises: Exercise[];
-  description: string;
-  tags: string[];
-  isPublic: boolean;
-}
+import { Workout, Exercise } from '../../types/workout';
 
 interface CreateWorkoutModalProps {
   isOpen: boolean;

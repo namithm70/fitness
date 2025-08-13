@@ -12,29 +12,7 @@ import {
   Volume2,
   VolumeX
 } from 'lucide-react';
-
-interface Exercise {
-  id: string;
-  name: string;
-  sets: number;
-  reps: number;
-  weight?: number;
-  duration?: number;
-  restTime: number;
-  notes?: string;
-}
-
-interface Workout {
-  id: string;
-  name: string;
-  type: string;
-  difficulty: string;
-  duration: number;
-  exercises: Exercise[];
-  description: string;
-  tags: string[];
-  isPublic: boolean;
-}
+import { Workout, Exercise } from '../../types/workout';
 
 interface WorkoutTimerProps {
   workout: Workout;

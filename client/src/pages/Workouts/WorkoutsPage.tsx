@@ -19,33 +19,7 @@ import CreateWorkoutModal from '../../components/Workouts/CreateWorkoutModal';
 import WorkoutCard from '../../components/Workouts/WorkoutCard';
 import WorkoutTimer from '../../components/Workouts/WorkoutTimer';
 import toast from 'react-hot-toast';
-
-interface Exercise {
-  id: string;
-  name: string;
-  sets: number;
-  reps: number;
-  weight?: number;
-  duration?: number;
-  restTime: number;
-  notes?: string;
-}
-
-interface Workout {
-  id: string;
-  name: string;
-  type: 'strength' | 'cardio' | 'hiit' | 'yoga' | 'flexibility' | 'endurance';
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
-  duration: number;
-  exercises: Exercise[];
-  description: string;
-  tags: string[];
-  isPublic: boolean;
-  createdAt?: string;
-  createdBy?: string;
-  rating?: number;
-  completedCount?: number;
-}
+import { Workout, Exercise } from '../../types/workout';
 
 const WorkoutsPage: React.FC = () => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
