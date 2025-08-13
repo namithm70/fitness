@@ -41,7 +41,7 @@ const ProgressDashboard: React.FC = () => {
         activeGoals: [],
         recentAchievements: [],
         workoutStats: { totalWorkouts: 0, totalDuration: 0, avgDuration: 0 },
-        bmi: null,
+        bmi: undefined,
         measurementTrend: [],
         summary: {
           totalEntries: 0,
