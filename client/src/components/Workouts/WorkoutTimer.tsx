@@ -39,6 +39,12 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
   const isLastExercise = currentExerciseIndex === workout.exercises.length - 1;
   const isLastSet = currentSet === currentExercise.sets;
 
+  const playSound = useCallback(() => {
+    if (audioRef.current && !isMuted) {
+      audioRef.current.play().catch(() => {});
+    }
+  }, [isMuted]);
+
   useEffect(() => {
     // Initialize audio
     audioRef.current = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
@@ -91,13 +97,7 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
         clearInterval(intervalRef.current);
       }
     };
-  }, [isRunning, timeLeft, currentState, currentExerciseIndex, currentSet]);
-
-  const playSound = useCallback(() => {
-    if (audioRef.current && !isMuted) {
-      audioRef.current.play().catch(() => {});
-    }
-  }, [isMuted]);
+  }, [isRunning, timeLeft, currentState, currentExerciseIndex, currentSet, currentExercise.duration, currentExercise.restTime, isLastExercise, isLastSet, playSound]);
 
   useEffect(() => {
     if (isRunning && startTime) {

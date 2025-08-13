@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Dumbbell, 
@@ -26,13 +26,12 @@ const WorkoutsPage: React.FC = () => {
   const [selectedType, setSelectedType] = useState<string>('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [showTimer, setShowTimer] = useState(false);
 
   const [currentWorkout, setCurrentWorkout] = useState<Workout | null>(null);
   const [bookmarkedWorkouts, setBookmarkedWorkouts] = useState<string[]>([]);
 
   // Sample workout data
-  const sampleWorkouts: Workout[] = [
+  const sampleWorkouts = useMemo<Workout[]>(() => [
     {
       id: '1',
       name: 'Full Body Strength',
@@ -105,7 +104,7 @@ const WorkoutsPage: React.FC = () => {
       rating: 4.6,
       completedCount: 6,
     },
-  ];
+  ], []);
 
   useEffect(() => {
     // Load sample workouts
@@ -151,7 +150,6 @@ const WorkoutsPage: React.FC = () => {
 
   const handleStartWorkout = (workout: Workout) => {
     setCurrentWorkout(workout);
-    setShowTimer(true);
   };
 
   const handleCompleteWorkout = (workout: Workout, timeSpent: number) => {
@@ -163,7 +161,6 @@ const WorkoutsPage: React.FC = () => {
     ));
     
     toast.success(`Great job! You completed ${workout.name} in ${Math.floor(timeSpent / 60)} minutes`);
-    setShowTimer(false);
     setCurrentWorkout(null);
   };
 
@@ -360,16 +357,15 @@ const WorkoutsPage: React.FC = () => {
         onSave={handleCreateWorkout}
       />
 
-      {currentWorkout && (
-        <WorkoutTimer
-          workout={currentWorkout}
-          onComplete={handleCompleteWorkout}
-          onClose={() => {
-            setShowTimer(false);
-            setCurrentWorkout(null);
-          }}
-        />
-      )}
+             {currentWorkout && (
+         <WorkoutTimer
+           workout={currentWorkout}
+           onComplete={handleCompleteWorkout}
+           onClose={() => {
+             setCurrentWorkout(null);
+           }}
+         />
+       )}
     </div>
   );
 };
