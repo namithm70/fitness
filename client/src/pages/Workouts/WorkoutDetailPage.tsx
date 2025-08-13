@@ -5,6 +5,7 @@ import { Play, Clock, Target, Users, Star } from 'lucide-react';
 
 const WorkoutDetailPage: React.FC = () => {
   const { id } = useParams();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // TODO: Use id to fetch workout details when API is implemented
 
   return (
