@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import API_CONFIG from '../config/api';
 
 interface User {
   id: string;
@@ -56,6 +57,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Set up axios defaults
   useEffect(() => {
+    // Set base URL for axios
+    axios.defaults.baseURL = API_CONFIG.baseURL;
+    axios.defaults.timeout = API_CONFIG.timeout;
+    
     const token = localStorage.getItem('token');
     if (token) {
       axios.defaults.headers.common['x-auth-token'] = token;
