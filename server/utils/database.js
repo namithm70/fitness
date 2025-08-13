@@ -12,12 +12,18 @@ class DatabaseManager {
   async connect() {
     const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/fitness-app';
     
+    // Check if we have a valid MongoDB URI
+    if (!MONGODB_URI || MONGODB_URI === 'mongodb://localhost:27017/fitness-app') {
+      console.log('⚠️ No MongoDB URI provided, using in-memory storage');
+      this.isConnected = false;
+      return false;
+    }
+    
     try {
       console.log('🔄 Attempting to connect to MongoDB...');
+      console.log(`📡 Connection string: ${MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, '//***:***@')}`);
       
       await mongoose.connect(MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
         serverSelectionTimeoutMS: 5000,
         socketTimeoutMS: 45000,
       });
@@ -55,9 +61,15 @@ class DatabaseManager {
         return this.connect();
       }
       
-      console.log('⚠️ Falling back to in-memory storage for development...');
-      this.isConnected = false;
-      return false;
+      if (process.env.NODE_ENV === 'production') {
+        console.error('❌ MongoDB connection failed in production. Please check your MONGODB_URI environment variable.');
+        console.error('💡 Make sure you have set up MongoDB Atlas and configured the connection string correctly.');
+        process.exit(1);
+      } else {
+        console.log('⚠️ Falling back to in-memory storage for development...');
+        this.isConnected = false;
+        return false;
+      }
     }
   }
 

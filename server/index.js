@@ -29,10 +29,15 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
 }));
 
+// Trust proxy for rate limiting behind load balancers
+app.set('trust proxy', 1);
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: config.rateLimitWindowMs,
-  max: config.rateLimitMax
+  max: config.rateLimitMax,
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 app.use(limiter);
 
