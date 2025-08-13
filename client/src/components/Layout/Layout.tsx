@@ -44,39 +44,61 @@ const Layout: React.FC = () => {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
+      <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+        {/* Header */}
+        <div className="flex items-center justify-between h-20 px-8 border-b border-gray-100 bg-gradient-to-r from-fitness-500 to-fitness-600">
           <Link to="/dashboard" className="flex items-center">
-            <h1 className="text-2xl font-bold text-gradient">FitLife</h1>
+            <h1 className="text-2xl font-bold text-white">FitLife</h1>
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+            className="lg:hidden p-2 rounded-lg text-white hover:bg-white hover:bg-opacity-20 transition-colors duration-200"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Navigation */}
-        <nav className="mt-8 px-4">
-          <div className="space-y-2">
+        <nav className="flex-1 px-6 py-8">
+          <div className="space-y-3">
             {navigation.map((item) => {
               const Icon = item.icon;
               return (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 ${
+                  className={`group flex items-center px-6 py-4 text-sm font-medium rounded-xl transition-all duration-200 relative overflow-hidden ${
                     isActive(item.href)
-                      ? 'bg-fitness-100 text-fitness-700 border-r-2 border-fitness-500'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-fitness-500 text-white shadow-lg shadow-fitness-500/25 transform scale-105'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:shadow-md'
                   }`}
                   onClick={() => setSidebarOpen(false)}
                 >
-                  <Icon className="w-5 h-5 mr-3" />
-                  {item.name}
+                  {/* Active indicator */}
+                  {isActive(item.href) && (
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-white rounded-r-full"></div>
+                  )}
+                  
+                  {/* Icon with enhanced styling */}
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-lg mr-4 transition-all duration-200 ${
+                    isActive(item.href)
+                      ? 'bg-white bg-opacity-20'
+                      : 'bg-gray-100 group-hover:bg-fitness-100'
+                  }`}>
+                    <Icon className={`w-5 h-5 transition-colors duration-200 ${
+                      isActive(item.href) ? 'text-white' : 'text-gray-600 group-hover:text-fitness-600'
+                    }`} />
+                  </div>
+                  
+                  {/* Text */}
+                  <span className="font-semibold">{item.name}</span>
+                  
+                  {/* Hover effect */}
+                  {!isActive(item.href) && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-fitness-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                  )}
                 </Link>
               );
             })}
@@ -84,15 +106,15 @@ const Layout: React.FC = () => {
         </nav>
 
         {/* User info */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
-          <div className="flex items-center mb-4">
+        <div className="p-6 border-t border-gray-100 bg-gray-50">
+          <div className="flex items-center mb-4 p-4 bg-white rounded-xl shadow-sm">
             <img
               src={user?.profilePicture || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face'}
               alt="Profile"
-              className="w-10 h-10 rounded-full mr-3"
+              className="w-12 h-12 rounded-full mr-4 ring-2 ring-fitness-100"
             />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">
+              <p className="text-sm font-semibold text-gray-900 truncate">
                 {user?.firstName} {user?.lastName}
               </p>
               <p className="text-xs text-gray-500 truncate">{user?.email}</p>
@@ -100,16 +122,18 @@ const Layout: React.FC = () => {
           </div>
           <button
             onClick={logout}
-            className="flex items-center w-full px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors duration-200"
+            className="flex items-center w-full px-6 py-3 text-sm text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all duration-200 group"
           >
-            <LogOut className="w-4 h-4 mr-3" />
-            Sign Out
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 group-hover:bg-red-100 mr-4 transition-colors duration-200">
+              <LogOut className="w-4 h-4 text-gray-600 group-hover:text-red-600 transition-colors duration-200" />
+            </div>
+            <span className="font-medium">Sign Out</span>
           </button>
         </div>
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-64">
+      <div className="lg:pl-72">
         {/* Top navigation */}
         <div className="sticky top-0 z-30 bg-white shadow-sm border-b border-gray-200">
           <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
