@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const InMemoryStorage = require('./inMemoryStorage');
+const { InMemoryStorage } = require('./inMemoryStorage');
 
 class DatabaseManager {
   constructor() {

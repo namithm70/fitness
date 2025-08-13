@@ -4,7 +4,8 @@ const bcrypt = require('bcryptjs');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
-const inMemoryStorage = require('../utils/inMemoryStorage');
+const { InMemoryStorage } = require('../utils/inMemoryStorage');
+const inMemoryStorage = new InMemoryStorage();
 
 const router = express.Router();
 

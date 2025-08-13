@@ -109,4 +109,4 @@ class InMemoryStorage {
   }
 }
 
-module.exports = new InMemoryStorage();
+module.exports = { InMemoryStorage };

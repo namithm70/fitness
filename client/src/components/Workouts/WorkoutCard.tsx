@@ -75,7 +75,7 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
   isBookmarked = false,
 }) => {
   const typeConfig = workoutTypeConfig[workout.type];
-  const difficultyConfig = difficultyConfig[workout.difficulty];
+  const difficultyLevelConfig = difficultyConfig[workout.difficulty];
   const Icon = typeConfig.icon;
 
   const formatDuration = (minutes: number) => {
@@ -116,8 +116,8 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
               {workout.name}
             </h3>
             <div className="flex items-center gap-2 mt-1">
-              <span className={`px-2 py-1 rounded-full text-xs font-medium ${difficultyConfig.color}`}>
-                {difficultyConfig.label}
+              <span className={`px-2 py-1 rounded-full text-xs font-medium ${difficultyLevelConfig.color}`}>
+                {difficultyLevelConfig.label}
               </span>
               <span className="text-sm text-gray-500 capitalize">{workout.type}</span>
             </div>
