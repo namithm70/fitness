@@ -29,6 +29,7 @@ const RegisterPage: React.FC = () => {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<RegisterFormData>({
     defaultValues: {
@@ -94,9 +95,8 @@ const RegisterPage: React.FC = () => {
       ? currentGoals.filter(g => g !== goal)
       : [...currentGoals, goal];
     
-    // Update the form value
-    const event = { target: { value: updatedGoals } };
-    register('fitnessGoals').onChange(event);
+    // Update the form value using setValue
+    setValue('fitnessGoals', updatedGoals);
   };
 
   const nextStep = () => setCurrentStep(currentStep + 1);
@@ -306,21 +306,46 @@ const RegisterPage: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-4">
                     What's your current fitness level?
                   </label>
-                  <div className="space-y-3">
-                    {fitnessLevels.map((level) => (
-                      <label key={level.value} className="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                        <input
-                          type="radio"
-                          value={level.value}
-                          {...register('fitnessLevel')}
-                          className="mt-1 h-4 w-4 text-fitness-600 focus:ring-fitness-500 border-gray-300"
-                        />
-                        <div className="ml-3">
-                          <div className="text-sm font-medium text-gray-900">{level.label}</div>
-                          <div className="text-sm text-gray-500">{level.description}</div>
-                        </div>
-                      </label>
-                    ))}
+                  <div className="space-y-4">
+                    {fitnessLevels.map((level) => {
+                      const isSelected = watch('fitnessLevel') === level.value;
+                      return (
+                        <label 
+                          key={level.value} 
+                          className={`group flex items-start p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 ${
+                            isSelected 
+                              ? 'border-fitness-500 bg-fitness-50 shadow-md' 
+                              : 'border-gray-200 hover:border-fitness-300 hover:bg-gray-50'
+                          }`}
+                        >
+                          <div className="flex items-center justify-center w-6 h-6 mr-4 mt-1">
+                            <input
+                              type="radio"
+                              value={level.value}
+                              {...register('fitnessLevel')}
+                              className="sr-only"
+                            />
+                            <div className={`w-5 h-5 border-2 rounded-full flex items-center justify-center transition-all duration-200 ${
+                              isSelected 
+                                ? 'border-fitness-500' 
+                                : 'border-gray-300 group-hover:border-fitness-400'
+                            }`}>
+                              {isSelected && (
+                                <div className="w-2.5 h-2.5 bg-fitness-500 rounded-full"></div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex-1">
+                            <div className={`text-sm font-semibold transition-colors duration-200 ${
+                              isSelected ? 'text-fitness-700' : 'text-gray-900'
+                            }`}>
+                              {level.label}
+                            </div>
+                            <div className="text-sm text-gray-500 mt-1">{level.description}</div>
+                          </div>
+                        </label>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -328,20 +353,49 @@ const RegisterPage: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-4">
                     What are your fitness goals? (Select all that apply)
                   </label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {fitnessGoals.map((goal) => (
-                      <label key={goal.value} className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          value={goal.value}
-                          checked={watch('fitnessGoals').includes(goal.value)}
-                          onChange={() => handleGoalToggle(goal.value)}
-                          className="h-4 w-4 text-fitness-600 focus:ring-fitness-500 border-gray-300 rounded"
-                        />
-                        <span className="ml-3 text-2xl">{goal.icon}</span>
-                        <span className="ml-2 text-sm font-medium text-gray-900">{goal.label}</span>
-                      </label>
-                    ))}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {fitnessGoals.map((goal) => {
+                      const isSelected = watch('fitnessGoals').includes(goal.value);
+                      return (
+                        <label 
+                          key={goal.value} 
+                          className={`group flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 ${
+                            isSelected 
+                              ? 'border-fitness-500 bg-fitness-50 shadow-md' 
+                              : 'border-gray-200 hover:border-fitness-300 hover:bg-gray-50'
+                          }`}
+                        >
+                          <div className="flex items-center justify-center w-6 h-6 mr-4">
+                            <input
+                              type="checkbox"
+                              value={goal.value}
+                              checked={isSelected}
+                              onChange={() => handleGoalToggle(goal.value)}
+                              className="sr-only"
+                            />
+                            <div className={`w-5 h-5 border-2 rounded-md flex items-center justify-center transition-all duration-200 ${
+                              isSelected 
+                                ? 'border-fitness-500 bg-fitness-500' 
+                                : 'border-gray-300 group-hover:border-fitness-400'
+                            }`}>
+                              {isSelected && (
+                                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center flex-1">
+                            <span className="text-2xl mr-3">{goal.icon}</span>
+                            <span className={`text-sm font-semibold transition-colors duration-200 ${
+                              isSelected ? 'text-fitness-700' : 'text-gray-900'
+                            }`}>
+                              {goal.label}
+                            </span>
+                          </div>
+                        </label>
+                      );
+                    })}
                   </div>
                 </div>
 
