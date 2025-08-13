@@ -62,7 +62,9 @@ const NutritionDashboard: React.FC = () => {
             fatPercentage: 20
           },
           weightGoal: 'maintain',
+          targetWeight: 70,
           weeklyWeightChange: 0,
+          dietaryPreferences: [],
           mealTiming: {
             breakfastTime: '08:00',
             lunchTime: '12:00',
