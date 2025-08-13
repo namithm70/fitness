@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Camera, Target } from 'lucide-react';
+import { TrendingUp, Camera } from 'lucide-react';
 
 const ProgressPage: React.FC = () => {
   return (

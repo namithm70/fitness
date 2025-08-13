@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, MessageCircle, Trophy } from 'lucide-react';
+import { Users, MessageCircle } from 'lucide-react';
 
 const CommunityPage: React.FC = () => {
   return (

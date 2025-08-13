@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { User, Settings, Edit } from 'lucide-react';
+import { Settings, Edit } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const ProfilePage: React.FC = () => {

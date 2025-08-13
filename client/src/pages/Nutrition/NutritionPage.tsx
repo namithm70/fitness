@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Apple, Plus } from 'lucide-react';
+import { Apple, Plus } from 'lucide-react';
 
 const NutritionPage: React.FC = () => {
   return (

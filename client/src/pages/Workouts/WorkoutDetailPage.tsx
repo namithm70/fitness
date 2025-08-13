@@ -5,6 +5,7 @@ import { Play, Clock, Target, Users, Star } from 'lucide-react';
 
 const WorkoutDetailPage: React.FC = () => {
   const { id } = useParams();
+  // TODO: Use id to fetch workout details when API is implemented
 
   return (
     <div className="space-y-6">
