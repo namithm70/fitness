@@ -19,7 +19,7 @@ export interface CommentReply {
 export interface Post {
   _id: string;
   user: User;
-  type: 'text' | 'photo' | 'workout' | 'progress' | 'meal' | 'achievement' | 'challenge' | 'event';
+  type: 'text' | 'photo' | 'video' | 'workout' | 'progress' | 'meal' | 'achievement' | 'challenge' | 'event';
   title?: string;
   content: string;
   media: Media[];
@@ -63,7 +63,7 @@ export interface Media {
 
 export interface PostCreate {
   content: string;
-  type: 'text' | 'photo' | 'workout' | 'progress' | 'meal' | 'achievement' | 'challenge' | 'event';
+  type: 'text' | 'photo' | 'video' | 'workout' | 'progress' | 'meal' | 'achievement' | 'challenge' | 'event';
   title?: string;
   category?: 'workout' | 'nutrition' | 'progress' | 'motivation' | 'tips' | 'general' | 'challenge' | 'event';
   tags?: string[];

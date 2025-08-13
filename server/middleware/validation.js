@@ -145,7 +145,7 @@ const validatePost = [
     .isLength({ min: 1, max: 2000 })
     .withMessage('Post content is required and must be less than 2000 characters'),
   body('type')
-    .isIn(['text', 'photo', 'workout', 'progress', 'meal', 'achievement', 'challenge', 'event'])
+    .isIn(['text', 'photo', 'video', 'workout', 'progress', 'meal', 'achievement', 'challenge', 'event'])
     .withMessage('Invalid post type'),
   body('category')
     .optional()
