@@ -4,7 +4,11 @@ import {
   ScreenReaderOnlyProps, 
   FocusTrapProps, 
   AccessibleButtonProps, 
-  AccessibleFormFieldProps 
+  AccessibleFormFieldProps,
+  AccessibleInputProps,
+  AccessibleTextareaProps,
+  AccessibleSelectProps,
+  LiveRegionProps
 } from './AccessibilityTypes';
 
 // Skip to content link for keyboard navigation
