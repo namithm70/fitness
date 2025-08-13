@@ -192,56 +192,106 @@ const WorkoutsPage: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <motion.div 
+        className="flex items-center justify-between"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Workouts</h1>
-          <p className="text-gray-600">Browse and start your fitness routines</p>
+          <motion.h1 
+            className="text-4xl font-bold text-gray-900 flex items-center"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <motion.span
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 1, repeat: Infinity, repeatDelay: 3 }}
+              className="mr-3"
+            >
+              💪
+            </motion.span>
+            Workouts
+          </motion.h1>
+          <motion.p 
+            className="text-xl text-gray-600"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            Browse and start your fitness routines
+          </motion.p>
         </div>
-        <button 
-          onClick={() => setShowCreateModal(true)}
-          className="btn-primary flex items-center"
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <Plus className="w-4 h-4 mr-2" />
-          Create Workout
-        </button>
-      </div>
+          <button 
+            onClick={() => setShowCreateModal(true)}
+            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-xl flex items-center shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            Create Workout
+          </button>
+        </motion.div>
+      </motion.div>
 
       {/* Search and Filters */}
-      <div className="card">
-        <div className="space-y-4">
+      <motion.div 
+        className="bg-white rounded-xl shadow-lg border border-gray-100 p-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <div className="space-y-6">
           {/* Search */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="text"
               placeholder="Search workouts..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="input-field pl-10 w-full"
+              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm hover:shadow-md transition-all duration-300"
             />
           </div>
 
           {/* Type Filters */}
           <div>
-            <h3 className="text-sm font-medium text-gray-700 mb-3">Workout Type</h3>
-            <div className="flex flex-wrap gap-2">
-              {workoutTypes.map((type) => {
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+              <motion.span
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
+                className="mr-2"
+              >
+                🏋️
+              </motion.span>
+              Workout Type
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {workoutTypes.map((type, index) => {
                 const Icon = type.icon;
                 return (
-                  <button
+                  <motion.button
                     key={type.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedType(type.id)}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${
                       selectedType === type.id
-                        ? 'bg-fitness-100 text-fitness-700 border border-fitness-300'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
                     {type.name}
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
@@ -249,95 +299,159 @@ const WorkoutsPage: React.FC = () => {
 
           {/* Difficulty Filters */}
           <div>
-            <h3 className="text-sm font-medium text-gray-700 mb-3">Difficulty Level</h3>
-            <div className="flex flex-wrap gap-2">
-              {difficultyLevels.map((level) => (
-                <button
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+              <motion.span
+                animate={{ rotate: [0, 5, -5, 0] }}
+                transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
+                className="mr-2"
+              >
+                ⚡
+              </motion.span>
+              Difficulty Level
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {difficultyLevels.map((level, index) => (
+                <motion.button
                   key={level.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedDifficulty(level.id)}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                  className={`px-4 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${
                     selectedDifficulty === level.id
-                      ? 'bg-fitness-100 text-fitness-700 border border-fitness-300'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg shadow-purple-500/25'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
                   }`}
-                >
-                  {level.name}
-                </button>
+                                  >
+                    {level.name}
+                  </motion.button>
               ))}
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="card text-center">
-          <div className="flex items-center justify-center mb-2">
-            <Dumbbell className="w-6 h-6 text-fitness-600" />
-          </div>
-          <div className="text-2xl font-bold text-gray-900">{filteredWorkouts.length}</div>
-          <div className="text-sm text-gray-600">Available Workouts</div>
-        </div>
-        <div className="card text-center">
-          <div className="flex items-center justify-center mb-2">
-            <Clock className="w-6 h-6 text-fitness-600" />
-          </div>
-          <div className="text-2xl font-bold text-gray-900">
-            {Math.round(filteredWorkouts.reduce((sum, w) => sum + w.duration, 0) / filteredWorkouts.length || 0)}m
-          </div>
-          <div className="text-sm text-gray-600">Avg Duration</div>
-        </div>
-        <div className="card text-center">
-          <div className="flex items-center justify-center mb-2">
-            <Star className="w-6 h-6 text-fitness-600" />
-          </div>
-          <div className="text-2xl font-bold text-gray-900">
-            {filteredWorkouts.length > 0 
+      <motion.div 
+        className="grid grid-cols-1 md:grid-cols-4 gap-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
+        {[
+          {
+            icon: <Dumbbell className="w-6 h-6" />,
+            value: filteredWorkouts.length,
+            label: 'Available Workouts',
+            color: 'from-blue-500 to-blue-600'
+          },
+          {
+            icon: <Clock className="w-6 h-6" />,
+            value: `${Math.round(filteredWorkouts.reduce((sum, w) => sum + w.duration, 0) / filteredWorkouts.length || 0)}m`,
+            label: 'Avg Duration',
+            color: 'from-green-500 to-green-600'
+          },
+          {
+            icon: <Star className="w-6 h-6" />,
+            value: filteredWorkouts.length > 0 
               ? (filteredWorkouts.reduce((sum, w) => sum + (w.rating || 0), 0) / filteredWorkouts.length).toFixed(1)
-              : '0.0'
-            }
-          </div>
-          <div className="text-sm text-gray-600">Avg Rating</div>
-        </div>
-        <div className="card text-center">
-          <div className="flex items-center justify-center mb-2">
-            <TrendingUp className="w-6 h-6 text-fitness-600" />
-          </div>
-          <div className="text-2xl font-bold text-gray-900">
-            {filteredWorkouts.reduce((sum, w) => sum + (w.completedCount || 0), 0)}
-          </div>
-          <div className="text-sm text-gray-600">Total Completions</div>
-        </div>
-      </div>
+              : '0.0',
+            label: 'Avg Rating',
+            color: 'from-yellow-500 to-yellow-600'
+          },
+          {
+            icon: <TrendingUp className="w-6 h-6" />,
+            value: filteredWorkouts.reduce((sum, w) => sum + (w.completedCount || 0), 0),
+            label: 'Total Completions',
+            color: 'from-purple-500 to-purple-600'
+          }
+        ].map((stat, index) => (
+          <motion.div
+            key={stat.label}
+            className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 text-center group cursor-pointer"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            whileHover={{ 
+              scale: 1.05,
+              y: -5,
+              transition: { duration: 0.2 }
+            }}
+          >
+            <motion.div 
+              className={`flex items-center justify-center mb-3 p-3 rounded-xl bg-gradient-to-r ${stat.color} text-white shadow-lg group-hover:shadow-xl transition-all duration-300`}
+              whileHover={{ rotate: 5, scale: 1.1 }}
+            >
+              {stat.icon}
+            </motion.div>
+            <motion.div 
+              className="text-3xl font-bold text-gray-900 mb-2"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 5 }}
+            >
+              {stat.value}
+            </motion.div>
+            <div className="text-sm font-medium text-gray-600 group-hover:text-gray-800 transition-colors">
+              {stat.label}
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
 
       {/* Workouts Grid */}
       {filteredWorkouts.length === 0 ? (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="card text-center py-12"
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="bg-white rounded-xl shadow-lg border border-gray-100 p-12 text-center"
         >
-          <Dumbbell className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">No Workouts Found</h2>
-          <p className="text-gray-600 mb-6">
+          <motion.div
+            animate={{ 
+              rotate: [0, 5, -5, 0],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+          >
+            <Dumbbell className="w-20 h-20 text-gray-400 mx-auto mb-6" />
+          </motion.div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">No Workouts Found</h2>
+          <p className="text-lg text-gray-600 mb-8 max-w-md mx-auto">
             Try adjusting your search or filters to find more workouts.
           </p>
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="btn-primary flex items-center mx-auto"
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <Plus className="w-4 h-4 mr-2" />
-            Create Your First Workout
-          </button>
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-xl flex items-center mx-auto shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              Create Your First Workout
+            </button>
+          </motion.div>
         </motion.div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           {filteredWorkouts.map((workout, index) => (
             <motion.div
               key={workout.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              whileHover={{ 
+                scale: 1.02,
+                y: -5,
+                transition: { duration: 0.2 }
+              }}
             >
               <WorkoutCard
                 workout={workout}
@@ -347,7 +461,7 @@ const WorkoutsPage: React.FC = () => {
               />
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
 
       {/* Modals */}
