@@ -44,14 +44,20 @@ const Layout: React.FC = () => {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-white to-gray-50 shadow-2xl transform transition-all duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
-          <h1 className="text-xl font-bold text-gray-900">FitLife</h1>
+        {/* Header with gradient */}
+        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-purple-600">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+              <Dumbbell className="w-5 h-5 text-white" />
+            </div>
+            <h1 className="text-xl font-bold text-white">FitLife</h1>
+          </div>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden text-gray-500 hover:text-gray-700"
+            className="lg:hidden text-white hover:text-gray-200 transition-colors"
           >
             <X className="w-6 h-6" />
           </button>
@@ -59,40 +65,50 @@ const Layout: React.FC = () => {
 
         {/* Navigation */}
         <nav className="mt-6 px-3 flex-1">
-          <div className="space-y-1">
-            {navigation.map((item) => {
+          <div className="space-y-2">
+            {navigation.map((item, index) => {
               const Icon = item.icon;
               return (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                  className={`group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 transform hover:scale-105 ${
                     isActive(item.href)
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25'
+                      : 'text-gray-700 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200 hover:text-gray-900 hover:shadow-md'
                   }`}
                   onClick={() => setSidebarOpen(false)}
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <Icon className={`mr-3 h-5 w-5 ${
-                    isActive(item.href) ? 'text-blue-500' : 'text-gray-400 group-hover:text-gray-500'
-                  }`} />
-                  {item.name}
+                  <div className={`mr-3 p-1.5 rounded-lg transition-all duration-200 ${
+                    isActive(item.href) 
+                      ? 'bg-white bg-opacity-20' 
+                      : 'bg-gray-100 group-hover:bg-white group-hover:shadow-sm'
+                  }`}>
+                    <Icon className={`h-5 w-5 ${
+                      isActive(item.href) ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'
+                    }`} />
+                  </div>
+                  <span className="font-semibold">{item.name}</span>
+                  {isActive(item.href) && (
+                    <div className="ml-auto w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                  )}
                 </Link>
               );
             })}
           </div>
         </nav>
 
-        {/* User section */}
-        <div className="p-4 border-t border-gray-200">
-          <div className="flex items-center space-x-3 mb-3">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-medium">
+        {/* User section with enhanced styling */}
+        <div className="p-4 border-t border-gray-200 bg-white">
+          <div className="flex items-center space-x-3 mb-4 p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+              <span className="text-white text-sm font-bold">
                 {user?.firstName?.charAt(0) || 'U'}
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">
+              <p className="text-sm font-bold text-gray-900 truncate">
                 {user?.firstName} {user?.lastName}
               </p>
               <p className="text-xs text-gray-500 truncate">
@@ -104,14 +120,14 @@ const Layout: React.FC = () => {
           <div className="flex space-x-2">
             <button
               onClick={() => navigate('/profile')}
-              className="flex-1 flex items-center justify-center px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+              className="flex-1 flex items-center justify-center px-3 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 hover:shadow-md transition-all duration-200 transform hover:scale-105"
             >
               <Settings className="w-4 h-4 mr-2" />
               Settings
             </button>
             <button
               onClick={handleLogout}
-              className="flex-1 flex items-center justify-center px-3 py-2 text-sm font-medium text-red-700 bg-red-100 rounded-md hover:bg-red-200 transition-colors"
+              className="flex-1 flex items-center justify-center px-3 py-2.5 text-sm font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 hover:shadow-md transition-all duration-200 transform hover:scale-105"
             >
               <LogOut className="w-4 h-4 mr-2" />
               Logout
@@ -123,11 +139,11 @@ const Layout: React.FC = () => {
       {/* Main content */}
       <div className="flex-1 flex flex-col lg:ml-0">
         {/* Top bar */}
-        <div className="sticky top-0 z-30 bg-white shadow-sm border-b border-gray-200">
+        <div className="sticky top-0 z-30 bg-white shadow-lg border-b border-gray-200">
           <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden text-gray-500 hover:text-gray-700"
+              className="lg:hidden text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100 transition-all duration-200"
             >
               <Menu className="w-6 h-6" />
             </button>
@@ -137,16 +153,16 @@ const Layout: React.FC = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder="Search..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Search workouts, nutrition, progress..."
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm hover:shadow-md transition-all duration-200"
                 />
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
-              <button className="text-gray-500 hover:text-gray-700 relative">
+              <button className="text-gray-500 hover:text-gray-700 relative p-2 rounded-lg hover:bg-gray-100 transition-all duration-200">
                 <Bell className="w-6 h-6" />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
               </button>
             </div>
           </div>
