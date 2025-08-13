@@ -46,11 +46,12 @@ const CommunityDashboard: React.FC = () => {
         upcomingEvents: [],
         recommendedGroups: [],
         userStats: {
-          totalPosts: 0,
-          totalLikes: 0,
-          totalComments: 0,
           followers: 0,
-          following: 0
+          following: 0,
+          posts: 0,
+          reputation: 0,
+          level: 1,
+          experience: 0
         }
       });
     } finally {
