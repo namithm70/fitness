@@ -16,6 +16,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [foods, setFoods] = useState<Food[]>([]);
+  const [recentFoods, setRecentFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(false);
 
 
@@ -255,6 +256,54 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
             </div>
           ) : (
             <div className="p-6">
+              {/* Show recent foods when no search is active */}
+              {!searchQuery && !selectedCategory && recentFoods.length > 0 && (
+                <div className="mb-6">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <Clock className="w-5 h-5 text-gray-500" />
+                    <h3 className="text-lg font-semibold text-gray-900">Recent Foods</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {recentFoods.map((food) => (
+                      <div
+                        key={food._id}
+                        onClick={() => handleFoodSelect(food)}
+                        className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all cursor-pointer"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <h3 className="font-medium text-gray-900">{food.name}</h3>
+                            <p className="text-sm text-gray-600 capitalize">
+                              {food.category}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {food.nutrition.calories} cal per {food.servingSize.amount}{food.servingSize.unit}
+                            </p>
+                          </div>
+                          <Plus className="w-5 h-5 text-gray-400" />
+                        </div>
+                        
+                        <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
+                          <div>
+                            <span className="text-gray-600">Protein:</span>
+                            <span className="font-medium ml-1">{food.nutrition.protein}g</span>
+                          </div>
+                          <div>
+                            <span className="text-gray-600">Carbs:</span>
+                            <span className="font-medium ml-1">{food.nutrition.carbohydrates}g</span>
+                          </div>
+                          <div>
+                            <span className="text-gray-600">Fat:</span>
+                            <span className="font-medium ml-1">{food.nutrition.fat}g</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Show search results */}
               {foods.length === 0 ? (
                 <div className="text-center py-12">
                   <Search className="w-12 h-12 text-gray-400 mx-auto mb-3" />
