@@ -81,7 +81,8 @@ const NutritionDashboard: React.FC = () => {
           updatedAt: new Date().toISOString()
         },
         recentMeals: [],
-        weeklyData: []
+        weeklyData: [],
+        todaysMeals: []
       });
     } finally {
       setLoading(false);
