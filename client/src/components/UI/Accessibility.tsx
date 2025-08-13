@@ -1,5 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { SkipToContent, ScreenReaderOnly } from './AccessibilityTypes';
+import { 
+  SkipToContentProps, 
+  ScreenReaderOnlyProps, 
+  FocusTrapProps, 
+  AccessibleButtonProps, 
+  AccessibleFormFieldProps 
+} from './AccessibilityTypes';
 
 // Skip to content link for keyboard navigation
 export const SkipToContentLink: React.FC<SkipToContentProps> = ({ 
