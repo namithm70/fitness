@@ -39,6 +39,8 @@ const NutritionDashboard: React.FC = () => {
           carbohydrates: 0,
           fat: 0,
           fiber: 0,
+          sugar: 0,
+          sodium: 0,
           water: 0
         },
         nutritionGoal: {
@@ -48,6 +50,8 @@ const NutritionDashboard: React.FC = () => {
             carbohydrates: 250,
             fat: 65,
             fiber: 25,
+            sugar: 50,
+            sodium: 2300,
             water: 8
           }
         },
