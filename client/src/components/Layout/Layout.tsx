@@ -34,7 +34,7 @@ const Layout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 lg:flex">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
@@ -44,8 +44,8 @@ const Layout: React.FC = () => {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 lg:transform-none lg:flex-shrink-0 ${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
         {/* Header */}
         <div className="flex items-center justify-between h-20 px-8 border-b border-gray-100 bg-gradient-to-r from-fitness-500 to-fitness-600">
@@ -133,7 +133,7 @@ const Layout: React.FC = () => {
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-72">
+      <div className="lg:flex-1 lg:min-w-0">
         {/* Top navigation */}
         <div className="sticky top-0 z-30 bg-white shadow-sm border-b border-gray-200">
           <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
