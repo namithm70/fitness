@@ -1,4 +1,4 @@
-import { GOOGLE_CLIENT_ID, GOOGLE_OAUTH_ENDPOINTS } from '../config/googleOAuth';
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_OAUTH_ENDPOINTS } from '../config/googleOAuth';
 
 interface GoogleUser {
   id: string;
@@ -94,6 +94,7 @@ class GoogleAuthService {
     // Exchange code for access token
     const tokenRequestBody = new URLSearchParams({
       client_id: GOOGLE_CLIENT_ID,
+      client_secret: GOOGLE_CLIENT_SECRET,
       code: code,
       code_verifier: codeVerifier,
       grant_type: 'authorization_code',
