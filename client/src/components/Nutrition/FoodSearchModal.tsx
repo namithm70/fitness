@@ -50,6 +50,8 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
   const sampleFoods: Food[] = useMemo(() => [
     // Regular foods
     ...getAllIndianFoods(), // Add all Indian foods
+    
+    // Fruits
     {
       _id: '1',
       name: 'Banana',
@@ -75,6 +77,169 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
     },
     {
       _id: '2',
+      name: 'Apple',
+      category: 'fruits',
+      servingSize: { amount: 182, unit: 'g' },
+      nutrition: {
+        calories: 95,
+        protein: 0.5,
+        carbohydrates: 25,
+        fat: 0.3,
+        fiber: 4.4,
+        sugar: 19,
+        sodium: 2,
+        cholesterol: 0,
+        saturatedFat: 0.1,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 90,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      _id: '3',
+      name: 'Orange',
+      category: 'fruits',
+      servingSize: { amount: 131, unit: 'g' },
+      nutrition: {
+        calories: 62,
+        protein: 1.2,
+        carbohydrates: 15,
+        fat: 0.2,
+        fiber: 3.1,
+        sugar: 12,
+        sodium: 0,
+        cholesterol: 0,
+        saturatedFat: 0,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 85,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      _id: '4',
+      name: 'Mango',
+      category: 'fruits',
+      servingSize: { amount: 165, unit: 'g' },
+      nutrition: {
+        calories: 99,
+        protein: 1.4,
+        carbohydrates: 25,
+        fat: 0.6,
+        fiber: 2.6,
+        sugar: 23,
+        sodium: 2,
+        cholesterol: 0,
+        saturatedFat: 0.1,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 70,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      _id: '5',
+      name: 'Pineapple',
+      category: 'fruits',
+      servingSize: { amount: 165, unit: 'g' },
+      nutrition: {
+        calories: 83,
+        protein: 0.9,
+        carbohydrates: 22,
+        fat: 0.2,
+        fiber: 2.3,
+        sugar: 16,
+        sodium: 2,
+        cholesterol: 0,
+        saturatedFat: 0,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 65,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      _id: '6',
+      name: 'Strawberry',
+      category: 'fruits',
+      servingSize: { amount: 152, unit: 'g' },
+      nutrition: {
+        calories: 49,
+        protein: 1.0,
+        carbohydrates: 12,
+        fat: 0.5,
+        fiber: 3.0,
+        sugar: 7.4,
+        sodium: 1,
+        cholesterol: 0,
+        saturatedFat: 0,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 60,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      _id: '7',
+      name: 'Grapes',
+      category: 'fruits',
+      servingSize: { amount: 151, unit: 'g' },
+      nutrition: {
+        calories: 104,
+        protein: 1.1,
+        carbohydrates: 27,
+        fat: 0.2,
+        fiber: 1.4,
+        sugar: 23,
+        sodium: 3,
+        cholesterol: 0,
+        saturatedFat: 0.1,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 55,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      _id: '8',
+      name: 'Watermelon',
+      category: 'fruits',
+      servingSize: { amount: 154, unit: 'g' },
+      nutrition: {
+        calories: 46,
+        protein: 0.9,
+        carbohydrates: 12,
+        fat: 0.2,
+        fiber: 0.6,
+        sugar: 9.4,
+        sodium: 2,
+        cholesterol: 0,
+        saturatedFat: 0,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 50,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    
+    // Proteins
+    {
+      _id: '9',
       name: 'Chicken Breast',
       category: 'protein',
       servingSize: { amount: 100, unit: 'g' },
@@ -97,7 +262,55 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
       updatedAt: new Date().toISOString()
     },
     {
-      _id: '3',
+      _id: '10',
+      name: 'Salmon',
+      category: 'protein',
+      servingSize: { amount: 100, unit: 'g' },
+      nutrition: {
+        calories: 208,
+        protein: 25,
+        carbohydrates: 0,
+        fat: 12,
+        fiber: 0,
+        sugar: 0,
+        sodium: 59,
+        cholesterol: 55,
+        saturatedFat: 2.3,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 80,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      _id: '11',
+      name: 'Eggs',
+      category: 'protein',
+      servingSize: { amount: 50, unit: 'g' },
+      nutrition: {
+        calories: 74,
+        protein: 6.3,
+        carbohydrates: 0.4,
+        fat: 5.0,
+        fiber: 0,
+        sugar: 0.4,
+        sodium: 71,
+        cholesterol: 186,
+        saturatedFat: 1.6,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 85,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    
+    // Grains
+    {
+      _id: '12',
       name: 'Brown Rice',
       category: 'grains',
       servingSize: { amount: 100, unit: 'g' },
@@ -120,7 +333,32 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
       updatedAt: new Date().toISOString()
     },
     {
-      _id: '4',
+      _id: '13',
+      name: 'Quinoa',
+      category: 'grains',
+      servingSize: { amount: 100, unit: 'g' },
+      nutrition: {
+        calories: 120,
+        protein: 4.4,
+        carbohydrates: 22,
+        fat: 1.9,
+        fiber: 2.8,
+        sugar: 0.9,
+        sodium: 7,
+        cholesterol: 0,
+        saturatedFat: 0.2,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 70,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    
+    // Dairy
+    {
+      _id: '14',
       name: 'Greek Yogurt',
       category: 'dairy',
       servingSize: { amount: 100, unit: 'g' },
@@ -143,7 +381,32 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
       updatedAt: new Date().toISOString()
     },
     {
-      _id: '5',
+      _id: '15',
+      name: 'Milk',
+      category: 'dairy',
+      servingSize: { amount: 244, unit: 'ml' },
+      nutrition: {
+        calories: 103,
+        protein: 8.2,
+        carbohydrates: 12,
+        fat: 2.4,
+        fiber: 0,
+        sugar: 12,
+        sodium: 107,
+        cholesterol: 24,
+        saturatedFat: 1.5,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 90,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    
+    // Vegetables
+    {
+      _id: '16',
       name: 'Spinach',
       category: 'vegetables',
       servingSize: { amount: 100, unit: 'g' },
@@ -161,6 +424,52 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
       },
       isPublic: true,
       usageCount: 60,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      _id: '17',
+      name: 'Broccoli',
+      category: 'vegetables',
+      servingSize: { amount: 91, unit: 'g' },
+      nutrition: {
+        calories: 31,
+        protein: 2.6,
+        carbohydrates: 6.0,
+        fat: 0.3,
+        fiber: 2.4,
+        sugar: 1.5,
+        sodium: 30,
+        cholesterol: 0,
+        saturatedFat: 0.1,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 55,
+      verified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      _id: '18',
+      name: 'Carrots',
+      category: 'vegetables',
+      servingSize: { amount: 128, unit: 'g' },
+      nutrition: {
+        calories: 52,
+        protein: 1.2,
+        carbohydrates: 12,
+        fat: 0.3,
+        fiber: 3.6,
+        sugar: 6.1,
+        sodium: 88,
+        cholesterol: 0,
+        saturatedFat: 0,
+        transFat: 0
+      },
+      isPublic: true,
+      usageCount: 65,
       verified: true,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
@@ -239,30 +548,30 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-xl font-semibold text-gray-900">Search Foods</h2>
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Search Foods</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Search and Filters */}
-        <div className="p-6 border-b bg-gray-50">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
           <div className="flex space-x-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search for foods..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -270,7 +579,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {categories.map(category => (
                   <option key={category.value} value={category.value}>
@@ -283,7 +592,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto max-h-[60vh]">
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -294,41 +603,41 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
               {!searchQuery && !selectedCategory && recentFoods.length > 0 && (
                 <div className="mb-6">
                   <div className="flex items-center space-x-2 mb-4">
-                    <Clock className="w-5 h-5 text-gray-500" />
-                    <h3 className="text-lg font-semibold text-gray-900">Recent Foods</h3>
+                    <Clock className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Foods</h3>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {recentFoods.map((food) => (
                       <div
                         key={food._id}
                         onClick={() => handleFoodSelect(food)}
-                        className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all cursor-pointer"
+                        className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md transition-all cursor-pointer bg-white dark:bg-gray-800"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <h3 className="font-medium text-gray-900">{food.name}</h3>
-                            <p className="text-sm text-gray-600 capitalize">
+                            <h3 className="font-medium text-gray-900 dark:text-white">{food.name}</h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
                               {food.category}
                             </p>
-                            <p className="text-xs text-gray-500 mt-1">
+                            <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
                               {food.nutrition.calories} cal per {food.servingSize.amount}{food.servingSize.unit}
                             </p>
                           </div>
-                          <Plus className="w-5 h-5 text-gray-400" />
+                          <Plus className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                         </div>
                         
                         <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
                           <div>
-                            <span className="text-gray-600">Protein:</span>
-                            <span className="font-medium ml-1">{food.nutrition.protein}g</span>
+                            <span className="text-gray-600 dark:text-gray-400">Protein:</span>
+                            <span className="font-medium ml-1 text-gray-900 dark:text-white">{food.nutrition.protein}g</span>
                           </div>
                           <div>
-                            <span className="text-gray-600">Carbs:</span>
-                            <span className="font-medium ml-1">{food.nutrition.carbohydrates}g</span>
+                            <span className="text-gray-600 dark:text-gray-400">Carbs:</span>
+                            <span className="font-medium ml-1 text-gray-900 dark:text-white">{food.nutrition.carbohydrates}g</span>
                           </div>
                           <div>
-                            <span className="text-gray-600">Fat:</span>
-                            <span className="font-medium ml-1">{food.nutrition.fat}g</span>
+                            <span className="text-gray-600 dark:text-gray-400">Fat:</span>
+                            <span className="font-medium ml-1 text-gray-900 dark:text-white">{food.nutrition.fat}g</span>
                           </div>
                         </div>
                       </div>
@@ -340,9 +649,9 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
               {/* Show search results */}
               {foods.length === 0 ? (
                 <div className="text-center py-12">
-                  <Search className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <p className="text-gray-600">No foods found</p>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <Search className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-3" />
+                  <p className="text-gray-600 dark:text-gray-400">No foods found</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
                     Try adjusting your search terms or category filter
                   </p>
                 </div>
@@ -352,33 +661,33 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
                     <div
                       key={food._id}
                       onClick={() => handleFoodSelect(food)}
-                      className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all cursor-pointer"
+                      className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md transition-all cursor-pointer bg-white dark:bg-gray-800"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <h3 className="font-medium text-gray-900">{food.name}</h3>
-                          <p className="text-sm text-gray-600 capitalize">
+                          <h3 className="font-medium text-gray-900 dark:text-white">{food.name}</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
                             {food.category}
                           </p>
-                          <p className="text-xs text-gray-500 mt-1">
+                          <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
                             {food.nutrition.calories} cal per {food.servingSize.amount}{food.servingSize.unit}
                           </p>
                         </div>
-                        <Plus className="w-5 h-5 text-gray-400" />
+                        <Plus className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                       </div>
                       
                       <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
                         <div>
-                          <span className="text-gray-600">Protein:</span>
-                          <span className="font-medium ml-1">{food.nutrition.protein}g</span>
+                          <span className="text-gray-600 dark:text-gray-400">Protein:</span>
+                          <span className="font-medium ml-1 text-gray-900 dark:text-white">{food.nutrition.protein}g</span>
                         </div>
                         <div>
-                          <span className="text-gray-600">Carbs:</span>
-                          <span className="font-medium ml-1">{food.nutrition.carbohydrates}g</span>
+                          <span className="text-gray-600 dark:text-gray-400">Carbs:</span>
+                          <span className="font-medium ml-1 text-gray-900 dark:text-white">{food.nutrition.carbohydrates}g</span>
                         </div>
                         <div>
-                          <span className="text-gray-600">Fat:</span>
-                          <span className="font-medium ml-1">{food.nutrition.fat}g</span>
+                          <span className="text-gray-600 dark:text-gray-400">Fat:</span>
+                          <span className="font-medium ml-1 text-gray-900 dark:text-white">{food.nutrition.fat}g</span>
                         </div>
                       </div>
                     </div>
@@ -390,9 +699,9 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t bg-gray-50">
+        <div className="p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               {foods.length} foods found
             </p>
             <button
