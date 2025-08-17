@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Clock, 
-  Flame, 
   Calendar, 
   CheckCircle, 
   XCircle, 
-  TrendingUp,
   Activity,
   Dumbbell,
   Apple,
@@ -20,7 +18,6 @@ import { api } from '../../config/api';
 const HistorySection: React.FC = () => {
   const { user } = useAuth();
   const [history, setHistory] = useState<DailyHistory[]>([]);
-  const [selectedDate, setSelectedDate] = useState<string>('today');
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
 
@@ -50,24 +47,6 @@ const HistorySection: React.FC = () => {
   };
 
   const dateTabs = generateDateTabs();
-
-  useEffect(() => {
-    fetchHistory();
-  }, []);
-
-  const fetchHistory = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get(`/api/activities/user/${user?.id}/history`);
-      setHistory(response.data);
-    } catch (error) {
-      console.error('Error fetching history:', error);
-      // For demo purposes, create mock data
-      setHistory(generateMockHistory());
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const generateMockHistory = (): DailyHistory[] => {
     const mockHistory: DailyHistory[] = [];
@@ -192,6 +171,25 @@ const HistorySection: React.FC = () => {
       hour12: true 
     });
   };
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get(`/api/activities/user/${user?.id}/history`);
+        setHistory(response.data);
+      } catch (error) {
+        console.error('Error fetching history:', error);
+        // For demo purposes, create mock data
+        setHistory(generateMockHistory());
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const currentDayHistory = history.find(h => h.date === dateTabs[activeTab].date) || {
     date: dateTabs[activeTab].date,

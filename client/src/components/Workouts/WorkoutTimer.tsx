@@ -140,7 +140,7 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
         setTimeLeft(currentExercise.duration || 30);
       }
     }
-  }, [timeLeft, isRunning, currentState, isLastSet, isLastExercise, currentExerciseIndex, currentSet, currentExercise, playSound]);
+  }, [timeLeft, isRunning, currentState, isLastSet, isLastExercise, currentExerciseIndex, currentSet, currentExercise, playSound]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const startWorkout = () => {
     setCurrentState('exercise');
