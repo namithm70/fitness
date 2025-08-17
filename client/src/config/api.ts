@@ -7,8 +7,19 @@ const API_BASE_URL = process.env.REACT_APP_API_URL ||
     : 'http://localhost:5000'
   );
 
+// Force correct backend URL for production
+const FINAL_API_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://fitness-fkct.onrender.com' 
+  : API_BASE_URL;
+
+// Debug logging to help troubleshoot
+console.log('API Base URL:', API_BASE_URL);
+console.log('Final API URL:', FINAL_API_URL);
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('REACT_APP_API_URL:', process.env.REACT_APP_API_URL);
+
 export const API_CONFIG = {
-  baseURL: API_BASE_URL,
+  baseURL: FINAL_API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
