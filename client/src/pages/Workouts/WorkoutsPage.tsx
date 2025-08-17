@@ -18,7 +18,7 @@ import WorkoutCard from '../../components/Workouts/WorkoutCard';
 import WorkoutTimer from '../../components/Workouts/WorkoutTimer';
 import toast from 'react-hot-toast';
 import { Workout } from '../../types/workout';
-import { exerciseCategories, getAllExercises } from '../../data/exercises';
+
 
 const WorkoutsPage: React.FC = () => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);

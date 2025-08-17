@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Clock, Target, Dumbbell, Heart, Zap, Users, Timer, Save } from 'lucide-react';
 import { Workout, Exercise } from '../../types/workout';
-import { exerciseCategories, getAllExercises } from '../../data/exercises';
+import { getAllExercises } from '../../data/exercises';
 
 interface CreateWorkoutModalProps {
   isOpen: boolean;
