@@ -419,9 +419,9 @@ const DashboardPage: React.FC = () => {
                     <p className="text-sm font-bold text-gray-900 dark:text-white mb-1 group-hover:text-purple-800 dark:group-hover:text-purple-400 transition-colors">{workout.duration}min</p>
                     <motion.span 
                       className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${
-                        workout.difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
-                        workout.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
+                        workout.difficulty === 'Beginner' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400' :
+                        workout.difficulty === 'Intermediate' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400' :
+                        'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400'
                       }`}
                       whileHover={{ scale: 1.05 }}
                     >
