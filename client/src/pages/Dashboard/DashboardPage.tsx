@@ -454,14 +454,14 @@ const DashboardPage: React.FC = () => {
 
       {/* Motivation Section */}
       <motion.div 
-        className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 rounded-2xl p-8 text-white shadow-2xl relative overflow-hidden"
+        className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 dark:from-purple-900 dark:via-pink-900 dark:to-orange-900 rounded-2xl p-8 text-white dark:text-white shadow-2xl relative overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
         whileHover={{ scale: 1.02 }}
       >
         {/* Animated background elements */}
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-orange-500/20 animate-pulse"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-orange-500/20 dark:from-purple-900/30 dark:via-pink-900/30 dark:to-orange-900/30 animate-pulse"></div>
         <div className="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 -translate-x-16"></div>
         <div className="absolute bottom-0 right-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 translate-x-12"></div>
         
@@ -488,7 +488,7 @@ const DashboardPage: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Link to="/progress" className="inline-flex items-center bg-white text-purple-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl">
+            <Link to="/progress" className="inline-flex items-center bg-white text-purple-600 dark:bg-gray-900 dark:text-white dark:border dark:border-gray-700 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl">
               View Progress
               <motion.span
                 animate={{ x: [0, 3, 0] }}
