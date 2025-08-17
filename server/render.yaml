@@ -11,3 +11,7 @@ services:
         generateValue: true
       - key: MONGODB_URI
         sync: false
+      - key: CLIENT_URL
+        value: https://fitness-ebon-nine.vercel.app
+      - key: ALLOWED_ORIGINS
+        value: https://fitness-ebon-nine.vercel.app

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { X, Save, Calendar, Activity, Target, TrendingUp } from 'lucide-react';
 import { ProgressEntryCreate } from '../../types/progress';
 import { api } from '../../config/api';
+import { logProgressUpdate } from '../../utils/activityLogger';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface ProgressEntryModalProps {
   isOpen: boolean;
@@ -16,6 +18,7 @@ const ProgressEntryModal: React.FC<ProgressEntryModalProps> = ({
   onEntryCreated,
   entryType
 }) => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState<Partial<ProgressEntryCreate>>({
     type: entryType,
     date: new Date().toISOString().split('T')[0]
@@ -32,6 +35,42 @@ const ProgressEntryModal: React.FC<ProgressEntryModalProps> = ({
 
     try {
       await api.post('/progress/entries', formData);
+      
+      // Log progress activity
+      if (user?.id) {
+        let measurementType = entryType;
+        let value = 0;
+        
+        switch (entryType) {
+          case 'weight':
+            value = formData.weight || 0;
+            break;
+          case 'measurements':
+            measurementType = 'measurements';
+            value = Object.values(formData.measurements || {}).reduce((sum, val) => sum + (val || 0), 0);
+            break;
+          case 'body-fat':
+            value = formData.bodyFatPercentage || 0;
+            break;
+          case 'strength':
+            measurementType = 'strength';
+            value = formData.strengthMetrics?.[0]?.weight || 0;
+            break;
+          case 'endurance':
+            measurementType = 'endurance';
+            value = formData.enduranceMetrics?.distance || 0;
+            break;
+          case 'flexibility':
+            measurementType = 'flexibility';
+            value = formData.flexibilityMetrics?.sitAndReach || 0;
+            break;
+          default:
+            value = 0;
+        }
+        
+        await logProgressUpdate(user.id, measurementType, value);
+      }
+      
       onEntryCreated();
     } catch (error) {
       console.error('Error creating progress entry:', error);

@@ -3,6 +3,8 @@ import { X, Plus, Search, Trash2 } from 'lucide-react';
 import { Food, MealLogParams } from '../../types/nutrition';
 import { api } from '../../config/api';
 import FoodSearchModal from './FoodSearchModal';
+import { logNutritionEntry } from '../../utils/activityLogger';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface MealLogModalProps {
   isOpen: boolean;
@@ -25,6 +27,7 @@ const MealLogModal: React.FC<MealLogModalProps> = ({
   onMealLogged,
   mealType
 }) => {
+  const { user } = useAuth();
   const [entries, setEntries] = useState<MealEntry[]>([]);
   const [mealName, setMealName] = useState('');
   const [notes, setNotes] = useState('');
@@ -95,6 +98,14 @@ const MealLogModal: React.FC<MealLogModalProps> = ({
       };
 
       await api.post('/nutrition/meals', mealData);
+      
+      // Log nutrition activity
+      if (user?.id && entries.length > 0) {
+        const totalCalories = calculateTotalNutrition().calories;
+        const foodNames = entries.map(entry => entry.food.name).join(', ');
+        await logNutritionEntry(user.id, mealType, foodNames, totalCalories);
+      }
+      
       onMealLogged();
     } catch (error) {
       console.error('Error logging meal:', error);

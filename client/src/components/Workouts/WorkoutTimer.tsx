@@ -13,6 +13,8 @@ import {
   VolumeX
 } from 'lucide-react';
 import { Workout } from '../../types/workout';
+import { logExerciseCompletion, logWorkoutCompletion } from '../../utils/activityLogger';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface WorkoutTimerProps {
   workout: Workout;
@@ -23,6 +25,7 @@ interface WorkoutTimerProps {
 type TimerState = 'ready' | 'exercise' | 'rest' | 'completed';
 
 const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClose }) => {
+  const { user } = useAuth();
   const [currentState, setCurrentState] = useState<TimerState>('ready');
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [currentSet, setCurrentSet] = useState(1);
@@ -112,10 +115,15 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
     if (timeLeft === 0 && isRunning) {
       playSound();
       if (currentState === 'exercise') {
+        // Log the completed exercise
+        logExerciseActivity();
+        
         if (isLastSet) {
           if (isLastExercise) {
             setCurrentState('completed');
             setIsRunning(false);
+            // Log the completed workout
+            logWorkoutActivity();
           } else {
             setCurrentState('rest');
             setCurrentExerciseIndex(prev => prev + 1);
@@ -149,12 +157,51 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
     setIsRunning(true);
   };
 
+  const logExerciseActivity = async () => {
+    if (user?.id) {
+      try {
+        await logExerciseCompletion(
+          user.id,
+          currentExercise.name,
+          currentExercise.sets,
+          currentExercise.reps,
+          currentExercise.weight,
+          currentExercise.duration
+        );
+      } catch (error) {
+        console.error('Error logging exercise activity:', error);
+      }
+    }
+  };
+
+  const logWorkoutActivity = async () => {
+    if (user?.id) {
+      try {
+        const caloriesBurned = Math.round(totalTimeSpent / 60 * 8);
+        await logWorkoutCompletion(
+          user.id,
+          workout.name,
+          Math.floor(totalTimeSpent / 60),
+          caloriesBurned,
+          workout.id
+        );
+      } catch (error) {
+        console.error('Error logging workout activity:', error);
+      }
+    }
+  };
+
   const skipExercise = () => {
     if (currentState === 'exercise') {
+      // Log the completed exercise
+      logExerciseActivity();
+      
       if (isLastSet) {
         if (isLastExercise) {
           setCurrentState('completed');
           setIsRunning(false);
+          // Log the completed workout
+          logWorkoutActivity();
         } else {
           setCurrentState('rest');
           setCurrentExerciseIndex(prev => prev + 1);

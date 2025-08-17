@@ -272,61 +272,92 @@ router.post('/reset-password', [
 // @access  Public
 router.post('/social-login', async (req, res) => {
   try {
-    const { provider, socialId, email, firstName, lastName, profilePicture } = req.body;
+    const { provider, id, email, firstName, lastName, profilePicture } = req.body;
 
-    let user = await User.findOne({
-      [`socialLogin.${provider}.id`]: socialId
-    });
+    // Check if database is connected
+    const isConnected = req.app.locals.dbConnected;
 
-    if (!user) {
-      // Check if user exists with email
-      user = await User.findOne({ email });
-      
-      if (user) {
-        // Link social account to existing user
-        user.socialLogin[provider] = { id: socialId, email };
-        await user.save();
-      } else {
-        // Create new user
-        user = new User({
+    if (isConnected) {
+      // Use MongoDB
+      let user = await User.findOne({
+        [`socialLogin.${provider}.id`]: id
+      });
+
+      if (!user) {
+        // Check if user exists with email
+        user = await User.findOne({ email });
+        
+        if (user) {
+          // Link social account to existing user
+          user.socialLogin[provider] = { id, email };
+          await user.save();
+        } else {
+          // Create new user
+          user = new User({
+            email,
+            firstName,
+            lastName,
+            profilePicture,
+            socialLogin: {
+              [provider]: { id, email }
+            },
+            isEmailVerified: true // Social login users are considered verified
+          });
+          await user.save();
+        }
+      }
+
+      // Create JWT token
+      const payload = {
+        user: {
+          id: user.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET || 'your-secret-key',
+        { expiresIn: '7d' },
+        (err, token) => {
+          if (err) throw err;
+          res.json({
+            token,
+            user: {
+              id: user.id,
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              profilePicture: user.profilePicture
+            }
+          });
+        }
+      );
+    } else {
+      // Use in-memory storage
+      try {
+        const user = await inMemoryStorage.socialLogin({
+          provider,
+          id,
           email,
           firstName,
           lastName,
-          profilePicture,
-          socialLogin: {
-            [provider]: { id: socialId, email }
-          },
-          isEmailVerified: true // Social login users are considered verified
+          profilePicture
         });
-        await user.save();
-      }
-    }
 
-    // Create JWT token
-    const payload = {
-      user: {
-        id: user.id
-      }
-    };
+        const token = inMemoryStorage.generateToken(user);
+        const publicUser = inMemoryStorage.getUserPublicData(user);
 
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '7d' },
-      (err, token) => {
-        if (err) throw err;
         res.json({
           token,
-          user: {
-            id: user.id,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            profilePicture: user.profilePicture
-          }
+          user: publicUser
         });
+      } catch (error) {
+        if (error.message === 'User not found') {
+          return res.status(404).json({ error: 'User not found' });
+        }
+        throw error;
       }
-    );
+    }
   } catch (error) {
     console.error('Social login error:', error);
     res.status(500).json({ error: 'Server error' });

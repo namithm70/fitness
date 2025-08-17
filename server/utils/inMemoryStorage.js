@@ -122,6 +122,70 @@ class InMemoryStorage {
     return await bcrypt.compare(password, user.password);
   }
 
+  async socialLogin(socialData) {
+    const { provider, id, email, firstName, lastName, profilePicture } = socialData;
+    
+    // Validate required fields
+    if (!provider || !id || !email || !firstName || !lastName) {
+      throw new Error('Missing required fields for social login');
+    }
+
+    // Check if user exists with this social ID
+    let user = null;
+    for (const existingUser of this.users.values()) {
+      if (existingUser.socialLogin && existingUser.socialLogin[provider] && existingUser.socialLogin[provider].id === id) {
+        user = existingUser;
+        break;
+      }
+    }
+
+    if (!user) {
+      // Check if user exists with email
+      user = this.users.get(email.toLowerCase());
+      
+      if (user) {
+        // Link social account to existing user
+        if (!user.socialLogin) {
+          user.socialLogin = {};
+        }
+        user.socialLogin[provider] = { id, email };
+        user.updatedAt = new Date();
+        this.users.set(user.email, user);
+      } else {
+        // Create new user
+        user = {
+          id: this.nextUserId.toString(),
+          email: email.toLowerCase(),
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          profilePicture: profilePicture || null,
+          socialLogin: {
+            [provider]: { id, email }
+          },
+          fitnessLevel: 'beginner',
+          fitnessGoals: [],
+          subscription: {
+            type: 'free',
+            startDate: new Date(),
+            endDate: null
+          },
+          totalWorkouts: 0,
+          totalWorkoutTime: 0,
+          streakDays: 0,
+          lastWorkoutDate: null,
+          isEmailVerified: true, // Social login users are considered verified
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+
+        this.users.set(email, user);
+        this.nextUserId++;
+      }
+    }
+
+    return user;
+  }
+
   generateToken(user) {
     if (!user || !user.id) {
       throw new Error('Invalid user data for token generation');

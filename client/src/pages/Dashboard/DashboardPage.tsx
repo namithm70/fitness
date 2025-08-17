@@ -14,6 +14,7 @@ import {
   Users
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import HistorySection from '../../components/Progress/HistorySection';
 
 const DashboardPage: React.FC = () => {
   const { user } = useAuth();
@@ -296,7 +297,7 @@ const DashboardPage: React.FC = () => {
 
       {/* Main Content Grid */}
       <motion.div 
-        className="grid grid-cols-1 xl:grid-cols-2 gap-8"
+        className="grid grid-cols-1 xl:grid-cols-3 gap-8"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
@@ -439,6 +440,15 @@ const DashboardPage: React.FC = () => {
               </motion.div>
             </div>
           </div>
+        </motion.div>
+
+        {/* Activity History */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <HistorySection />
         </motion.div>
       </motion.div>
 

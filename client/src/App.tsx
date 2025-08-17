@@ -10,6 +10,7 @@ import ErrorBoundary from './components/UI/ErrorBoundary';
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const LoginPage = React.lazy(() => import('./pages/Auth/LoginPage'));
 const RegisterPage = React.lazy(() => import('./pages/Auth/RegisterPage'));
+const GoogleCallbackPage = React.lazy(() => import('./pages/Auth/GoogleCallbackPage'));
 const DashboardPage = React.lazy(() => import('./pages/Dashboard/DashboardPage'));
 const WorkoutsPage = React.lazy(() => import('./pages/Workouts/WorkoutsPage'));
 const WorkoutDetailPage = React.lazy(() => import('./pages/Workouts/WorkoutDetailPage'));
@@ -44,6 +45,7 @@ const App: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <LoginPage />} />
           <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <RegisterPage />} />
+          <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
 
           {/* Protected Routes */}
           <Route path="/" element={<Layout />}>

@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { googleAuthService } from '../../services/googleAuth';
+import toast from 'react-hot-toast';
 
 interface LoginFormData {
   email: string;
@@ -11,7 +13,7 @@ interface LoginFormData {
 }
 
 const LoginPage: React.FC = () => {
-  const { login } = useAuth();
+  const { login, socialLogin } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,9 +36,32 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const handleSocialLogin = (provider: string) => {
-    // TODO: Implement social login
-    console.log(`Login with ${provider}`);
+  const handleSocialLogin = async (provider: string) => {
+    setIsLoading(true);
+    try {
+      if (provider === 'google') {
+        const googleUser = await googleAuthService.loginWithGoogle();
+        
+        // Call the social login function from auth context
+        await socialLogin('google', {
+          id: googleUser.id,
+          email: googleUser.email,
+          firstName: googleUser.given_name,
+          lastName: googleUser.family_name,
+          profilePicture: googleUser.picture,
+          verified: googleUser.verified_email,
+        });
+        
+        navigate('/dashboard');
+      } else {
+        toast.error(`${provider} login is not implemented yet`);
+      }
+    } catch (error: any) {
+      console.error(`${provider} login error:`, error);
+      toast.error(`Failed to login with ${provider}`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
