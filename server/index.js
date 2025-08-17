@@ -22,12 +22,32 @@ const io = socketIo(server, {
 
 // Middleware
 app.use(helmet());
+
+// CORS configuration
 app.use(cors({
-  origin: config.allowedOrigins,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin is in allowed origins
+    if (config.allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+    
+    // Allow Vercel preview deployments
+    if (origin && origin.includes('vercel.app')) {
+      return callback(null, true);
+    }
+    
+    return callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token', 'Origin', 'Accept']
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 
 // Trust proxy for rate limiting behind load balancers
 app.set('trust proxy', 1);

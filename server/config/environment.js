@@ -15,7 +15,7 @@ const config = {
   clientUrl: process.env.CLIENT_URL || 'http://localhost:3000',
   allowedOrigins: process.env.ALLOWED_ORIGINS 
     ? process.env.ALLOWED_ORIGINS.split(',') 
-    : ['http://localhost:3000', 'https://fitness-ebon-nine.vercel.app', 'https://*.vercel.app'],
+    : ['http://localhost:3000', 'https://fitness-ebon-nine.vercel.app', 'https://*.vercel.app', 'https://fitness-ebon-nine.vercel.app'],
   
   // Rate limiting
   rateLimitWindowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
