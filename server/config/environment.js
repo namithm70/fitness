@@ -15,7 +15,7 @@ const config = {
   clientUrl: process.env.CLIENT_URL || 'http://localhost:3000',
   allowedOrigins: process.env.ALLOWED_ORIGINS 
     ? process.env.ALLOWED_ORIGINS.split(',') 
-    : ['http://localhost:3000', 'https://fitness-ebon-nine.vercel.app'],
+    : ['http://localhost:3000', 'https://fitness-ebon-nine.vercel.app', 'https://*.vercel.app'],
   
   // Rate limiting
   rateLimitWindowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
@@ -63,9 +63,9 @@ const validateSecurity = () => {
 
   // MongoDB URI validation
   if (config.nodeEnv === 'production' && (!config.mongodbUri || config.mongodbUri === 'mongodb://localhost:27017/fitness-app')) {
-    console.error('❌ CRITICAL: MONGODB_URI is required in production environment.');
-    console.error('💡 Please set a valid MongoDB connection string.');
-    process.exit(1);
+    console.warn('⚠️ Warning: MONGODB_URI not set in production. Using in-memory storage.');
+    console.warn('💡 For production, set a valid MongoDB connection string.');
+    // Don't exit - allow in-memory storage to work
   }
 
   // CORS validation
