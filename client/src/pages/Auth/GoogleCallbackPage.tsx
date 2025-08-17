@@ -39,8 +39,8 @@ const GoogleCallbackPage: React.FC = () => {
         await socialLogin('google', {
           id: googleUser.id,
           email: googleUser.email,
-          firstName: googleUser.given_name,
-          lastName: googleUser.family_name,
+          firstName: googleUser.given_name || googleUser.name?.split(' ')[0] || '',
+          lastName: googleUser.family_name || googleUser.name?.split(' ').slice(1).join(' ') || '',
           profilePicture: googleUser.picture,
           verified: googleUser.verified_email,
         });

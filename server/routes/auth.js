@@ -273,6 +273,21 @@ router.post('/reset-password', [
 router.post('/social-login', async (req, res) => {
   try {
     const { provider, id, email, firstName, lastName, profilePicture } = req.body;
+    
+    // Debug: Log the received data
+    console.log('Social login request body:', {
+      provider,
+      id,
+      email,
+      firstName,
+      lastName,
+      profilePicture,
+      hasProvider: !!provider,
+      hasId: !!id,
+      hasEmail: !!email,
+      hasFirstName: !!firstName,
+      hasLastName: !!lastName
+    });
 
     // Check if database is connected
     const isConnected = req.app.locals.dbConnected;
