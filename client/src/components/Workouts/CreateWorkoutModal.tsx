@@ -127,29 +127,29 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
-          className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden"
+          className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b">
-            <h2 className="text-2xl font-bold text-gray-900">Create New Workout</h2>
+          <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Create New Workout</h2>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Progress Steps */}
-          <div className="flex items-center p-4 bg-gray-50">
+          <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-800">
             {[1, 2, 3].map((step) => (
               <div key={step} className="flex items-center">
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                     currentStep >= step
                       ? 'bg-fitness-600 text-white'
-                      : 'bg-gray-300 text-gray-600'
+                      : 'bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-400'
                   }`}
                 >
                   {step}
@@ -157,7 +157,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
                 {step < 3 && (
                   <div
                     className={`w-16 h-1 mx-2 ${
-                      currentStep > step ? 'bg-fitness-600' : 'bg-gray-300'
+                      currentStep > step ? 'bg-fitness-600' : 'bg-gray-300 dark:bg-gray-600'
                     }`}
                   />
                 )}
@@ -175,7 +175,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
               >
                 {/* Basic Info */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Workout Name
                   </label>
                   <input
@@ -189,7 +189,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
 
                 {/* Workout Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                     Workout Type
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -201,12 +201,12 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
                           onClick={() => setWorkout(prev => ({ ...prev, type: type.id as Workout['type'] }))}
                           className={`p-4 rounded-lg border-2 transition-all ${
                             workout.type === type.id
-                              ? 'border-fitness-500 bg-fitness-50'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? 'border-fitness-500 bg-fitness-50 dark:bg-fitness-900/20'
+                              : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                           }`}
                         >
                           <Icon className={`w-6 h-6 mx-auto mb-2 ${type.color}`} />
-                          <div className="text-sm font-medium text-gray-900">{type.name}</div>
+                          <div className="text-sm font-medium text-gray-900 dark:text-white">{type.name}</div>
                         </button>
                       );
                     })}
@@ -215,7 +215,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
 
                 {/* Difficulty */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                     Difficulty Level
                   </label>
                   <div className="flex gap-3">
@@ -226,7 +226,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
                         className={`px-4 py-2 rounded-lg font-medium transition-all ${
                           workout.difficulty === level.id
                             ? level.color
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                         }`}
                       >
                         {level.name}
@@ -237,7 +237,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
 
                 {/* Description */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Description
                   </label>
                   <textarea
@@ -258,7 +258,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
               >
                 {/* Exercises List */}
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">Exercises</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Exercises</h3>
                   <button
                     onClick={() => setShowExerciseForm(true)}
                     className="btn-primary flex items-center"
@@ -269,8 +269,8 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
                 </div>
 
                 {workout.exercises?.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
-                    <Dumbbell className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <Dumbbell className="w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600" />
                     <p>No exercises added yet. Click "Add Exercise" to get started.</p>
                   </div>
                 )}
@@ -279,8 +279,8 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
                   <div key={exercise.id} className="card p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
-                        <h4 className="font-medium text-gray-900">{exercise.name}</h4>
-                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
+                        <h4 className="font-medium text-gray-900 dark:text-white">{exercise.name}</h4>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 dark:text-gray-400">
                           <span>{exercise.sets} sets</span>
                           <span>{exercise.reps} reps</span>
                           {exercise.weight && <span>{exercise.weight}kg</span>}
@@ -288,7 +288,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
                           <span>Rest: {exercise.restTime}s</span>
                         </div>
                         {exercise.notes && (
-                          <p className="text-sm text-gray-500 mt-1">{exercise.notes}</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">{exercise.notes}</p>
                         )}
                       </div>
                       <button
@@ -308,10 +308,10 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
                     animate={{ opacity: 1, y: 0 }}
                     className="card p-4 space-y-4"
                   >
-                    <h4 className="font-medium text-gray-900">Add Exercise</h4>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Add Exercise</h4>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Exercise Name
                       </label>
                       <select
@@ -330,7 +330,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           Sets
                         </label>
                         <input
@@ -342,7 +342,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           Reps
                         </label>
                         <input
@@ -357,7 +357,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           Weight (kg) - Optional
                         </label>
                         <input
@@ -370,7 +370,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           Duration (seconds) - Optional
                         </label>
                         <input
@@ -384,7 +384,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Rest Time (seconds)
                       </label>
                       <input
@@ -397,7 +397,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Notes (Optional)
                       </label>
                       <textarea
@@ -436,39 +436,39 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
               >
                 {/* Workout Summary */}
                 <div className="card p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Workout Summary</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Workout Summary</h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <Clock className="w-8 h-8 text-fitness-600 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900">{calculateTotalTime()}</div>
-                      <div className="text-sm text-gray-600">Minutes</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">{calculateTotalTime()}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Minutes</div>
                     </div>
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <Dumbbell className="w-8 h-8 text-fitness-600 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900">{workout.exercises?.length || 0}</div>
-                      <div className="text-sm text-gray-600">Exercises</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">{workout.exercises?.length || 0}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Exercises</div>
                     </div>
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <Target className="w-8 h-8 text-fitness-600 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900 capitalize">{workout.difficulty}</div>
-                      <div className="text-sm text-gray-600">Level</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white capitalize">{workout.difficulty}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Level</div>
                     </div>
                   </div>
 
                   <div className="space-y-3">
-                    <h4 className="font-medium text-gray-900">Exercises:</h4>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Exercises:</h4>
                     {workout.exercises?.map((exercise, index) => (
-                      <div key={exercise.id} className="flex items-center justify-between p-3 bg-white rounded-lg border">
+                      <div key={exercise.id} className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                         <div>
-                          <span className="font-medium text-gray-900">{index + 1}. {exercise.name}</span>
-                          <div className="text-sm text-gray-600">
+                          <span className="font-medium text-gray-900 dark:text-white">{index + 1}. {exercise.name}</span>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">
                             {exercise.sets} sets × {exercise.reps} reps
                             {exercise.weight && ` @ ${exercise.weight}kg`}
                             {exercise.duration && ` (${exercise.duration}s)`}
                           </div>
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-gray-500 dark:text-gray-500">
                           Rest: {exercise.restTime}s
                         </div>
                       </div>
@@ -483,9 +483,9 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
                       type="checkbox"
                       checked={workout.isPublic}
                       onChange={(e) => setWorkout(prev => ({ ...prev, isPublic: e.target.checked }))}
-                      className="rounded border-gray-300 text-fitness-600 focus:ring-fitness-500"
+                      className="rounded border-gray-300 dark:border-gray-600 text-fitness-600 focus:ring-fitness-500"
                     />
-                    <span className="ml-2 text-sm text-gray-700">Make this workout public</span>
+                    <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">Make this workout public</span>
                   </label>
                 </div>
               </motion.div>
@@ -493,7 +493,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between p-6 border-t bg-gray-50">
+          <div className="flex items-center justify-between p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
             <button
               onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
               disabled={currentStep === 1}
