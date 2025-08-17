@@ -218,7 +218,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [sampleFoods, searchQuery, selectedCategory, indianFoodCategories]);
+  }, [sampleFoods, searchQuery, selectedCategory]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
