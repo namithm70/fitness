@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { X, Search, Plus, Clock } from 'lucide-react';
 import { Food } from '../../types/nutrition';
+import { getAllIndianFoods, indianFoodCategories } from '../../data/indianFood';
 
 interface FoodSearchModalProps {
   isOpen: boolean;
@@ -19,6 +20,26 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
   const [recentFoods, setRecentFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(false);
 
+  // Function to get foods by Indian category
+  const getFoodsByIndianCategory = (categoryValue: string): Food[] => {
+    switch (categoryValue) {
+      case 'indian-breakfast':
+        return indianFoodCategories.find(cat => cat.id === 'breakfast')?.foods || [];
+      case 'indian-main':
+        return indianFoodCategories.find(cat => cat.id === 'main-dishes')?.foods || [];
+      case 'indian-breads':
+        return indianFoodCategories.find(cat => cat.id === 'breads')?.foods || [];
+      case 'indian-snacks':
+        return indianFoodCategories.find(cat => cat.id === 'snacks')?.foods || [];
+      case 'indian-desserts':
+        return indianFoodCategories.find(cat => cat.id === 'desserts')?.foods || [];
+      case 'indian-beverages':
+        return indianFoodCategories.find(cat => cat.id === 'beverages')?.foods || [];
+      default:
+        return [];
+    }
+  };
+
 
   const categories = [
     { value: '', label: 'All Categories' },
@@ -32,11 +53,20 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
     { value: 'snacks', label: 'Snacks' },
     { value: 'desserts', label: 'Desserts' },
     { value: 'condiments', label: 'Condiments' },
-    { value: 'other', label: 'Other' }
+    { value: 'other', label: 'Other' },
+    // Indian food categories
+    { value: 'indian-breakfast', label: 'Indian Breakfast' },
+    { value: 'indian-main', label: 'Indian Main Dishes' },
+    { value: 'indian-breads', label: 'Indian Breads' },
+    { value: 'indian-snacks', label: 'Indian Snacks' },
+    { value: 'indian-desserts', label: 'Indian Desserts' },
+    { value: 'indian-beverages', label: 'Indian Beverages' }
   ];
 
-  // Sample foods for demonstration
+  // Sample foods for demonstration including Indian foods
   const sampleFoods: Food[] = useMemo(() => [
+    // Regular foods
+    ...getAllIndianFoods(), // Add all Indian foods
     {
       _id: '1',
       name: 'Banana',
@@ -170,21 +200,34 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
       // });
       // setFoods(response.data);
 
-      // For now, filter sample foods
-      const filtered = sampleFoods.filter(food => {
-        const matchesQuery = !searchQuery || 
-          food.name.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesCategory = !selectedCategory || 
-          food.category === selectedCategory;
-        return matchesQuery && matchesCategory;
-      });
+      // For now, filter sample foods including Indian foods
+      let filtered = sampleFoods;
+      
+      // Handle Indian food categories
+      if (selectedCategory && selectedCategory.startsWith('indian-')) {
+        const indianFoods = getFoodsByIndianCategory(selectedCategory);
+        filtered = indianFoods.filter(food => {
+          return !searchQuery || 
+            food.name.toLowerCase().includes(searchQuery.toLowerCase());
+        });
+      } else {
+        // Regular category filtering
+        filtered = sampleFoods.filter(food => {
+          const matchesQuery = !searchQuery || 
+            food.name.toLowerCase().includes(searchQuery.toLowerCase());
+          const matchesCategory = !selectedCategory || 
+            food.category === selectedCategory;
+          return matchesQuery && matchesCategory;
+        });
+      }
+      
       setFoods(filtered);
     } catch (error) {
       console.error('Error searching foods:', error);
     } finally {
       setLoading(false);
     }
-  }, [sampleFoods, searchQuery, selectedCategory]);
+  }, [sampleFoods, searchQuery, selectedCategory, getFoodsByIndianCategory]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {

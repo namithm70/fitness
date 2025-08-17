@@ -18,6 +18,7 @@ import WorkoutCard from '../../components/Workouts/WorkoutCard';
 import WorkoutTimer from '../../components/Workouts/WorkoutTimer';
 import toast from 'react-hot-toast';
 import { Workout } from '../../types/workout';
+import { exerciseCategories, getAllExercises } from '../../data/exercises';
 
 const WorkoutsPage: React.FC = () => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
@@ -30,7 +31,7 @@ const WorkoutsPage: React.FC = () => {
   const [currentWorkout, setCurrentWorkout] = useState<Workout | null>(null);
   const [bookmarkedWorkouts, setBookmarkedWorkouts] = useState<string[]>([]);
 
-  // Sample workout data
+  // Sample workout data with comprehensive exercises
   const sampleWorkouts = useMemo<Workout[]>(() => [
     {
       id: '1',
@@ -39,10 +40,11 @@ const WorkoutsPage: React.FC = () => {
       difficulty: 'intermediate',
       duration: 45,
       exercises: [
-        { id: '1', name: 'Push-ups', sets: 3, reps: 12, restTime: 60 },
-        { id: '2', name: 'Squats', sets: 3, reps: 15, restTime: 60 },
-        { id: '3', name: 'Plank', sets: 3, reps: 1, duration: 30, restTime: 60 },
-        { id: '4', name: 'Lunges', sets: 3, reps: 10, restTime: 60 },
+        { id: 'push-ups', name: 'Push-ups', sets: 3, reps: 12, restTime: 60, notes: 'Keep body straight, lower chest to ground' },
+        { id: 'squats', name: 'Squats', sets: 4, reps: 15, restTime: 90, notes: 'Keep chest up, knees in line with toes' },
+        { id: 'plank', name: 'Plank', sets: 3, reps: 1, duration: 60, restTime: 60, notes: 'Keep body straight, engage core' },
+        { id: 'lunges', name: 'Lunges', sets: 3, reps: 12, restTime: 60, notes: 'Step forward, lower back knee to ground' },
+        { id: 'bent-over-rows', name: 'Bent Over Rows', sets: 3, reps: 12, restTime: 90, notes: 'Pull weight to lower chest, squeeze shoulder blades' },
       ],
       description: 'A comprehensive full-body workout targeting all major muscle groups.',
       tags: ['full-body', 'strength', 'bodyweight'],
@@ -57,10 +59,11 @@ const WorkoutsPage: React.FC = () => {
       difficulty: 'advanced',
       duration: 30,
       exercises: [
-        { id: '1', name: 'Burpees', sets: 4, reps: 10, restTime: 30 },
-        { id: '2', name: 'Mountain Climbers', sets: 4, reps: 1, duration: 45, restTime: 30 },
-        { id: '3', name: 'Jumping Jacks', sets: 4, reps: 1, duration: 30, restTime: 30 },
-        { id: '4', name: 'High Knees', sets: 4, reps: 1, duration: 30, restTime: 30 },
+        { id: 'burpees', name: 'Burpees', sets: 4, reps: 10, restTime: 30, notes: 'Full burpee with push-up and jump' },
+        { id: 'mountain-climbers', name: 'Mountain Climbers', sets: 4, reps: 1, duration: 45, restTime: 30, notes: 'Fast alternating knees' },
+        { id: 'jumping-jacks', name: 'Jumping Jacks', sets: 4, reps: 1, duration: 30, restTime: 30, notes: 'Full range jumping jacks' },
+        { id: 'high-knees', name: 'High Knees', sets: 4, reps: 1, duration: 30, restTime: 30, notes: 'Run in place, knees to chest' },
+        { id: 'squat-jumps', name: 'Squat Jumps', sets: 4, reps: 12, restTime: 45, notes: 'Explosive jump from squat position' },
       ],
       description: 'High-intensity interval training for maximum calorie burn.',
       tags: ['cardio', 'hiit', 'fat-burning'],
@@ -75,10 +78,11 @@ const WorkoutsPage: React.FC = () => {
       difficulty: 'beginner',
       duration: 25,
       exercises: [
-        { id: '1', name: 'Downward Dog', sets: 3, reps: 1, duration: 30, restTime: 15 },
-        { id: '2', name: 'Warrior Pose', sets: 2, reps: 1, duration: 45, restTime: 15 },
-        { id: '3', name: 'Child\'s Pose', sets: 2, reps: 1, duration: 30, restTime: 15 },
-        { id: '4', name: 'Sun Salutation', sets: 3, reps: 1, duration: 60, restTime: 15 },
+        { id: 'downward-dog', name: 'Downward Dog', sets: 3, reps: 1, duration: 60, restTime: 30, notes: 'Press hips back and up' },
+        { id: 'warrior-1', name: 'Warrior I', sets: 2, reps: 1, duration: 45, restTime: 30, notes: 'Front knee bent, back leg straight' },
+        { id: 'child-pose', name: 'Child\'s Pose', sets: 2, reps: 1, duration: 60, restTime: 30, notes: 'Relaxing stretch for back' },
+        { id: 'sun-salutation', name: 'Sun Salutation', sets: 3, reps: 1, duration: 120, restTime: 60, notes: 'Complete flow sequence' },
+        { id: 'cat-cow', name: 'Cat-Cow', sets: 3, reps: 10, restTime: 30, notes: 'Alternate arching and rounding back' },
       ],
       description: 'Gentle yoga flow perfect for starting your day with energy.',
       tags: ['yoga', 'morning', 'flexibility'],
@@ -93,16 +97,93 @@ const WorkoutsPage: React.FC = () => {
       difficulty: 'advanced',
       duration: 50,
       exercises: [
-        { id: '1', name: 'Pull-ups', sets: 4, reps: 8, restTime: 90 },
-        { id: '2', name: 'Dips', sets: 4, reps: 10, restTime: 90 },
-        { id: '3', name: 'Push-ups', sets: 4, reps: 15, restTime: 60 },
-        { id: '4', name: 'Plank Hold', sets: 3, reps: 1, duration: 60, restTime: 60 },
+        { id: 'pull-ups', name: 'Pull-ups', sets: 4, reps: 8, restTime: 90, notes: 'Pull chin above bar, control descent' },
+        { id: 'dips', name: 'Dips', sets: 4, reps: 10, restTime: 90, notes: 'Lower body until upper arms are parallel to ground' },
+        { id: 'bench-press', name: 'Bench Press', sets: 4, reps: 8, restTime: 120, notes: 'Lower bar to chest, press up explosively' },
+        { id: 'overhead-press', name: 'Overhead Press', sets: 3, reps: 10, restTime: 90, notes: 'Press weight overhead, keep core tight' },
+        { id: 'bicep-curls', name: 'Bicep Curls', sets: 3, reps: 12, restTime: 60, notes: 'Curl weight up, control descent' },
       ],
       description: 'Focus on building upper body strength and power.',
       tags: ['upper-body', 'strength', 'power'],
       isPublic: true,
       rating: 4.6,
       completedCount: 6,
+    },
+    {
+      id: '5',
+      name: 'Lower Body Blast',
+      type: 'strength',
+      difficulty: 'intermediate',
+      duration: 40,
+      exercises: [
+        { id: 'squats', name: 'Squats', sets: 4, reps: 15, restTime: 90, notes: 'Keep chest up, knees in line with toes' },
+        { id: 'deadlifts', name: 'Deadlifts', sets: 4, reps: 8, restTime: 120, notes: 'Keep back straight, drive through heels' },
+        { id: 'lunges', name: 'Lunges', sets: 3, reps: 12, restTime: 60, notes: 'Step forward, lower back knee to ground' },
+        { id: 'calf-raises', name: 'Calf Raises', sets: 4, reps: 20, restTime: 60, notes: 'Raise heels, hold at top' },
+        { id: 'glute-bridges', name: 'Glute Bridges', sets: 3, reps: 15, restTime: 60, notes: 'Squeeze glutes at top' },
+      ],
+      description: 'Target your legs, glutes, and calves for a complete lower body workout.',
+      tags: ['lower-body', 'strength', 'legs'],
+      isPublic: true,
+      rating: 4.4,
+      completedCount: 9,
+    },
+    {
+      id: '6',
+      name: 'Core Crusher',
+      type: 'strength',
+      difficulty: 'beginner',
+      duration: 25,
+      exercises: [
+        { id: 'plank', name: 'Plank', sets: 3, reps: 1, duration: 60, restTime: 60, notes: 'Keep body straight, engage core' },
+        { id: 'crunches', name: 'Crunches', sets: 3, reps: 20, restTime: 45, notes: 'Lift shoulders off ground, don\'t pull neck' },
+        { id: 'russian-twists', name: 'Russian Twists', sets: 3, reps: 20, restTime: 45, notes: 'Rotate torso, keep feet off ground' },
+        { id: 'leg-raises', name: 'Leg Raises', sets: 3, reps: 15, restTime: 60, notes: 'Lower legs slowly, don\'t arch back' },
+        { id: 'side-plank', name: 'Side Plank', sets: 3, reps: 1, duration: 30, restTime: 45, notes: 'Hold each side' },
+      ],
+      description: 'Strengthen your core with this comprehensive ab workout.',
+      tags: ['core', 'abs', 'strength'],
+      isPublic: true,
+      rating: 4.3,
+      completedCount: 18,
+    },
+    {
+      id: '7',
+      name: 'Cardio Kickboxing',
+      type: 'cardio',
+      difficulty: 'intermediate',
+      duration: 35,
+      exercises: [
+        { id: 'jumping-jacks', name: 'Jumping Jacks', sets: 3, reps: 1, duration: 60, restTime: 30, notes: 'Full range of motion' },
+        { id: 'high-knees', name: 'High Knees', sets: 3, reps: 1, duration: 45, restTime: 30, notes: 'Knees to chest level' },
+        { id: 'burpees', name: 'Burpees', sets: 3, reps: 10, restTime: 60, notes: 'Squat, push-up, jump sequence' },
+        { id: 'mountain-climbers', name: 'Mountain Climbers', sets: 3, reps: 1, duration: 60, restTime: 45, notes: 'Fast alternating knees' },
+        { id: 'jump-rope', name: 'Jump Rope', sets: 3, reps: 1, duration: 120, restTime: 60, notes: 'Basic bounce or advanced moves' },
+      ],
+      description: 'High-energy cardio workout with boxing-inspired movements.',
+      tags: ['cardio', 'boxing', 'high-energy'],
+      isPublic: true,
+      rating: 4.7,
+      completedCount: 11,
+    },
+    {
+      id: '8',
+      name: 'Functional Fitness',
+      type: 'strength',
+      difficulty: 'advanced',
+      duration: 55,
+      exercises: [
+        { id: 'kettlebell-swings', name: 'Kettlebell Swings', sets: 3, reps: 15, restTime: 90, notes: 'Hip hinge movement, swing between legs' },
+        { id: 'clean-and-press', name: 'Clean and Press', sets: 3, reps: 8, restTime: 120, notes: 'Clean weight to shoulders, press overhead' },
+        { id: 'farmer-walks', name: 'Farmer Walks', sets: 3, reps: 1, duration: 60, restTime: 90, notes: 'Walk with heavy weights' },
+        { id: 'medicine-ball-slams', name: 'Medicine Ball Slams', sets: 3, reps: 12, restTime: 60, notes: 'Slam ball to ground' },
+        { id: 'battle-ropes', name: 'Battle Ropes', sets: 3, reps: 1, duration: 45, restTime: 60, notes: 'Wave motion with ropes' },
+      ],
+      description: 'Functional movements that improve everyday strength and mobility.',
+      tags: ['functional', 'strength', 'mobility'],
+      isPublic: true,
+      rating: 4.9,
+      completedCount: 7,
     },
   ], []);
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Clock, Target, Dumbbell, Heart, Zap, Users, Timer, Save } from 'lucide-react';
 import { Workout, Exercise } from '../../types/workout';
+import { exerciseCategories, getAllExercises } from '../../data/exercises';
 
 interface CreateWorkoutModalProps {
   isOpen: boolean;
@@ -24,18 +25,14 @@ const difficultyLevels = [
   { id: 'advanced', name: 'Advanced', color: 'bg-red-100 text-red-800' },
 ];
 
-const sampleExercises = [
-  { name: 'Push-ups', category: 'strength' },
-  { name: 'Squats', category: 'strength' },
-  { name: 'Plank', category: 'strength' },
-  { name: 'Burpees', category: 'hiit' },
-  { name: 'Mountain Climbers', category: 'cardio' },
-  { name: 'Jumping Jacks', category: 'cardio' },
-  { name: 'Downward Dog', category: 'yoga' },
-  { name: 'Warrior Pose', category: 'yoga' },
-  { name: 'Hamstring Stretch', category: 'flexibility' },
-  { name: 'Cobra Stretch', category: 'flexibility' },
-];
+const sampleExercises = getAllExercises().map(exercise => ({
+  name: exercise.name,
+  category: exercise.id.includes('strength') ? 'strength' : 
+           exercise.id.includes('cardio') ? 'cardio' :
+           exercise.id.includes('hiit') ? 'hiit' :
+           exercise.id.includes('yoga') ? 'yoga' :
+           exercise.id.includes('core') ? 'strength' : 'strength'
+}));
 
 const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({ isOpen, onClose, onSave }) => {
   const [workout, setWorkout] = useState<Partial<Workout>>({
