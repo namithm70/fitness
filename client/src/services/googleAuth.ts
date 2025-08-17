@@ -92,22 +92,31 @@ class GoogleAuthService {
     }
 
     // Exchange code for access token
+    const tokenRequestBody = new URLSearchParams({
+      client_id: GOOGLE_CLIENT_ID,
+      code: code,
+      code_verifier: codeVerifier,
+      grant_type: 'authorization_code',
+      redirect_uri: `${window.location.origin}/auth/google/callback`,
+    });
+    
+    console.log('Token exchange request body:', tokenRequestBody.toString());
+    
     const tokenResponse = await fetch(GOOGLE_OAUTH_ENDPOINTS.token, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: new URLSearchParams({
-        client_id: GOOGLE_CLIENT_ID,
-        code: code,
-        code_verifier: codeVerifier,
-        grant_type: 'authorization_code',
-        redirect_uri: `${window.location.origin}/auth/google/callback`,
-      }),
+      body: tokenRequestBody,
     });
 
+    console.log('Token response status:', tokenResponse.status);
+    console.log('Token response headers:', Object.fromEntries(tokenResponse.headers.entries()));
+
     if (!tokenResponse.ok) {
-      throw new Error('Failed to exchange code for token');
+      const errorText = await tokenResponse.text();
+      console.error('Token exchange error response:', errorText);
+      throw new Error(`Failed to exchange code for token: ${tokenResponse.status} - ${errorText}`);
     }
 
     const tokenData: GoogleAuthResponse = await tokenResponse.json();

@@ -18,6 +18,12 @@ const GoogleCallbackPage: React.FC = () => {
         const state = searchParams.get('state');
         const error = searchParams.get('error');
 
+        console.log('Google callback parameters:', {
+          code: code ? `${code.substring(0, 20)}...` : null,
+          state: state ? `${state.substring(0, 10)}...` : null,
+          error
+        });
+
         if (error) {
           throw new Error(`OAuth error: ${error}`);
         }
