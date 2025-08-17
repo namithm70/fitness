@@ -59,9 +59,12 @@ class GoogleAuthService {
     sessionStorage.setItem('google_code_verifier', codeVerifier);
     sessionStorage.setItem('google_state', state);
 
+    const redirectUri = `${window.location.origin}/auth/google/callback`;
+    console.log('Redirect URI being used:', redirectUri);
+    
     const params = new URLSearchParams({
       client_id: GOOGLE_CLIENT_ID,
-      redirect_uri: `${window.location.origin}/auth/google/callback`,
+      redirect_uri: redirectUri,
       response_type: 'code',
       scope: 'email profile',
       state: state,
@@ -72,6 +75,7 @@ class GoogleAuthService {
     });
 
     const authUrl = `${GOOGLE_OAUTH_ENDPOINTS.authorization}?${params.toString()}`;
+    console.log('Full auth URL:', authUrl);
     window.location.href = authUrl;
   }
 
