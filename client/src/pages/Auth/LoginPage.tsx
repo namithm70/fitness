@@ -13,7 +13,7 @@ interface LoginFormData {
 }
 
 const LoginPage: React.FC = () => {
-  const { login, socialLogin } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
