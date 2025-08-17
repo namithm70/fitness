@@ -3,13 +3,13 @@ import axios from 'axios';
 // API Configuration for different environments
 const API_BASE_URL = process.env.REACT_APP_API_URL || 
   (process.env.NODE_ENV === 'production' 
-    ? 'https://fitness-backend.onrender.com' // Your actual backend URL (no port needed for Render)
+    ? 'https://fitness-fkct.onrender.com' // Your actual backend URL (no port needed for Render)
     : 'http://localhost:5000'
   );
 
 // Force correct backend URL for production
 const FINAL_API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://fitness-backend.onrender.com' 
+  ? 'https://fitness-fkct.onrender.com' 
   : API_BASE_URL;
 
 // Debug logging to help troubleshoot
