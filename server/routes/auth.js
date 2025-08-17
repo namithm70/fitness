@@ -360,7 +360,12 @@ router.post('/social-login', async (req, res) => {
     }
   } catch (error) {
     console.error('Social login error:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      jwtSecret: process.env.JWT_SECRET ? 'SET' : 'NOT_SET'
+    });
+    res.status(500).json({ error: 'Server error', details: error.message });
   }
 });
 
