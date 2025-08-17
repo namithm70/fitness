@@ -199,21 +199,21 @@ const DashboardPage: React.FC = () => {
               y: -5,
               transition: { duration: 0.2 }
             }}
-            className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 group cursor-pointer"
+            className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 group cursor-pointer"
           >
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-600 mb-2 group-hover:text-gray-800 transition-colors">{stat.title}</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors">{stat.title}</p>
                 <motion.p 
-                  className="text-3xl font-bold text-gray-900 mb-2"
+                  className="text-3xl font-bold text-gray-900 dark:text-white mb-2"
                   animate={{ scale: [1, 1.05, 1] }}
                   transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 5 }}
                 >
                   {stat.value}
                 </motion.p>
                 <p className={`text-xs font-medium flex items-center ${
-                  stat.changeType === 'positive' ? 'text-green-600' : 
-                  stat.changeType === 'negative' ? 'text-red-600' : 'text-gray-600'
+                  stat.changeType === 'positive' ? 'text-green-600 dark:text-green-400' : 
+                  stat.changeType === 'negative' ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-400'
                 }`}>
                   <motion.span
                     animate={{ x: [0, 2, 0] }}
@@ -242,7 +242,7 @@ const DashboardPage: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
           <motion.span
             animate={{ rotate: [0, 5, -5, 0] }}
             transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
@@ -267,7 +267,7 @@ const DashboardPage: React.FC = () => {
               whileTap={{ scale: 0.95 }}
             >
               <Link to={action.href} className="block">
-                <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 text-center group relative overflow-hidden">
+                <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 text-center group relative overflow-hidden">
                   {/* Gradient overlay on hover */}
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   
@@ -282,8 +282,8 @@ const DashboardPage: React.FC = () => {
                     >
                       {action.icon}
                     </motion.div>
-                    <h3 className="font-bold text-gray-900 mb-3 text-lg group-hover:text-gray-800 transition-colors">{action.title}</h3>
-                    <p className="text-sm text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors">{action.description}</p>
+                    <h3 className="font-bold text-gray-900 dark:text-white mb-3 text-lg group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors">{action.title}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">{action.description}</p>
                   </div>
                   
                   {/* Animated border */}
@@ -304,11 +304,11 @@ const DashboardPage: React.FC = () => {
       >
         {/* Recent Workouts */}
         <motion.div 
-          className="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
+          className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
           whileHover={{ y: -5 }}
         >
-          <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-blue-50">
-            <h2 className="text-xl font-bold text-gray-900 flex items-center">
+          <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center">
               <motion.span
                 animate={{ rotate: [0, 10, 0] }}
                 transition={{ duration: 1, repeat: Infinity, repeatDelay: 3 }}
@@ -335,7 +335,7 @@ const DashboardPage: React.FC = () => {
                     x: 5,
                     transition: { duration: 0.2 }
                   }}
-                  className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-blue-50 hover:to-blue-100 transition-all duration-300 cursor-pointer group"
+                  className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-xl hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 transition-all duration-300 cursor-pointer group"
                 >
                   <div className="flex items-center space-x-4">
                     <motion.div 
@@ -346,18 +346,18 @@ const DashboardPage: React.FC = () => {
                       transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}
                     />
                     <div>
-                      <h3 className="font-semibold text-gray-900 group-hover:text-blue-800 transition-colors">{workout.name}</h3>
-                      <p className="text-sm text-gray-600 group-hover:text-gray-700 transition-colors">{workout.date}</p>
+                      <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-800 dark:group-hover:text-blue-400 transition-colors">{workout.name}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">{workout.date}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-gray-900 group-hover:text-blue-800 transition-colors">{workout.duration}min</p>
-                    <p className="text-xs text-gray-600 group-hover:text-gray-700 transition-colors">{workout.calories} cal</p>
+                    <p className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-blue-800 dark:group-hover:text-blue-400 transition-colors">{workout.duration}min</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">{workout.calories} cal</p>
                   </div>
                 </motion.div>
               ))}
             </div>
-            <div className="mt-6 pt-4 border-t border-gray-100">
+            <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link to="/workouts" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl">
                   <Plus className="w-4 h-4 mr-2" />
@@ -370,11 +370,11 @@ const DashboardPage: React.FC = () => {
 
         {/* Upcoming Workouts */}
         <motion.div 
-          className="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
+          className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
           whileHover={{ y: -5 }}
         >
-          <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-purple-50">
-            <h2 className="text-xl font-bold text-gray-900 flex items-center">
+          <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-purple-50 dark:from-gray-800 dark:to-purple-900/20">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center">
               <motion.span
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
@@ -401,7 +401,7 @@ const DashboardPage: React.FC = () => {
                     x: -5,
                     transition: { duration: 0.2 }
                   }}
-                  className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-purple-50 hover:to-purple-100 transition-all duration-300 cursor-pointer group"
+                  className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-xl hover:from-purple-50 hover:to-purple-100 dark:hover:from-purple-900/20 dark:hover:to-purple-800/20 transition-all duration-300 cursor-pointer group"
                 >
                   <div className="flex items-center space-x-4">
                     <motion.div 
@@ -411,12 +411,12 @@ const DashboardPage: React.FC = () => {
                       <Calendar className="w-6 h-6 text-purple-600" />
                     </motion.div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 group-hover:text-purple-800 transition-colors">{workout.name}</h3>
-                      <p className="text-sm text-gray-600 group-hover:text-gray-700 transition-colors">{workout.time}</p>
+                      <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-purple-800 dark:group-hover:text-purple-400 transition-colors">{workout.name}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">{workout.time}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-gray-900 mb-1 group-hover:text-purple-800 transition-colors">{workout.duration}min</p>
+                    <p className="text-sm font-bold text-gray-900 dark:text-white mb-1 group-hover:text-purple-800 dark:group-hover:text-purple-400 transition-colors">{workout.duration}min</p>
                     <motion.span 
                       className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${
                         workout.difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
@@ -431,7 +431,7 @@ const DashboardPage: React.FC = () => {
                 </motion.div>
               ))}
             </div>
-            <div className="mt-6 pt-4 border-t border-gray-100">
+            <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link to="/workouts" className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl">
                   <Calendar className="w-4 h-4 mr-2" />
