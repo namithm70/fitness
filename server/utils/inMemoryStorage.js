@@ -125,10 +125,13 @@ class InMemoryStorage {
   async socialLogin(socialData) {
     const { provider, id, email, firstName, lastName, profilePicture } = socialData;
     
-    // Validate required fields
-    if (!provider || !id || !email || !firstName || !lastName) {
+    // Validate required fields (make lastName optional)
+    if (!provider || !id || !email || !firstName) {
       throw new Error('Missing required fields for social login');
     }
+    
+    // Use empty string as fallback for lastName
+    const finalLastName = lastName || '';
 
     // Check if user exists with this social ID
     let user = null;
@@ -157,7 +160,7 @@ class InMemoryStorage {
           id: this.nextUserId.toString(),
           email: email.toLowerCase(),
           firstName: firstName.trim(),
-          lastName: lastName.trim(),
+          lastName: finalLastName.trim(),
           profilePicture: profilePicture || null,
           socialLogin: {
             [provider]: { id, email }
