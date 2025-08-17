@@ -10,7 +10,10 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: function() {
+      // Password is only required if no social login is present
+      return !this.socialLogin || (!this.socialLogin.google && !this.socialLogin.facebook);
+    },
     minlength: 6
   },
   firstName: {
@@ -20,8 +23,9 @@ const userSchema = new mongoose.Schema({
   },
   lastName: {
     type: String,
-    required: true,
-    trim: true
+    required: false,
+    trim: true,
+    default: ''
   },
   profilePicture: {
     type: String,
@@ -261,7 +265,8 @@ userSchema.virtual('bmi').get(function() {
 
 // Pre-save middleware to hash password
 userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
+  // Skip password hashing for social login users without passwords
+  if (!this.password || !this.isModified('password')) return next();
   
   try {
     const salt = await bcrypt.genSalt(12);
@@ -274,6 +279,10 @@ userSchema.pre('save', async function(next) {
 
 // Method to compare password
 userSchema.methods.comparePassword = async function(candidatePassword) {
+  // Social login users don't have passwords
+  if (!this.password) {
+    return false;
+  }
   return bcrypt.compare(candidatePassword, this.password);
 };
 
