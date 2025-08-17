@@ -23,16 +23,27 @@ const io = socketIo(server, {
 // Middleware
 app.use(helmet());
 
-// CORS configuration - More permissive for immediate fix
+// CORS configuration - Most permissive for immediate fix
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-auth-token');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+
+// Also keep the cors middleware as backup
 app.use(cors({
-  origin: true, // Allow all origins temporarily
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token', 'Origin', 'Accept', 'X-Requested-With']
 }));
-
-// Handle preflight requests
-app.options('*', cors());
 
 // Trust proxy for rate limiting behind load balancers
 app.set('trust proxy', 1);
