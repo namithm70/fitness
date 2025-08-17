@@ -283,7 +283,7 @@ const WorkoutsPage: React.FC = () => {
       >
         <div>
           <motion.h1 
-            className="text-4xl font-bold text-gray-900 flex items-center"
+            className="text-4xl font-bold text-gray-900 dark:text-white flex items-center"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -298,7 +298,7 @@ const WorkoutsPage: React.FC = () => {
             Workouts
           </motion.h1>
           <motion.p 
-            className="text-xl text-gray-600"
+            className="text-xl text-gray-600 dark:text-gray-400"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
@@ -322,7 +322,7 @@ const WorkoutsPage: React.FC = () => {
 
       {/* Search and Filters */}
       <motion.div 
-        className="bg-white rounded-xl shadow-lg border border-gray-100 p-6"
+        className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -336,13 +336,13 @@ const WorkoutsPage: React.FC = () => {
               placeholder="Search workouts..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm hover:shadow-md transition-all duration-300"
+              className="w-full pl-12 pr-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm hover:shadow-md transition-all duration-300"
             />
           </div>
 
           {/* Type Filters */}
           <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
               <motion.span
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
@@ -367,7 +367,7 @@ const WorkoutsPage: React.FC = () => {
                     className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${
                       selectedType === type.id
                         ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 hover:shadow-md'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -380,7 +380,7 @@ const WorkoutsPage: React.FC = () => {
 
           {/* Difficulty Filters */}
           <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
               <motion.span
                 animate={{ rotate: [0, 5, -5, 0] }}
                 transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
@@ -403,7 +403,7 @@ const WorkoutsPage: React.FC = () => {
                   className={`px-4 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${
                     selectedDifficulty === level.id
                       ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg shadow-purple-500/25'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 hover:shadow-md'
                   }`}
                                   >
                     {level.name}
@@ -451,7 +451,7 @@ const WorkoutsPage: React.FC = () => {
         ].map((stat, index) => (
           <motion.div
             key={stat.label}
-            className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 text-center group cursor-pointer"
+            className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 text-center group cursor-pointer"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -468,13 +468,13 @@ const WorkoutsPage: React.FC = () => {
               {stat.icon}
             </motion.div>
             <motion.div 
-              className="text-3xl font-bold text-gray-900 mb-2"
+              className="text-3xl font-bold text-gray-900 dark:text-white mb-2"
               animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 5 }}
             >
               {stat.value}
             </motion.div>
-            <div className="text-sm font-medium text-gray-600 group-hover:text-gray-800 transition-colors">
+            <div className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors">
               {stat.label}
             </div>
           </motion.div>
@@ -487,7 +487,7 @@ const WorkoutsPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="bg-white rounded-xl shadow-lg border border-gray-100 p-12 text-center"
+          className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-12 text-center"
         >
           <motion.div
             animate={{ 
@@ -498,8 +498,8 @@ const WorkoutsPage: React.FC = () => {
           >
             <Dumbbell className="w-20 h-20 text-gray-400 mx-auto mb-6" />
           </motion.div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">No Workouts Found</h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-md mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">No Workouts Found</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
             Try adjusting your search or filters to find more workouts.
           </p>
           <motion.div
