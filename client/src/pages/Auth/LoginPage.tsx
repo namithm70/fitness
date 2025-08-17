@@ -40,19 +40,8 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
     try {
       if (provider === 'google') {
-        const googleUser = await googleAuthService.loginWithGoogle();
-        
-        // Call the social login function from auth context
-        await socialLogin('google', {
-          id: googleUser.id,
-          email: googleUser.email,
-          firstName: googleUser.given_name,
-          lastName: googleUser.family_name,
-          profilePicture: googleUser.picture,
-          verified: googleUser.verified_email,
-        });
-        
-        navigate('/dashboard');
+        // Use redirect method instead of popup
+        await googleAuthService.initiateGoogleLogin();
       } else {
         toast.error(`${provider} login is not implemented yet`);
       }
