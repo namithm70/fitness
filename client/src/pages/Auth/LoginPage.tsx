@@ -13,7 +13,7 @@ interface LoginFormData {
 }
 
 const LoginPage: React.FC = () => {
-  const { login } = useAuth();
+  const { login, socialLogin } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,8 +40,26 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
     try {
       if (provider === 'google') {
-        // Use redirect method instead of popup
-        await googleAuthService.initiateGoogleLogin();
+        // Try popup method first, fallback to redirect
+        try {
+          const googleUser = await googleAuthService.loginWithGoogle();
+          
+          // Call the social login function from auth context
+          await socialLogin('google', {
+            id: googleUser.id,
+            email: googleUser.email,
+            firstName: googleUser.given_name,
+            lastName: googleUser.family_name,
+            profilePicture: googleUser.picture,
+            verified: googleUser.verified_email,
+          });
+          
+          navigate('/dashboard');
+        } catch (error) {
+          console.log('Popup method failed, trying redirect method:', error);
+          // Fallback to redirect method
+          await googleAuthService.initiateGoogleLogin();
+        }
       } else {
         toast.error(`${provider} login is not implemented yet`);
       }
