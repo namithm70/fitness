@@ -23,9 +23,20 @@ const io = socketIo(server, {
 // Middleware
 app.use(helmet());
 
-// CORS configuration - Most permissive for immediate fix
+// CORS configuration - Explicit for Vercel frontend
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  // Allow specific origins
+  const allowedOrigins = [
+    'https://fitness-ebon-nine.vercel.app',
+    'https://fitness-fkct.onrender.com',
+    'http://localhost:3000'
+  ];
+  
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+  
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-auth-token');
   res.header('Access-Control-Allow-Credentials', 'true');
@@ -39,7 +50,7 @@ app.use((req, res, next) => {
 
 // Also keep the cors middleware as backup
 app.use(cors({
-  origin: true,
+  origin: ['https://fitness-ebon-nine.vercel.app', 'http://localhost:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token', 'Origin', 'Accept', 'X-Requested-With']
