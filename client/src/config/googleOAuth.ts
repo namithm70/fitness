@@ -1,4 +1,4 @@
-export const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
+export const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || '340843559721-7m0fqnkp0kai4vrvfsse0orhjmuu9urh.apps.googleusercontent.com';
 
 // Debug logging
 console.log('Google Client ID loaded:', GOOGLE_CLIENT_ID ? 'YES' : 'NO');
