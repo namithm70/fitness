@@ -45,27 +45,27 @@ const WorkoutFrequencyChart: React.FC<WorkoutFrequencyChartProps> = ({ workoutSt
       {/* Summary Stats */}
       <div className="grid grid-cols-3 gap-4">
         <div className="text-center">
-          <div className="text-2xl font-bold text-blue-600">{totalWorkouts}</div>
-          <div className="text-xs text-gray-600">Workouts</div>
+          <div className="text-2xl font-bold text-blue-400">{totalWorkouts}</div>
+          <div className="text-xs text-white/80">Workouts</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-green-600">{totalDuration}</div>
-          <div className="text-xs text-gray-600">Total Minutes</div>
+          <div className="text-2xl font-bold text-green-400">{totalDuration}</div>
+          <div className="text-xs text-white/80">Total Minutes</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-purple-600">{avgDuration}</div>
-          <div className="text-xs text-gray-600">Avg Duration</div>
+          <div className="text-2xl font-bold text-purple-400">{avgDuration}</div>
+          <div className="text-xs text-white/80">Avg Duration</div>
         </div>
       </div>
 
       {/* Chart */}
-      <div className="bg-gray-50 rounded-lg p-4">
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Last 30 Days</h3>
+      <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-4">
+        <h3 className="text-sm font-medium text-white mb-3">Last 30 Days</h3>
         <div className="flex items-end justify-between h-20 space-x-1">
           {data.map((day, index) => (
             <div key={index} className="flex-1 flex flex-col items-center">
               <div 
-                className="w-full bg-blue-500 rounded-t transition-all duration-300 hover:bg-blue-600"
+                className="w-full bg-blue-400 rounded-t transition-all duration-300 hover:bg-blue-300"
                 style={{ 
                   height: maxDuration > 0 ? `${(day.duration / maxDuration) * 100}%` : '0%',
                   minHeight: day.duration > 0 ? '4px' : '0px'
@@ -73,7 +73,7 @@ const WorkoutFrequencyChart: React.FC<WorkoutFrequencyChartProps> = ({ workoutSt
                 title={`${day.date}: ${day.duration} minutes`}
               ></div>
               {index % 7 === 0 && (
-                <span className="text-xs text-gray-500 mt-1">
+                <span className="text-xs text-white/70 mt-1">
                   {new Date(day.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                 </span>
               )}
@@ -83,17 +83,17 @@ const WorkoutFrequencyChart: React.FC<WorkoutFrequencyChartProps> = ({ workoutSt
       </div>
 
       {/* Streak Info */}
-      <div className="bg-blue-50 rounded-lg p-3">
+      <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-3">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-blue-900">Current Streak</p>
-            <p className="text-xs text-blue-700">Keep up the great work!</p>
+            <p className="text-sm font-medium text-blue-300">Current Streak</p>
+            <p className="text-xs text-blue-200">Keep up the great work!</p>
           </div>
           <div className="text-right">
-            <div className="text-2xl font-bold text-blue-600">
+            <div className="text-2xl font-bold text-blue-400">
               {Math.floor(Math.random() * 7) + 1}
             </div>
-            <div className="text-xs text-blue-700">days</div>
+            <div className="text-xs text-blue-200">days</div>
           </div>
         </div>
       </div>
