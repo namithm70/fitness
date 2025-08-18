@@ -207,13 +207,13 @@ const HistorySection: React.FC = () => {
   if (loading) {
     return (
       <motion.div 
-        className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-6"
+        className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl shadow-lg p-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <div className="flex items-center justify-center h-32">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
         </div>
       </motion.div>
     );
@@ -221,14 +221,14 @@ const HistorySection: React.FC = () => {
 
   return (
     <motion.div 
-      className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
+      className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl shadow-lg hover:bg-white/15 hover:shadow-xl transition-all duration-300"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center">
+      <div className="flex items-center justify-between p-6 border-b border-white/20 bg-white/5">
+        <h2 className="text-xl font-bold text-white flex items-center">
           <motion.span
             animate={{ rotate: [0, 10, 0] }}
             transition={{ duration: 1, repeat: Infinity, repeatDelay: 3 }}
@@ -238,14 +238,14 @@ const HistorySection: React.FC = () => {
           </motion.span>
           Activity History
         </h2>
-        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex items-center space-x-2 text-sm text-white/70">
           <Clock className="w-4 h-4" />
           <span>Last 7 days</span>
         </div>
       </div>
 
       {/* Date Tabs */}
-      <div className="p-4 border-b border-gray-100 dark:border-gray-700">
+      <div className="p-4 border-b border-white/20">
         <div className="flex space-x-2 overflow-x-auto pb-2">
           {dateTabs.map((tab, index) => (
             <motion.button
@@ -253,8 +253,8 @@ const HistorySection: React.FC = () => {
               onClick={() => setActiveTab(index)}
               className={`flex flex-col items-center px-4 py-3 rounded-xl font-medium transition-all duration-300 whitespace-nowrap ${
                 activeTab === index
-                  ? 'bg-blue-500 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  ? 'bg-white text-purple-600 shadow-lg'
+                  : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -268,7 +268,7 @@ const HistorySection: React.FC = () => {
       </div>
 
       {/* Daily Summary */}
-      <div className="p-6 border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
+      <div className="p-6 border-b border-white/20 bg-white/5">
         <div className="grid grid-cols-3 gap-4">
           <motion.div 
             className="text-center"
@@ -276,8 +276,8 @@ const HistorySection: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{currentDayHistory.totalWorkouts}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Workouts</div>
+            <div className="text-2xl font-bold text-white">{currentDayHistory.totalWorkouts}</div>
+            <div className="text-sm text-white/70">Workouts</div>
           </motion.div>
           <motion.div 
             className="text-center"
@@ -285,8 +285,8 @@ const HistorySection: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, delay: 0.2 }}
           >
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">{currentDayHistory.totalDuration}min</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Duration</div>
+            <div className="text-2xl font-bold text-white">{currentDayHistory.totalDuration}min</div>
+            <div className="text-sm text-white/70">Duration</div>
           </motion.div>
           <motion.div 
             className="text-center"
@@ -294,8 +294,8 @@ const HistorySection: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, delay: 0.3 }}
           >
-            <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{currentDayHistory.totalCalories}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Calories</div>
+            <div className="text-2xl font-bold text-white">{currentDayHistory.totalCalories}</div>
+            <div className="text-sm text-white/70">Calories</div>
           </motion.div>
         </div>
       </div>
@@ -305,17 +305,17 @@ const HistorySection: React.FC = () => {
         <div className="space-y-4">
           <AnimatePresence mode="wait">
             {currentDayHistory.activities.length === 0 ? (
-                              <motion.div
-                  key="empty"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="text-center py-8 text-gray-500 dark:text-gray-400"
-                >
-                  <Calendar className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
-                  <p className="text-lg font-medium text-gray-900 dark:text-white">No activities for this day</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Start your fitness journey today!</p>
-                </motion.div>
+                                            <motion.div
+                key="empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-center py-8 text-white/60"
+              >
+                <Calendar className="w-12 h-12 mx-auto mb-4 text-white/40" />
+                <p className="text-lg font-medium text-white">No activities for this day</p>
+                <p className="text-sm text-white/70">Start your fitness journey today!</p>
+              </motion.div>
             ) : (
               currentDayHistory.activities.slice(0, 5).map((activity, index) => (
                 <motion.div
@@ -329,20 +329,20 @@ const HistorySection: React.FC = () => {
                     x: 5,
                     transition: { duration: 0.2 }
                   }}
-                  className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-xl hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 transition-all duration-300 cursor-pointer group"
+                  className="flex items-center justify-between p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300 cursor-pointer group"
                 >
                   <div className="flex items-center space-x-4">
                     <motion.div 
-                      className={`p-2 rounded-lg ${getColorForActivity(activity.type)}`}
+                      className="p-2 rounded-lg bg-white/20 text-white"
                       whileHover={{ rotate: 5, scale: 1.1 }}
                     >
                       {getIconForActivity(activity.type)}
                     </motion.div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-800 dark:group-hover:text-blue-400 transition-colors">
+                      <h3 className="font-semibold text-white group-hover:text-white/90 transition-colors">
                         {activity.action}
                       </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
+                      <p className="text-sm text-white/70 group-hover:text-white/80 transition-colors">
                         {activity.details.workoutName || 
                          activity.details.exerciseName || 
                          activity.details.foodName || 
@@ -350,16 +350,16 @@ const HistorySection: React.FC = () => {
                          'Activity'}
                       </p>
                       <div className="flex items-center space-x-4 mt-1">
-                        <span className="text-xs text-gray-500 dark:text-gray-500">
+                        <span className="text-xs text-white/60">
                           {formatTime(activity.timestamp)}
                         </span>
                         {activity.details.duration && (
-                          <span className="text-xs text-blue-600 dark:text-blue-400">
+                          <span className="text-xs text-white/80">
                             {activity.details.duration}min
                           </span>
                         )}
                         {(activity.details.workoutCalories || activity.details.nutritionCalories) && (
-                          <span className="text-xs text-orange-600 dark:text-orange-400">
+                          <span className="text-xs text-white/80">
                             {activity.details.workoutCalories || activity.details.nutritionCalories} cal
                           </span>
                         )}
@@ -372,10 +372,10 @@ const HistorySection: React.FC = () => {
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}
                       >
-                        <CheckCircle className="w-5 h-5 text-green-500" />
+                        <CheckCircle className="w-5 h-5 text-green-400" />
                       </motion.div>
                     ) : (
-                      <XCircle className="w-5 h-5 text-red-500" />
+                      <XCircle className="w-5 h-5 text-red-400" />
                     )}
                   </div>
                 </motion.div>
@@ -391,10 +391,10 @@ const HistorySection: React.FC = () => {
               transition={{ duration: 0.3, delay: 0.4 }}
               className="text-center pt-4"
             >
-                                <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors duration-200">
-                    <Activity className="w-4 h-4 mr-2" />
-                    View All Activities ({currentDayHistory.activities.length})
-                  </button>
+                                              <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-white/20 rounded-lg hover:bg-white/30 transition-colors duration-200">
+                <Activity className="w-4 h-4 mr-2" />
+                View All Activities ({currentDayHistory.activities.length})
+              </button>
             </motion.div>
           )}
         </div>
