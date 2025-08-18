@@ -22,6 +22,7 @@ const Layout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
