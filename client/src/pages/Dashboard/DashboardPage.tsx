@@ -78,6 +78,30 @@ const DashboardPage: React.FC = () => {
       duration: 50,
       calories: 350,
       completed: false
+    },
+    {
+      id: 4,
+      name: 'Core Training',
+      date: '2024-01-09',
+      duration: 25,
+      calories: 180,
+      completed: true
+    },
+    {
+      id: 5,
+      name: 'Full Body Circuit',
+      date: '2024-01-07',
+      duration: 55,
+      calories: 420,
+      completed: true
+    },
+    {
+      id: 6,
+      name: 'Yoga Flow',
+      date: '2024-01-05',
+      duration: 40,
+      calories: 150,
+      completed: true
     }
   ];
 
@@ -132,6 +156,27 @@ const DashboardPage: React.FC = () => {
       name: 'Strength Training',
       time: 'Wednesday, 5:30 PM',
       duration: 60,
+      difficulty: 'Advanced'
+    },
+    {
+      id: 4,
+      name: 'Cardio Blast',
+      time: 'Thursday, 6:30 AM',
+      duration: 40,
+      difficulty: 'Intermediate'
+    },
+    {
+      id: 5,
+      name: 'Core Power',
+      time: 'Friday, 5:00 PM',
+      duration: 35,
+      difficulty: 'Beginner'
+    },
+    {
+      id: 6,
+      name: 'HIIT Training',
+      time: 'Saturday, 8:00 AM',
+      duration: 50,
       difficulty: 'Advanced'
     }
   ];
@@ -325,7 +370,7 @@ const DashboardPage: React.FC = () => {
           </div>
           <div className="p-6">
             <div className="space-y-4">
-              {recentWorkouts.map((workout, index) => (
+              {recentWorkouts.slice(0, 5).map((workout, index) => (
                 <motion.div
                   key={workout.id}
                   initial={{ opacity: 0, x: -20 }}
@@ -357,6 +402,21 @@ const DashboardPage: React.FC = () => {
                   </div>
                 </motion.div>
               ))}
+              
+              {/* Show more workouts button if there are more than 5 */}
+              {recentWorkouts.length > 5 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.4 }}
+                  className="text-center pt-2"
+                >
+                  <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors duration-200">
+                    <TrendingUp className="w-4 h-4 mr-2" />
+                    View All Workouts ({recentWorkouts.length})
+                  </button>
+                </motion.div>
+              )}
             </div>
             <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
@@ -391,7 +451,7 @@ const DashboardPage: React.FC = () => {
           </div>
           <div className="p-6">
             <div className="space-y-4">
-              {upcomingWorkouts.map((workout, index) => (
+              {upcomingWorkouts.slice(0, 5).map((workout, index) => (
                 <motion.div
                   key={workout.id}
                   initial={{ opacity: 0, x: 20 }}
@@ -431,6 +491,21 @@ const DashboardPage: React.FC = () => {
                   </div>
                 </motion.div>
               ))}
+              
+              {/* Show more workouts button if there are more than 5 */}
+              {upcomingWorkouts.length > 5 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.4 }}
+                  className="text-center pt-2"
+                >
+                  <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors duration-200">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    View All Workouts ({upcomingWorkouts.length})
+                  </button>
+                </motion.div>
+              )}
             </div>
             <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
