@@ -109,7 +109,7 @@ const LoginPage: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl"
             >
-              <span className="text-3xl font-bold text-white">💪</span>
+              <span className="text-3xl font-bold text-white">F</span>
             </motion.div>
             
             <motion.h1
