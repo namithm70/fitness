@@ -21,24 +21,24 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({ posts }) => {
 
   if (posts.length === 0) {
     return (
-      <div className="card">
+      <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg">
         <div className="flex items-center space-x-2 mb-4">
-          <TrendingUp className="w-5 h-5 text-orange-500" />
-          <h3 className="text-lg font-semibold text-gray-900">Trending</h3>
+          <TrendingUp className="w-5 h-5 text-orange-400" />
+          <h3 className="text-lg font-semibold text-white">Trending</h3>
         </div>
         <div className="text-center py-6">
-          <TrendingUp className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-          <p className="text-sm text-gray-500">No trending posts yet</p>
+          <TrendingUp className="w-12 h-12 text-white/40 mx-auto mb-2" />
+          <p className="text-sm text-white/70">No trending posts yet</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="card">
+    <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg">
       <div className="flex items-center space-x-2 mb-4">
-        <TrendingUp className="w-5 h-5 text-orange-500" />
-        <h3 className="text-lg font-semibold text-gray-900">Trending</h3>
+        <TrendingUp className="w-5 h-5 text-orange-400" />
+        <h3 className="text-lg font-semibold text-white">Trending</h3>
       </div>
       <div className="space-y-3">
         {posts.slice(0, 5).map((post, index) => (
@@ -49,7 +49,7 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({ posts }) => {
             transition={{ duration: 0.3, delay: index * 0.1 }}
             className="group cursor-pointer"
           >
-            <div className="flex items-start space-x-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
+            <div className="flex items-start space-x-3 p-2 rounded-lg hover:bg-white/10 transition-colors">
               <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
                 {index + 1}
               </div>
@@ -60,14 +60,14 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({ posts }) => {
                     alt={post.user.firstName}
                     className="w-4 h-4 rounded-full"
                   />
-                  <span className="text-xs font-medium text-gray-900 truncate">
+                  <span className="text-xs font-medium text-white/90 truncate">
                     {post.user.firstName} {post.user.lastName}
                   </span>
                 </div>
-                <p className="text-sm text-gray-700 line-clamp-2 mb-2">
+                <p className="text-sm text-white/80 line-clamp-2 mb-2">
                   {post.content}
                 </p>
-                <div className="flex items-center justify-between text-xs text-gray-500">
+                <div className="flex items-center justify-between text-xs text-white/60">
                   <span>{formatTimeAgo(post.createdAt)}</span>
                   <div className="flex items-center space-x-3">
                     <div className="flex items-center space-x-1">
@@ -90,8 +90,8 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({ posts }) => {
         ))}
       </div>
       {posts.length > 5 && (
-        <div className="mt-4 pt-3 border-t">
-          <button className="w-full text-center text-sm text-blue-600 hover:text-blue-700 font-medium">
+        <div className="mt-4 pt-3 border-t border-white/20">
+          <button className="w-full text-center text-sm text-purple-300 hover:text-purple-200 font-medium">
             View All Trending
           </button>
         </div>
