@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { X, Search, Plus, Clock } from 'lucide-react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { X, Search, Plus, Clock, ChevronDown } from 'lucide-react';
 import { Food } from '../../types/nutrition';
 import { getAllIndianFoods, indianFoodCategories } from '../../data/indianFood';
 
@@ -19,6 +19,8 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
   const [foods, setFoods] = useState<Food[]>([]);
   const [recentFoods, setRecentFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Function to get foods by Indian category
 
@@ -43,6 +45,18 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
     { value: 'indian-desserts', label: 'Indian Desserts' },
     { value: 'indian-beverages', label: 'Indian Beverages' }
   ];
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Sample foods for demonstration including Indian foods
   const sampleFoods: Food[] = useMemo(() => [
@@ -542,6 +556,16 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
     onClose();
   };
 
+  const handleCategorySelect = (categoryValue: string) => {
+    setSelectedCategory(categoryValue);
+    setIsDropdownOpen(false);
+  };
+
+  const getSelectedCategoryLabel = () => {
+    const category = categories.find(cat => cat.value === selectedCategory);
+    return category ? category.label : 'All Categories';
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -573,29 +597,34 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
                 />
               </div>
             </div>
-            <div className="w-48">
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-white/20 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 appearance-none cursor-pointer"
-                style={{
-                  backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                  backgroundPosition: 'right 0.5rem center',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundSize: '1.5em 1.5em',
-                  paddingRight: '2.5rem'
-                }}
+            <div className="w-48 relative" ref={dropdownRef}>
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-full px-3 py-2 border border-white/20 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 flex items-center justify-between hover:bg-white/20 transition-all duration-200"
               >
-                {categories.map(category => (
-                  <option 
-                    key={category.value} 
-                    value={category.value}
-                    className="bg-white/10 text-white border-white/20"
-                  >
-                    {category.label}
-                  </option>
-                ))}
-              </select>
+                <span>{getSelectedCategoryLabel()}</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {isDropdownOpen && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+                  {categories.map((category) => (
+                    <button
+                      key={category.value}
+                      onClick={() => handleCategorySelect(category.value)}
+                      className={`w-full px-3 py-2 text-left hover:bg-white/20 transition-all duration-200 ${
+                        selectedCategory === category.value
+                          ? 'bg-purple-500/30 text-white'
+                          : 'text-white/90 hover:text-white'
+                      } ${category.value === '' ? 'rounded-t-lg' : ''} ${
+                        category.value === categories[categories.length - 1].value ? 'rounded-b-lg' : ''
+                      }`}
+                    >
+                      {category.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
