@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Clock, 
@@ -48,7 +48,7 @@ const HistorySection: React.FC = () => {
 
   const dateTabs = generateDateTabs();
 
-  const generateMockHistory = (): DailyHistory[] => {
+  const generateMockHistory = useCallback((): DailyHistory[] => {
     const mockHistory: DailyHistory[] = [];
     const today = new Date();
     
@@ -98,7 +98,7 @@ const HistorySection: React.FC = () => {
     }
     
     return mockHistory;
-  };
+  }, [user?.id]);
 
   const getActionForType = (type: ActivityType['type']): string => {
     switch (type) {
@@ -194,7 +194,7 @@ const HistorySection: React.FC = () => {
       setHistory(generateMockHistory());
       setLoading(false);
     }
-  }, [user?.id]);
+  }, [user?.id, generateMockHistory]);
 
   const currentDayHistory = history.find(h => h.date === dateTabs[activeTab].date) || {
     date: dateTabs[activeTab].date,
