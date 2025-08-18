@@ -142,7 +142,7 @@ class GoogleAuthService {
     return userData;
   }
 
-  // Alternative method using Google Identity Services (recommended)
+  // Using Google Identity Services (GSI)
   async loginWithGoogle(): Promise<GoogleUser> {
     return new Promise((resolve, reject) => {
       console.log('Starting Google login...');
@@ -158,34 +158,46 @@ class GoogleAuthService {
         return;
       }
 
-      window.google.accounts.oauth2.initTokenClient({
-        client_id: GOOGLE_CLIENT_ID,
-        scope: 'email profile',
-        callback: async (response) => {
-          if (response.error) {
-            reject(new Error(response.error));
-            return;
-          }
+      // Check if the correct API is available
+      if (!window.google.accounts || !window.google.accounts.oauth2) {
+        reject(new Error('Google OAuth2 API not available'));
+        return;
+      }
 
-          try {
-            // Get user info using the access token
-            const userResponse = await fetch(GOOGLE_OAUTH_ENDPOINTS.userInfo, {
-              headers: {
-                Authorization: `Bearer ${response.access_token}`,
-              },
-            });
-
-            if (!userResponse.ok) {
-              throw new Error('Failed to get user info');
+      try {
+        const tokenClient = window.google.accounts.oauth2.initTokenClient({
+          client_id: GOOGLE_CLIENT_ID,
+          scope: 'email profile',
+          callback: async (response) => {
+            if (response.error) {
+              reject(new Error(response.error));
+              return;
             }
 
-            const userData: GoogleUser = await userResponse.json();
-            resolve(userData);
-          } catch (error) {
-            reject(error);
-          }
-        },
-      }).requestAccessToken();
+            try {
+              // Get user info using the access token
+              const userResponse = await fetch(GOOGLE_OAUTH_ENDPOINTS.userInfo, {
+                headers: {
+                  Authorization: `Bearer ${response.access_token}`,
+                },
+              });
+
+              if (!userResponse.ok) {
+                throw new Error('Failed to get user info');
+              }
+
+              const userData: GoogleUser = await userResponse.json();
+              resolve(userData);
+            } catch (error) {
+              reject(error);
+            }
+          },
+        });
+
+        tokenClient.requestAccessToken();
+      } catch (error) {
+        reject(new Error(`Failed to initialize Google login: ${error}`));
+      }
     });
   }
 }

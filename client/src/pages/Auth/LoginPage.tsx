@@ -41,8 +41,16 @@ const LoginPage: React.FC = () => {
     try {
       if (provider === 'google') {
         try {
+          console.log('Attempting Google login...');
           const googleUser = await googleAuthService.loginWithGoogle();
+          console.log('Google login successful, user data:', { 
+            id: googleUser.id, 
+            email: googleUser.email,
+            given_name: googleUser.given_name,
+            family_name: googleUser.family_name 
+          });
           
+          console.log('Attempting social login with backend...');
           await socialLogin('google', {
             id: googleUser.id,
             email: googleUser.email,
@@ -51,14 +59,19 @@ const LoginPage: React.FC = () => {
             profilePicture: googleUser.picture,
           });
           
+          console.log('Social login successful!');
           toast.success('Successfully logged in with Google!');
           navigate('/dashboard');
         } catch (error: any) {
+          console.error('Google login error:', error);
           if (error.message?.includes('popup_closed_by_user')) {
             toast.error('Sign in was cancelled');
+          } else if (error.message?.includes('Google Identity Services not loaded')) {
+            toast.error('Google services are not available. Please try again later.');
+          } else if (error.message?.includes('Google Client ID is not configured')) {
+            toast.error('Google authentication is not properly configured.');
           } else {
-            console.error('Google login error:', error);
-            toast.error('Failed to login with Google. Please try again.');
+            toast.error(`Login failed: ${error.message || 'Please try again.'}`);
           }
         }
       }
