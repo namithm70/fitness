@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Home, Dumbbell, Utensils, TrendingUp, Users, User, 
-  Menu, X, LogOut, Settings, Bell, Search, MoreVert
+  Menu, X, LogOut, Settings, Bell, Search, MoreHorizontal
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { SkipToContentLink } from '../UI/Accessibility';
@@ -128,7 +128,7 @@ const Layout: React.FC = () => {
               </p>
             </div>
             <button className="p-2 rounded-xl hover:bg-state-layers-hover motion-standard">
-              <MoreVert className="w-5 h-5 text-surface-on-surface-variant" />
+              <MoreHorizontal className="w-5 h-5 text-surface-on-surface-variant" />
             </button>
           </div>
           

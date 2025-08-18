@@ -13,7 +13,7 @@ import {
   BookOpen,
   Users,
   ArrowUpRight,
-  MoreHoriz
+  MoreHorizontal
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import HistorySection from '../../components/Progress/HistorySection';
@@ -224,7 +224,7 @@ const DashboardPage: React.FC = () => {
                 {stat.icon}
               </div>
               <button className="p-2 rounded-xl hover:bg-state-layers-hover motion-standard">
-                <MoreHoriz className="w-5 h-5 text-surface-on-surface-variant" />
+                <MoreHorizontal className="w-5 h-5 text-surface-on-surface-variant" />
               </button>
             </div>
             
