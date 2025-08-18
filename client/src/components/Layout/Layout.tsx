@@ -1,178 +1,246 @@
-import React, { useState } from 'react';
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
-  Home, Dumbbell, Utensils, TrendingUp, Users, User, 
-  Menu, X, LogOut, Settings, Bell, Search
+  Home, 
+  Dumbbell, 
+  Apple, 
+  TrendingUp, 
+  Users, 
+  User, 
+  Settings, 
+  LogOut,
+  Menu,
+  X,
+  ChevronRight,
+  Sparkles
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { SkipToContentLink } from '../UI/Accessibility';
-import DarkModeToggle from '../UI/DarkModeToggle';
 
-const Layout: React.FC = () => {
+const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: Home },
-    { name: 'Workouts', href: '/workouts', icon: Dumbbell },
-    { name: 'Nutrition', href: '/nutrition', icon: Utensils },
-    { name: 'Progress', href: '/progress', icon: TrendingUp },
-    { name: 'Community', href: '/community', icon: Users },
-    { name: 'Profile', href: '/profile', icon: User },
+    { name: 'Dashboard', href: '/dashboard', icon: Home, description: 'Overview & Stats' },
+    { name: 'Workouts', href: '/workouts', icon: Dumbbell, description: 'Training & Routines' },
+    { name: 'Nutrition', href: '/nutrition', icon: Apple, description: 'Meal Planning & Tracking' },
+    { name: 'Progress', href: '/progress', icon: TrendingUp, description: 'Goals & Achievements' },
+    { name: 'Community', href: '/community', icon: Users, description: 'Connect & Share' },
+    { name: 'Profile', href: '/profile', icon: User, description: 'Personal Settings' },
   ];
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate('/login');
   };
 
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
+  const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex transition-colors duration-300">
-      <SkipToContentLink />
-      
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-black bg-opacity-75 lg:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-black/20 backdrop-blur-lg border-r border-white/20 shadow-2xl transform transition-all duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
-        {/* Header with glass effect */}
-        <div className="flex items-center justify-between h-16 px-6 border-b border-white/20 bg-white/10">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-              <Dumbbell className="w-5 h-5 text-white" />
+      <div className={`
+        fixed inset-y-0 left-0 z-50 w-80 transform transition-all duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+        ${isCollapsed ? 'w-20' : 'w-80'}
+      `}>
+        <div className="flex flex-col h-full bg-white/10 backdrop-blur-xl border-r border-white/20 shadow-2xl">
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-white/20 bg-white/5">
+            <div className="flex items-center space-x-3">
+              <div className="relative">
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl flex items-center justify-center shadow-lg">
+                  <Dumbbell className="w-6 h-6 text-white" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white/20 animate-pulse"></div>
+              </div>
+              {!isCollapsed && (
+                <div>
+                  <h1 className="text-xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+                    FitLife
+                  </h1>
+                  <p className="text-xs text-white/60 font-medium">Premium Fitness</p>
+                </div>
+              )}
             </div>
-            <h1 className="text-xl font-bold text-white">FitLife</h1>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => setIsCollapsed(!isCollapsed)}
+                className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all duration-200 hidden lg:block"
+              >
+                <ChevronRight className={`w-4 h-4 transition-transform duration-200 ${isCollapsed ? 'rotate-180' : ''}`} />
+              </button>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all duration-200 lg:hidden"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
           </div>
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="lg:hidden text-white hover:text-white/80 transition-colors"
-          >
-            <X className="w-6 h-6" />
-          </button>
-        </div>
 
-        {/* Navigation */}
-        <nav className="mt-6 px-3 flex-1">
-          <div className="space-y-2">
-            {navigation.map((item, index) => {
+          {/* Navigation */}
+          <nav className="flex-1 px-4 py-6 space-y-2">
+            {navigation.map((item) => {
               const Icon = item.icon;
+              const active = isActive(item.href);
+              
               return (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 transform hover:scale-105 ${
-                    isActive(item.href)
-                      ? 'bg-white text-purple-600 shadow-lg shadow-white/25'
-                      : 'text-white/80 hover:bg-white/10 hover:text-white hover:shadow-md'
-                  }`}
-                  onClick={() => setSidebarOpen(false)}
-                  style={{ animationDelay: `${index * 50}ms` }}
+                  className={`
+                    group relative flex items-center px-4 py-3 rounded-xl transition-all duration-200
+                    ${active 
+                      ? 'bg-gradient-to-r from-purple-500/30 to-pink-500/30 border border-purple-400/50 shadow-lg shadow-purple-500/20' 
+                      : 'hover:bg-white/10 hover:border-white/20 border border-transparent'
+                    }
+                  `}
                 >
-                  <div className={`mr-3 p-1.5 rounded-lg transition-all duration-200 ${
-                    isActive(item.href) 
-                      ? 'bg-purple-600/20' 
-                      : 'bg-white/10 group-hover:bg-white/20 group-hover:shadow-sm'
-                  }`}>
-                    <Icon className={`h-5 w-5 ${
-                      isActive(item.href) ? 'text-purple-600' : 'text-white/70 group-hover:text-white'
-                    }`} />
+                  {/* Active indicator */}
+                  {active && (
+                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-purple-400 to-pink-400 rounded-r-full"></div>
+                  )}
+                  
+                  {/* Icon */}
+                  <div className={`
+                    relative flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200
+                    ${active 
+                      ? 'bg-white/20 text-purple-300' 
+                      : 'text-white/70 group-hover:text-white group-hover:bg-white/10'
+                    }
+                  `}>
+                    <Icon className="w-5 h-5" />
+                    {active && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-lg animate-pulse"></div>
+                    )}
                   </div>
-                  <span className="font-semibold">{item.name}</span>
-                  {isActive(item.href) && (
-                    <div className="ml-auto w-2 h-2 bg-purple-600 rounded-full animate-pulse"></div>
+                  
+                  {/* Text content */}
+                  {!isCollapsed && (
+                    <div className="ml-3 flex-1">
+                      <span className={`
+                        block font-medium transition-colors duration-200
+                        ${active ? 'text-white' : 'text-white/90 group-hover:text-white'}
+                      `}>
+                        {item.name}
+                      </span>
+                      <span className={`
+                        block text-xs transition-colors duration-200
+                        ${active ? 'text-purple-200' : 'text-white/60 group-hover:text-white/80'}
+                      `}>
+                        {item.description}
+                      </span>
+                    </div>
+                  )}
+                  
+                  {/* Hover effect */}
+                  {!isCollapsed && (
+                    <div className={`
+                      absolute right-3 opacity-0 group-hover:opacity-100 transition-all duration-200
+                      ${active ? 'text-purple-300' : 'text-white/60'}
+                    `}>
+                      <ChevronRight className="w-4 h-4" />
+                    </div>
                   )}
                 </Link>
               );
             })}
-          </div>
-        </nav>
+          </nav>
 
-        {/* User section with glass styling */}
-        <div className="p-4 border-t border-white/20 bg-white/10">
-          <div className="flex items-center space-x-3 mb-4 p-3 bg-white/10 rounded-xl">
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center shadow-lg">
-              <span className="text-white text-sm font-bold">
-                {user?.firstName?.charAt(0) || 'U'}
-              </span>
+          {/* User section */}
+          <div className="p-4 border-t border-white/20 bg-white/5">
+            <div className={`
+              flex items-center space-x-3 p-3 rounded-xl transition-all duration-200
+              ${isCollapsed ? 'justify-center' : ''}
+            `}>
+              <div className="relative">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center shadow-lg">
+                  <span className="text-white font-bold text-lg">
+                    {user?.firstName?.charAt(0) || 'U'}
+                  </span>
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white/20 flex items-center justify-center">
+                  <Sparkles className="w-2 h-2 text-white" />
+                </div>
+              </div>
+              
+              {!isCollapsed && (
+                <div className="flex-1 min-w-0">
+                                     <p className="text-sm font-semibold text-white truncate">
+                     {user?.firstName || 'User'}
+                   </p>
+                  <p className="text-xs text-white/70 truncate">
+                    {user?.email || 'user@example.com'}
+                  </p>
+                </div>
+              )}
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-white truncate">
-                {user?.firstName} {user?.lastName}
-              </p>
-              <p className="text-xs text-white/70 truncate">
-                {user?.email}
-              </p>
-            </div>
-          </div>
-          
-          <div className="flex space-x-2">
-            <button
-              onClick={() => navigate('/profile')}
-              className="flex-1 flex items-center justify-center px-3 py-2.5 text-sm font-medium text-white bg-white/20 rounded-lg hover:bg-white/30 hover:shadow-md transition-all duration-200 transform hover:scale-105"
-            >
-              <Settings className="w-4 h-4 mr-2" />
-              Settings
-            </button>
-            <button
-              onClick={handleLogout}
-              className="flex-1 flex items-center justify-center px-3 py-2.5 text-sm font-medium text-red-300 bg-red-500/20 rounded-lg hover:bg-red-500/30 hover:shadow-md transition-all duration-200 transform hover:scale-105"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </button>
+
+            {/* Action buttons */}
+            {!isCollapsed && (
+              <div className="mt-3 space-y-2">
+                <button className="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white rounded-lg transition-all duration-200 border border-white/20 hover:border-white/30">
+                  <Settings className="w-4 h-4" />
+                  <span className="text-sm font-medium">Settings</span>
+                </button>
+                <button 
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-gradient-to-r from-red-500/20 to-pink-500/20 hover:from-red-500/30 hover:to-pink-500/30 text-red-300 hover:text-red-200 rounded-lg transition-all duration-200 border border-red-500/30 hover:border-red-400/50"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span className="text-sm font-medium">Logout</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col lg:ml-0">
+      <div className={`lg:ml-80 transition-all duration-300 ease-in-out ${isCollapsed ? 'lg:ml-20' : 'lg:ml-80'}`}>
         {/* Top bar */}
         <div className="sticky top-0 z-30 bg-white/10 backdrop-blur-lg border-b border-white/20 shadow-lg">
-          <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between px-6 py-4">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden text-white/80 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-all duration-200"
+              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all duration-200 lg:hidden"
             >
               <Menu className="w-6 h-6" />
             </button>
-
-            <div className="flex-1 max-w-lg lg:max-w-xs">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder="Search workouts, nutrition, progress..."
-                  className="w-full pl-10 pr-4 py-2.5 border border-white/20 bg-white/10 text-white placeholder-white/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 shadow-sm hover:shadow-md transition-all duration-200"
-                />
-              </div>
-            </div>
-
+            
             <div className="flex items-center space-x-4">
-              <DarkModeToggle />
-              <button className="text-white/80 hover:text-white relative p-2 rounded-lg hover:bg-white/10 transition-all duration-200">
-                <Bell className="w-6 h-6" />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full animate-pulse"></span>
-              </button>
+              <div className="hidden md:flex items-center space-x-2 text-sm text-white/70">
+                <span>Welcome back,</span>
+                                 <span className="font-medium text-white">
+                   {user?.firstName || 'User'}
+                 </span>
+              </div>
+              
+              {/* Quick actions */}
+              <div className="flex items-center space-x-2">
+                <button className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all duration-200">
+                  <Sparkles className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Page content */}
-        <main id="main-content" className="flex-1 p-4 sm:p-6 lg:p-8">
-          <Outlet />
+        <main className="p-6">
+          {children}
         </main>
       </div>
     </div>
