@@ -297,7 +297,7 @@ const HistorySection: React.FC = () => {
 
       {/* Activities List */}
       <div className="p-6">
-        <div className="space-y-4 max-h-96 overflow-y-auto">
+        <div className="space-y-4">
           <AnimatePresence mode="wait">
             {currentDayHistory.activities.length === 0 ? (
               <motion.div
@@ -312,7 +312,7 @@ const HistorySection: React.FC = () => {
                 <p className="text-sm text-gray-600 dark:text-gray-400">Start your fitness journey today!</p>
               </motion.div>
             ) : (
-              currentDayHistory.activities.map((activity, index) => (
+              currentDayHistory.activities.slice(0, 5).map((activity, index) => (
                 <motion.div
                   key={activity.id}
                   initial={{ opacity: 0, x: -20 }}
@@ -377,6 +377,21 @@ const HistorySection: React.FC = () => {
               ))
             )}
           </AnimatePresence>
+          
+          {/* Show more activities button if there are more than 5 */}
+          {currentDayHistory.activities.length > 5 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+              className="text-center pt-4"
+            >
+              <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors duration-200">
+                <Activity className="w-4 h-4 mr-2" />
+                View All Activities ({currentDayHistory.activities.length})
+              </button>
+            </motion.div>
+          )}
         </div>
       </div>
     </motion.div>
