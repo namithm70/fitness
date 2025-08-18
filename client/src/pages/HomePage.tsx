@@ -79,20 +79,27 @@ const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+      </div>
+
       {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
+      <nav className="bg-white/10 backdrop-blur-md border-b border-white/20 sticky top-0 z-50 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <h1 className="text-2xl font-bold text-gradient">FitLife</h1>
+                <h1 className="text-2xl font-bold text-white">FitLife</h1>
               </div>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
-                <Link to="/login" className="btn-secondary">Sign In</Link>
-                <Link to="/register" className="btn-primary">Get Started</Link>
+                <Link to="/login" className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-all duration-200">Sign In</Link>
+                <Link to="/register" className="bg-white text-purple-600 px-4 py-2 rounded-lg hover:bg-white/90 transition-all duration-200">Get Started</Link>
               </div>
             </div>
           </div>
@@ -100,7 +107,7 @@ const HomePage: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -108,20 +115,20 @@ const HomePage: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+              <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6">
                 Your Fitness Journey
-                <span className="text-gradient block">Starts Here</span>
+                <span className="text-white block">Starts Here</span>
               </h1>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-xl text-white/80 mb-8">
                 Transform your life with personalized workouts, nutrition tracking, and a supportive community. 
                 Achieve your fitness goals with FitLife.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/register" className="btn-primary text-lg px-8 py-4 flex items-center justify-center">
+                <Link to="/register" className="bg-white text-purple-600 text-lg px-8 py-4 rounded-lg font-semibold hover:bg-white/90 transition-all duration-200 flex items-center justify-center">
                   Start Free Trial
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
-                <button className="btn-secondary text-lg px-8 py-4 flex items-center justify-center">
+                <button className="bg-white/20 text-white text-lg px-8 py-4 rounded-lg font-semibold hover:bg-white/30 transition-all duration-200 flex items-center justify-center">
                   <Play className="mr-2 w-5 h-5" />
                   Watch Demo
                 </button>
@@ -139,14 +146,14 @@ const HomePage: React.FC = () => {
                   alt="Fitness motivation"
                   className="rounded-2xl shadow-2xl"
                 />
-                <div className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-lg p-4">
+                <div className="absolute -bottom-6 -left-6 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl shadow-lg p-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-fitness-100 rounded-full flex items-center justify-center">
-                      <Dumbbell className="w-6 h-6 text-fitness-600" />
+                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                      <Dumbbell className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900">500+ Workouts</p>
-                      <p className="text-sm text-gray-600">Available now</p>
+                      <p className="font-semibold text-white">500+ Workouts</p>
+                      <p className="text-sm text-white/70">Available now</p>
                     </div>
                   </div>
                 </div>
@@ -157,7 +164,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white/5 backdrop-blur-sm relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -168,8 +175,8 @@ const HomePage: React.FC = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="text-4xl font-bold text-gradient mb-2">{stat.number}</div>
-                <div className="text-gray-600">{stat.label}</div>
+                <div className="text-4xl font-bold text-white mb-2">{stat.number}</div>
+                <div className="text-white/70">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -177,13 +184,13 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-white/5 backdrop-blur-sm relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-white mb-4">
               Everything You Need to Succeed
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-white/80 max-w-3xl mx-auto">
               From workout planning to nutrition tracking, we provide all the tools you need 
               to achieve your fitness goals and maintain a healthy lifestyle.
             </p>
@@ -195,13 +202,13 @@ const HomePage: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="card-hover"
+                className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300"
               >
-                <div className="w-12 h-12 bg-fitness-100 rounded-lg flex items-center justify-center text-fitness-600 mb-4">
+                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center text-white mb-4">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
+                <p className="text-white/70">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -209,13 +216,13 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white/5 backdrop-blur-sm relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-white mb-4">
               What Our Users Say
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-white/80">
               Join thousands of satisfied users who have transformed their lives with FitLife
             </p>
           </div>
@@ -226,7 +233,7 @@ const HomePage: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="card"
+                className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300"
               >
                 <div className="flex items-center mb-4">
                   <img
@@ -235,8 +242,8 @@ const HomePage: React.FC = () => {
                     className="w-12 h-12 rounded-full mr-4"
                   />
                   <div>
-                    <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-600">{testimonial.role}</p>
+                    <h4 className="font-semibold text-white">{testimonial.name}</h4>
+                    <p className="text-sm text-white/70">{testimonial.role}</p>
                   </div>
                 </div>
                 <div className="flex items-center mb-4">
@@ -244,7 +251,7 @@ const HomePage: React.FC = () => {
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-600 italic">"{testimonial.content}"</p>
+                <p className="text-white/80 italic">"{testimonial.content}"</p>
               </motion.div>
             ))}
           </div>
@@ -252,34 +259,36 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 fitness-gradient">
+      <section className="py-24 bg-white/5 backdrop-blur-sm relative z-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Ready to Start Your Fitness Journey?
-          </h2>
-          <p className="text-xl text-white/90 mb-8">
-            Join thousands of users who have already transformed their lives with FitLife
-          </p>
-          <Link to="/register" className="bg-white text-fitness-600 font-semibold py-4 px-8 rounded-lg hover:bg-gray-100 transition-colors duration-200 inline-flex items-center">
-            Get Started Free
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Link>
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-12">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Ready to Start Your Fitness Journey?
+            </h2>
+            <p className="text-xl text-white/80 mb-8">
+              Join thousands of users who have already transformed their lives with FitLife
+            </p>
+            <Link to="/register" className="bg-white text-purple-600 font-semibold py-4 px-8 rounded-lg hover:bg-white/90 transition-all duration-200 inline-flex items-center">
+              Get Started Free
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-black/20 backdrop-blur-lg border-t border-white/10 text-white py-12 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-2xl font-bold text-gradient mb-4">FitLife</h3>
-              <p className="text-gray-400">
+              <h3 className="text-2xl font-bold text-white mb-4">FitLife</h3>
+              <p className="text-white/70">
                 Your comprehensive fitness companion for achieving your health and wellness goals.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Features</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="font-semibold mb-4 text-white">Features</h4>
+              <ul className="space-y-2 text-white/70">
                 <li><Link to="/workouts" className="hover:text-white transition-colors">Workouts</Link></li>
                 <li><Link to="/nutrition" className="hover:text-white transition-colors">Nutrition</Link></li>
                 <li><Link to="/progress" className="hover:text-white transition-colors">Progress</Link></li>
@@ -287,8 +296,8 @@ const HomePage: React.FC = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="font-semibold mb-4 text-white">Company</h4>
+              <ul className="space-y-2 text-white/70">
                 <li><button className="hover:text-white transition-colors text-left">About</button></li>
                 <li><button className="hover:text-white transition-colors text-left">Blog</button></li>
                 <li><button className="hover:text-white transition-colors text-left">Careers</button></li>
@@ -296,8 +305,8 @@ const HomePage: React.FC = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="font-semibold mb-4 text-white">Support</h4>
+              <ul className="space-y-2 text-white/70">
                 <li><button className="hover:text-white transition-colors text-left">Help Center</button></li>
                 <li><button className="hover:text-white transition-colors text-left">Privacy Policy</button></li>
                 <li><button className="hover:text-white transition-colors text-left">Terms of Service</button></li>
@@ -305,7 +314,7 @@ const HomePage: React.FC = () => {
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+          <div className="border-t border-white/20 mt-8 pt-8 text-center text-white/70">
             <p>&copy; 2024 FitLife. All rights reserved.</p>
           </div>
         </div>
