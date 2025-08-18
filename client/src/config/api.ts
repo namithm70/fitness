@@ -3,14 +3,14 @@ import axios from 'axios';
 // API Configuration for different environments
 const API_BASE_URL = process.env.REACT_APP_API_URL || 
   (process.env.NODE_ENV === 'production' 
-    ? 'https://fitness-fkct.onrender.com' // Your actual backend URL (no port needed for Render)
+    ? 'https://fitness-fkct.onrender.com' // Your actual backend URL
     : 'http://localhost:5000'
   );
 
-// Force correct backend URL for production
+// Always use the correct backend URL for production
 const FINAL_API_URL = process.env.NODE_ENV === 'production' 
   ? 'https://fitness-fkct.onrender.com' 
-  : API_BASE_URL;
+  : (process.env.REACT_APP_API_URL || 'http://localhost:5000');
 
 // Debug logging to help troubleshoot
 console.log('API Base URL:', API_BASE_URL);
