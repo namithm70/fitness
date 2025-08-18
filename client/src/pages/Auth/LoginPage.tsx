@@ -46,9 +46,9 @@ const LoginPage: React.FC = () => {
           await socialLogin('google', {
             id: googleUser.id,
             email: googleUser.email,
-            firstName: googleUser.firstName,
-            lastName: googleUser.lastName,
-            profilePicture: googleUser.profilePicture,
+            firstName: googleUser.given_name,
+            lastName: googleUser.family_name,
+            profilePicture: googleUser.picture,
           });
           
           toast.success('Successfully logged in with Google!');
