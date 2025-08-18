@@ -153,16 +153,7 @@ const HistorySection: React.FC = () => {
     }
   };
 
-  const getColorForActivity = (type: ActivityType['type']) => {
-    switch (type) {
-      case 'workout': return 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30';
-      case 'exercise': return 'text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30';
-      case 'nutrition': return 'text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/30';
-      case 'progress': return 'text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30';
-      case 'goal': return 'text-pink-600 dark:text-pink-400 bg-pink-100 dark:bg-pink-900/30';
-      default: return 'text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700';
-    }
-  };
+
 
   const formatTime = (timestamp: string) => {
     return new Date(timestamp).toLocaleTimeString('en-US', { 
