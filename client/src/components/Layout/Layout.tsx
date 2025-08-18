@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { 
   Home, 
   Dumbbell, 
@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Layout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const location = useLocation();
@@ -178,9 +178,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               
               {!isCollapsed && (
                 <div className="flex-1 min-w-0">
-                                     <p className="text-sm font-semibold text-white truncate">
-                     {user?.firstName || 'User'}
-                   </p>
+                  <p className="text-sm font-semibold text-white truncate">
+                    {user?.firstName || 'User'}
+                  </p>
                   <p className="text-xs text-white/70 truncate">
                     {user?.email || 'user@example.com'}
                   </p>
@@ -223,9 +223,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <div className="flex items-center space-x-4">
               <div className="hidden md:flex items-center space-x-2 text-sm text-white/70">
                 <span>Welcome back,</span>
-                                 <span className="font-medium text-white">
-                   {user?.firstName || 'User'}
-                 </span>
+                <span className="font-medium text-white">
+                  {user?.firstName || 'User'}
+                </span>
               </div>
               
               {/* Quick actions */}
@@ -240,7 +240,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
         {/* Page content */}
         <main className="p-6">
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>
