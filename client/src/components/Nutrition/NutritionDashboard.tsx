@@ -94,19 +94,7 @@ const NutritionDashboard: React.FC = () => {
     fetchDashboard();
   };
 
-  const getProgressColor = (current: number, target: number) => {
-    const percentage = (current / target) * 100;
-    if (percentage >= 90 && percentage <= 110) return 'text-green-600';
-    if (percentage > 110) return 'text-red-600';
-    return 'text-blue-600';
-  };
 
-  const getProgressBarColor = (current: number, target: number) => {
-    const percentage = (current / target) * 100;
-    if (percentage >= 90 && percentage <= 110) return 'bg-green-500';
-    if (percentage > 110) return 'bg-red-500';
-    return 'bg-blue-500';
-  };
 
   if (loading) {
     return (
