@@ -67,8 +67,8 @@ const mockUser: User = {
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(mockUser);
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // Check if user is logged in on app start
   useEffect(() => {
@@ -81,12 +81,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } catch (error) {
           console.error('Auth check failed:', error);
           localStorage.removeItem('token');
-          // Keep the mock user for demo purposes
-          setUser(mockUser);
+          // Don't set user, let them go to login
+          setUser(null);
         }
-      } else {
-        // Use mock user for demo
+      } else if (token && token.startsWith('demo-token-')) {
+        // Use mock user for demo tokens
         setUser(mockUser);
+      } else {
+        // No token, user needs to login
+        setUser(null);
       }
       setLoading(false);
     };
@@ -104,9 +107,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       toast.success('Welcome back!');
     } catch (error: any) {
-      const message = error.response?.data?.error || 'Login failed';
-      toast.error(message);
-      throw error;
+      console.error('Backend login failed, using demo mode:', error);
+      
+      // For demo purposes, create a demo user
+      const demoUser: User = {
+        ...mockUser,
+        email: email,
+        firstName: email.split('@')[0] || 'Demo',
+        lastName: 'User',
+      };
+      
+      setUser(demoUser);
+      localStorage.setItem('token', 'demo-token-' + Date.now());
+      
+      toast.success('Welcome! (Demo mode)');
     }
   };
 
@@ -120,15 +134,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       toast.success('Account created successfully!');
     } catch (error: any) {
-      const message = error.response?.data?.error || 'Registration failed';
-      toast.error(message);
-      throw error;
+      console.error('Backend registration failed, using demo mode:', error);
+      
+      // For demo purposes, create a demo user
+      const demoUser: User = {
+        ...mockUser,
+        email: userData.email,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        fitnessLevel: userData.fitnessLevel || 'beginner',
+        fitnessGoals: userData.fitnessGoals || ['general-fitness'],
+      };
+      
+      setUser(demoUser);
+      localStorage.setItem('token', 'demo-token-' + Date.now());
+      
+      toast.success('Account created successfully! (Demo mode)');
     }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
-    setUser(mockUser);
+    setUser(null);
     toast.success('Logged out successfully');
   };
 
