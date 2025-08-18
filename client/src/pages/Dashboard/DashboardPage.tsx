@@ -252,7 +252,7 @@ const DashboardPage: React.FC = () => {
           </motion.span>
           Quick Actions
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {quickActions.map((action, index) => (
             <motion.div
               key={action.title}
@@ -265,13 +265,14 @@ const DashboardPage: React.FC = () => {
                 transition: { duration: 0.2 }
               }}
               whileTap={{ scale: 0.95 }}
+              className="h-full"
             >
-              <Link to={action.href} className="block">
-                <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 text-center group relative overflow-hidden">
+              <Link to={action.href} className="block h-full">
+                <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 text-center group relative overflow-hidden h-full flex flex-col">
                   {/* Gradient overlay on hover */}
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   
-                  <div className="relative z-10">
+                  <div className="relative z-10 flex flex-col items-center h-full gap-3">
                     <motion.div 
                       className={`inline-flex p-4 rounded-xl ${action.color} text-white mb-4 shadow-lg group-hover:shadow-xl transition-all duration-300`}
                       whileHover={{ 
