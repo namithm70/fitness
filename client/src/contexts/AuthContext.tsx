@@ -74,13 +74,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem('token');
-      if (token) {
+      if (token && token !== 'demo-token-' && !token.startsWith('demo-token-')) {
         try {
           const response = await api.get('/api/auth/user');
           setUser(response.data);
         } catch (error) {
+          console.error('Auth check failed:', error);
           localStorage.removeItem('token');
+          // Keep the mock user for demo purposes
+          setUser(mockUser);
         }
+      } else {
+        // Use mock user for demo
+        setUser(mockUser);
       }
       setLoading(false);
     };

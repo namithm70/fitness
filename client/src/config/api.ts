@@ -48,8 +48,20 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+      // Only redirect if not already on login page and not a demo token
+      const token = localStorage.getItem('token');
+      const currentPath = window.location.pathname;
+      
+      if (token && !token.startsWith('demo-token-') && currentPath !== '/login' && currentPath !== '/register') {
+        localStorage.removeItem('token');
+        console.log('401 error: redirecting to login');
+        window.location.href = '/login';
+      } else {
+        // For demo tokens or already on auth pages, just remove the token
+        if (token && !token.startsWith('demo-token-')) {
+          localStorage.removeItem('token');
+        }
+      }
     }
     return Promise.reject(error);
   }

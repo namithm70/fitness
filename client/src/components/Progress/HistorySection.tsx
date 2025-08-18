@@ -187,9 +187,14 @@ const HistorySection: React.FC = () => {
       }
     };
 
-    fetchHistory();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (user?.id) {
+      fetchHistory();
+    } else {
+      // If no user, just set mock data
+      setHistory(generateMockHistory());
+      setLoading(false);
+    }
+  }, [user?.id]);
 
   const currentDayHistory = history.find(h => h.date === dateTabs[activeTab].date) || {
     date: dateTabs[activeTab].date,
