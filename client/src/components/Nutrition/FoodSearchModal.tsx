@@ -22,8 +22,6 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
 
   // Function to get foods by Indian category
 
-
-
   const categories = [
     { value: '', label: 'All Categories' },
     { value: 'fruits', label: 'Fruits' },
@@ -548,30 +546,30 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+      <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Search Foods</h2>
+        <div className="flex items-center justify-between p-6 border-b border-white/20 bg-white/5">
+          <h2 className="text-xl font-semibold text-white">Search Foods</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="text-white/60 hover:text-white transition-colors"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Search and Filters */}
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+        <div className="p-6 border-b border-white/20 bg-white/5">
           <div className="flex space-x-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-5 h-5" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search for foods..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-10 pr-4 py-2 border border-white/20 bg-white/10 text-white placeholder-white/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                 />
               </div>
             </div>
@@ -579,7 +577,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-white/20 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
               >
                 {categories.map(category => (
                   <option key={category.value} value={category.value}>
@@ -595,7 +593,7 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
         <div className="flex-1 overflow-y-auto max-h-[60vh]">
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
             </div>
           ) : (
             <div className="p-6">
@@ -603,41 +601,41 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
               {!searchQuery && !selectedCategory && recentFoods.length > 0 && (
                 <div className="mb-6">
                   <div className="flex items-center space-x-2 mb-4">
-                    <Clock className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Foods</h3>
+                    <Clock className="w-5 h-5 text-white/60" />
+                    <h3 className="text-lg font-semibold text-white">Recent Foods</h3>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {recentFoods.map((food) => (
                       <div
                         key={food._id}
                         onClick={() => handleFoodSelect(food)}
-                        className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md transition-all cursor-pointer bg-white dark:bg-gray-800"
+                        className="border border-white/20 rounded-lg p-4 hover:border-purple-400 hover:bg-white/10 transition-all cursor-pointer bg-white/5 backdrop-blur-sm"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <h3 className="font-medium text-gray-900 dark:text-white">{food.name}</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
+                            <h3 className="font-medium text-white">{food.name}</h3>
+                            <p className="text-sm text-white/80 capitalize">
                               {food.category}
                             </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                            <p className="text-xs text-white/60 mt-1">
                               {food.nutrition.calories} cal per {food.servingSize.amount}{food.servingSize.unit}
                             </p>
                           </div>
-                          <Plus className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+                          <Plus className="w-5 h-5 text-white/60" />
                         </div>
                         
                         <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
                           <div>
-                            <span className="text-gray-600 dark:text-gray-400">Protein:</span>
-                            <span className="font-medium ml-1 text-gray-900 dark:text-white">{food.nutrition.protein}g</span>
+                            <span className="text-white/70">Protein:</span>
+                            <span className="font-medium ml-1 text-white">{food.nutrition.protein}g</span>
                           </div>
                           <div>
-                            <span className="text-gray-600 dark:text-gray-400">Carbs:</span>
-                            <span className="font-medium ml-1 text-gray-900 dark:text-white">{food.nutrition.carbohydrates}g</span>
+                            <span className="text-white/70">Carbs:</span>
+                            <span className="font-medium ml-1 text-white">{food.nutrition.carbohydrates}g</span>
                           </div>
                           <div>
-                            <span className="text-gray-600 dark:text-gray-400">Fat:</span>
-                            <span className="font-medium ml-1 text-gray-900 dark:text-white">{food.nutrition.fat}g</span>
+                            <span className="text-white/70">Fat:</span>
+                            <span className="font-medium ml-1 text-white">{food.nutrition.fat}g</span>
                           </div>
                         </div>
                       </div>
@@ -649,9 +647,9 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
               {/* Show search results */}
               {foods.length === 0 ? (
                 <div className="text-center py-12">
-                  <Search className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-3" />
-                  <p className="text-gray-600 dark:text-gray-400">No foods found</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
+                  <Search className="w-12 h-12 text-white/40 mx-auto mb-3" />
+                  <p className="text-white/80">No foods found</p>
+                  <p className="text-sm text-white/60 mt-1">
                     Try adjusting your search terms or category filter
                   </p>
                 </div>
@@ -661,33 +659,33 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
                     <div
                       key={food._id}
                       onClick={() => handleFoodSelect(food)}
-                      className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md transition-all cursor-pointer bg-white dark:bg-gray-800"
+                      className="border border-white/20 rounded-lg p-4 hover:border-purple-400 hover:bg-white/10 transition-all cursor-pointer bg-white/5 backdrop-blur-sm"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <h3 className="font-medium text-gray-900 dark:text-white">{food.name}</h3>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
+                          <h3 className="font-medium text-white">{food.name}</h3>
+                          <p className="text-sm text-white/80 capitalize">
                             {food.category}
                           </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                          <p className="text-xs text-white/60 mt-1">
                             {food.nutrition.calories} cal per {food.servingSize.amount}{food.servingSize.unit}
                           </p>
                         </div>
-                        <Plus className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+                        <Plus className="w-5 h-5 text-white/60" />
                       </div>
                       
                       <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
                         <div>
-                          <span className="text-gray-600 dark:text-gray-400">Protein:</span>
-                          <span className="font-medium ml-1 text-gray-900 dark:text-white">{food.nutrition.protein}g</span>
+                          <span className="text-white/70">Protein:</span>
+                          <span className="font-medium ml-1 text-white">{food.nutrition.protein}g</span>
                         </div>
                         <div>
-                          <span className="text-gray-600 dark:text-gray-400">Carbs:</span>
-                          <span className="font-medium ml-1 text-gray-900 dark:text-white">{food.nutrition.carbohydrates}g</span>
+                          <span className="text-white/70">Carbs:</span>
+                          <span className="font-medium ml-1 text-white">{food.nutrition.carbohydrates}g</span>
                         </div>
                         <div>
-                          <span className="text-gray-600 dark:text-gray-400">Fat:</span>
-                          <span className="font-medium ml-1 text-gray-900 dark:text-white">{food.nutrition.fat}g</span>
+                          <span className="text-white/70">Fat:</span>
+                          <span className="font-medium ml-1 text-white">{food.nutrition.fat}g</span>
                         </div>
                       </div>
                     </div>
@@ -699,14 +697,14 @@ const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+        <div className="p-6 border-t border-white/20 bg-white/5">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-white/70">
               {foods.length} foods found
             </p>
             <button
               onClick={onClose}
-              className="btn-secondary"
+              className="bg-white/20 text-white hover:bg-white/30 px-4 py-2 rounded-lg font-semibold transition-all duration-200"
             >
               Cancel
             </button>
