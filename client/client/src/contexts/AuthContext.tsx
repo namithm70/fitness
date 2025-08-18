@@ -1,0 +1,178 @@
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { api } from '../config/api';
+
+interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  profilePicture?: string;
+  fitnessLevel: string;
+  fitnessGoals: string[];
+  subscription: {
+    type: string;
+    startDate?: Date;
+    endDate?: Date;
+  };
+  totalWorkouts: number;
+  totalWorkoutTime: number;
+  streakDays: number;
+  lastWorkoutDate?: Date;
+}
+
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  register: (userData: RegisterData) => Promise<void>;
+  logout: () => void;
+  updateUser: (userData: Partial<User>) => Promise<void>;
+  socialLogin: (provider: string, socialData: any) => Promise<void>;
+}
+
+interface RegisterData {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  fitnessLevel?: string;
+  fitnessGoals?: string[];
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// Mock user for development/testing
+const mockUser: User = {
+  id: '1',
+  email: 'demo@fitness.com',
+  firstName: 'Demo',
+  lastName: 'User',
+  profilePicture: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face',
+  fitnessLevel: 'intermediate',
+  fitnessGoals: ['weight-loss', 'muscle-gain', 'endurance'],
+  subscription: {
+    type: 'premium'
+  },
+  totalWorkouts: 45,
+  totalWorkoutTime: 2700, // 45 hours in minutes
+  streakDays: 7,
+  lastWorkoutDate: new Date()
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(mockUser); // Start with mock user
+  const [loading, setLoading] = useState(false); // Set to false since we have mock user
+
+  // Check if user is logged in on app start
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await api.get('/api/auth/user');
+          setUser(response.data);
+        } catch (error) {
+          localStorage.removeItem('token');
+          // Keep mock user for development
+        }
+      }
+      setLoading(false);
+    };
+
+    checkAuth();
+  }, []);
+
+  const login = async (email: string, password: string) => {
+    try {
+      const response = await api.post('/api/auth/login', { email, password });
+      const { token, user } = response.data;
+      
+      localStorage.setItem('token', token);
+      setUser(user);
+      
+      toast.success('Welcome back!');
+    } catch (error: any) {
+      const message = error.response?.data?.error || 'Login failed';
+      toast.error(message);
+      throw error;
+    }
+  };
+
+  const register = async (userData: RegisterData) => {
+    try {
+      const response = await api.post('/api/auth/register', userData);
+      const { token, user } = response.data;
+      
+      localStorage.setItem('token', token);
+      setUser(user);
+      
+      toast.success('Account created successfully!');
+    } catch (error: any) {
+      const message = error.response?.data?.error || 'Registration failed';
+      toast.error(message);
+      throw error;
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(mockUser); // Reset to mock user instead of null
+    toast.success('Logged out successfully');
+  };
+
+  const updateUser = async (userData: Partial<User>) => {
+    try {
+      const response = await api.put('/api/users/profile', userData);
+      setUser(response.data);
+      toast.success('Profile updated successfully');
+    } catch (error: any) {
+      const message = error.response?.data?.error || 'Update failed';
+      toast.error(message);
+      throw error;
+    }
+  };
+
+  const socialLogin = async (provider: string, socialData: any) => {
+    try {
+      const response = await api.post('/api/auth/social-login', {
+        provider,
+        ...socialData
+      });
+      const { token, user } = response.data;
+      
+      localStorage.setItem('token', token);
+      setUser(user);
+      
+      toast.success(`Welcome! You've signed in with ${provider}`);
+    } catch (error: any) {
+      const message = error.response?.data?.error || 'Social login failed';
+      toast.error(message);
+      throw error;
+    }
+  };
+
+  const value: AuthContextType = {
+    user,
+    loading,
+    login,
+    register,
+    logout,
+    updateUser,
+    socialLogin
+  };
+
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
