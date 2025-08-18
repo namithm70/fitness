@@ -1,328 +1,138 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Material Design 3 CSS Custom Properties */
+/* Custom CSS Variables for Theme Colors */
 :root {
-  /* Material 3 Color Tokens */
-  --md-sys-color-primary: #000000;
-  --md-sys-color-on-primary: #ffffff;
-  --md-sys-color-primary-container: #f1f3f4;
-  --md-sys-color-on-primary-container: #000000;
+  --fitness-primary: #22c55e;
+  --fitness-secondary: #16a34a;
+  --fitness-accent: #15803d;
+  --fitness-light: #dcfce7;
+  --fitness-dark: #14532d;
   
-  --md-sys-color-surface: #ffffff;
-  --md-sys-color-on-surface: #1d1b20;
-  --md-sys-color-surface-variant: #f8f9fa;
-  --md-sys-color-on-surface-variant: #49454f;
-  --md-sys-color-surface-container: #f1f3f4;
-  --md-sys-color-surface-container-high: #e8eaed;
-  --md-sys-color-surface-container-highest: #dadce0;
-  
-  --md-sys-color-outline: #79747e;
-  --md-sys-color-outline-variant: #cac4d0;
-  
-  /* Material 3 Elevation Tokens */
-  --md-sys-elevation-level0: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
-  --md-sys-elevation-level1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-  --md-sys-elevation-level2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
-  --md-sys-elevation-level3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
-  --md-sys-elevation-level4: 0px 6px 10px 4px rgba(0, 0, 0, 0.15), 0px 2px 3px 0px rgba(0, 0, 0, 0.3);
-  --md-sys-elevation-level5: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
-  
-  /* Material 3 Motion Tokens */
-  --md-sys-motion-duration-short1: 50ms;
-  --md-sys-motion-duration-short2: 100ms;
-  --md-sys-motion-duration-short3: 150ms;
-  --md-sys-motion-duration-short4: 200ms;
-  --md-sys-motion-duration-medium1: 250ms;
-  --md-sys-motion-duration-medium2: 300ms;
-  --md-sys-motion-duration-medium3: 350ms;
-  --md-sys-motion-duration-medium4: 400ms;
-  --md-sys-motion-duration-long1: 450ms;
-  --md-sys-motion-duration-long2: 500ms;
-  --md-sys-motion-duration-long3: 550ms;
-  --md-sys-motion-duration-long4: 600ms;
-  
-  --md-sys-motion-easing-linear: cubic-bezier(0, 0, 1, 1);
-  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
-  --md-sys-motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
-  --md-sys-motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
-  --md-sys-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
-  --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
-  --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --nutrition-primary: #f3771e;
+  --nutrition-secondary: #e45d14;
+  --nutrition-accent: #bd4613;
+  --nutrition-light: #fdedd4;
+  --nutrition-dark: #7a3216;
 }
 
-/* Dark Theme */
 .dark {
-  --md-sys-color-primary: #ffffff;
-  --md-sys-color-on-primary: #000000;
-  --md-sys-color-primary-container: #3c4043;
-  --md-sys-color-on-primary-container: #ffffff;
+  --fitness-primary: #4ade80;
+  --fitness-secondary: #22c55e;
+  --fitness-accent: #16a34a;
+  --fitness-light: #14532d;
+  --fitness-dark: #dcfce7;
   
-  --md-sys-color-surface: #121212;
-  --md-sys-color-on-surface: #e3e3e3;
-  --md-sys-color-surface-variant: #1e1e1e;
-  --md-sys-color-on-surface-variant: #c7c7c7;
-  --md-sys-color-surface-container: #202124;
-  --md-sys-color-surface-container-high: #2d2e30;
-  --md-sys-color-surface-container-highest: #35363a;
-  
-  --md-sys-color-outline: #8e8e93;
-  --md-sys-color-outline-variant: #48484a;
+  --nutrition-primary: #f59538;
+  --nutrition-secondary: #f3771e;
+  --nutrition-accent: #e45d14;
+  --nutrition-light: #7a3216;
+  --nutrition-dark: #fdedd4;
 }
 
 @layer base {
   * {
-    @apply border-outline-variant;
+    @apply border-gray-200 dark:border-gray-700;
   }
   
   html {
-    @apply antialiased;
-    scroll-behavior: smooth;
+    @apply scroll-smooth;
   }
   
   body {
-    @apply bg-surface text-surface-on-surface font-sans;
+    @apply bg-gray-50 dark:bg-black text-gray-900 dark:text-white transition-colors duration-300;
     font-feature-settings: 'rlig' 1, 'calt' 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 }
 
 @layer components {
-  /* Material 3 Button Components */
-  .btn-filled {
-    @apply bg-primary text-white px-6 py-3 rounded-xl font-medium text-label-large;
-    @apply hover:shadow-elevation-2 focus:shadow-elevation-2;
-    @apply transition-all duration-200 ease-out;
-    @apply active:scale-95;
+  .card {
+    @apply bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-6;
   }
   
-  .btn-outlined {
-    @apply border border-outline bg-transparent text-primary px-6 py-3 rounded-xl font-medium text-label-large;
-    @apply hover:bg-state-layers-hover focus:bg-state-layers-focus;
-    @apply transition-all duration-200 ease-out;
-    @apply active:scale-95;
+  .btn-primary {
+    @apply bg-gradient-to-r from-fitness-500 to-fitness-600 hover:from-fitness-600 hover:to-fitness-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95;
   }
   
-  .btn-text {
-    @apply bg-transparent text-primary px-4 py-2 rounded-xl font-medium text-label-large;
-    @apply hover:bg-state-layers-hover focus:bg-state-layers-focus;
-    @apply transition-all duration-200 ease-out;
-    @apply active:scale-95;
+  .btn-secondary {
+    @apply bg-gradient-to-r from-nutrition-500 to-nutrition-600 hover:from-nutrition-600 hover:to-nutrition-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95;
   }
   
-  /* Material 3 Card Components */
-  .card-elevated {
-    @apply bg-surface-container rounded-xl shadow-elevation-1;
-    @apply hover:shadow-elevation-2 transition-shadow duration-200;
-  }
-  
-  .card-filled {
-    @apply bg-surface-container-highest rounded-xl;
-  }
-  
-  .card-outlined {
-    @apply bg-surface border border-outline-variant rounded-xl;
-    @apply hover:shadow-elevation-1 transition-shadow duration-200;
-  }
-  
-  /* Material 3 Surface Components */
-  .surface {
-    @apply bg-surface text-surface-on-surface;
-  }
-  
-  .surface-variant {
-    @apply bg-surface-variant text-surface-on-surface-variant;
-  }
-  
-  .surface-container {
-    @apply bg-surface-container text-surface-on-surface;
-  }
-  
-  .surface-container-high {
-    @apply bg-surface-container-high text-surface-on-surface;
-  }
-  
-  .surface-container-highest {
-    @apply bg-surface-container-highest text-surface-on-surface;
-  }
-  
-  /* Material 3 Input Components */
-  .input-outlined {
-    @apply border border-outline-variant rounded-md px-4 py-3;
-    @apply bg-surface text-surface-on-surface;
-    @apply focus:border-primary focus:outline-none focus:ring-0;
-    @apply transition-colors duration-200;
-  }
-  
-  .input-filled {
-    @apply bg-surface-container-highest rounded-t-md px-4 py-3 border-b-2 border-outline-variant;
-    @apply text-surface-on-surface;
-    @apply focus:border-primary focus:outline-none focus:ring-0;
-    @apply transition-colors duration-200;
-  }
-  
-  /* Material 3 Typography Classes */
-  .display-large {
-    @apply text-display-large text-surface-on-surface;
-  }
-  
-  .display-medium {
-    @apply text-display-medium text-surface-on-surface;
-  }
-  
-  .display-small {
-    @apply text-display-small text-surface-on-surface;
-  }
-  
-  .headline-large {
-    @apply text-headline-large text-surface-on-surface;
-  }
-  
-  .headline-medium {
-    @apply text-headline-medium text-surface-on-surface;
-  }
-  
-  .headline-small {
-    @apply text-headline-small text-surface-on-surface;
-  }
-  
-  .title-large {
-    @apply text-title-large text-surface-on-surface;
-  }
-  
-  .title-medium {
-    @apply text-title-medium text-surface-on-surface;
-  }
-  
-  .title-small {
-    @apply text-title-small text-surface-on-surface;
-  }
-  
-  .body-large {
-    @apply text-body-large text-surface-on-surface;
-  }
-  
-  .body-medium {
-    @apply text-body-medium text-surface-on-surface;
-  }
-  
-  .body-small {
-    @apply text-body-small text-surface-on-surface;
-  }
-  
-  .label-large {
-    @apply text-label-large text-surface-on-surface;
-  }
-  
-  .label-medium {
-    @apply text-label-medium text-surface-on-surface;
-  }
-  
-  .label-small {
-    @apply text-label-small text-surface-on-surface;
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fitness-500 focus:border-transparent transition-all duration-300;
   }
 }
 
 @layer utilities {
-  /* Material 3 State Layer Utilities */
-  .state-hover:hover {
-    @apply relative;
+  .text-gradient {
+    @apply bg-gradient-to-r from-fitness-500 to-nutrition-500 bg-clip-text text-transparent;
   }
   
-  .state-hover:hover::before {
-    content: '';
-    @apply absolute inset-0 bg-state-layers-hover pointer-events-none;
+  .glass-effect {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
   
-  .state-focus:focus {
-    @apply relative;
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
   }
   
-  .state-focus:focus::before {
-    content: '';
-    @apply absolute inset-0 bg-state-layers-focus pointer-events-none;
-  }
-  
-  .state-pressed:active {
-    @apply relative;
-  }
-  
-  .state-pressed:active::before {
-    content: '';
-    @apply absolute inset-0 bg-state-layers-pressed pointer-events-none;
-  }
-  
-  /* Material 3 Elevation Utilities */
-  .elevation-0 {
-    box-shadow: var(--md-sys-elevation-level0);
-  }
-  
-  .elevation-1 {
-    box-shadow: var(--md-sys-elevation-level1);
-  }
-  
-  .elevation-2 {
-    box-shadow: var(--md-sys-elevation-level2);
-  }
-  
-  .elevation-3 {
-    box-shadow: var(--md-sys-elevation-level3);
-  }
-  
-  .elevation-4 {
-    box-shadow: var(--md-sys-elevation-level4);
-  }
-  
-  .elevation-5 {
-    box-shadow: var(--md-sys-elevation-level5);
-  }
-  
-  /* Material 3 Motion Utilities */
-  .motion-standard {
-    transition-timing-function: var(--md-sys-motion-easing-standard);
-  }
-  
-  .motion-emphasized {
-    transition-timing-function: var(--md-sys-motion-easing-emphasized);
-  }
-  
-  .motion-duration-short {
-    transition-duration: var(--md-sys-motion-duration-short4);
-  }
-  
-  .motion-duration-medium {
-    transition-duration: var(--md-sys-motion-duration-medium2);
-  }
-  
-  .motion-duration-long {
-    transition-duration: var(--md-sys-motion-duration-long2);
+  .animate-bounce-gentle {
+    animation: bounceGentle 2s infinite;
   }
 }
 
-/* Custom scrollbar for Material 3 */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes bounceGentle {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--md-sys-color-surface-variant);
+  background: #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--md-sys-color-outline-variant);
+  background: #888;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--md-sys-color-outline);
+  background: #555;
 }
 
-/* Material 3 Focus Ring */
-*:focus-visible {
-  outline: 2px solid var(--md-sys-color-primary);
-  outline-offset: 2px;
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
 }

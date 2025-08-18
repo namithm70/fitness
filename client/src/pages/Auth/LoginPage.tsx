@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Dumbbell } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { googleAuthService } from '../../services/googleAuth';
 import toast from 'react-hot-toast';
@@ -84,41 +84,48 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen surface flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -inset-10 opacity-20">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl animate-float"></div>
+          <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl animate-float" style={{ animationDelay: '4s' }}></div>
+        </div>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="w-full max-w-md"
+        transition={{ duration: 0.6 }}
+        className="relative z-10 w-full max-w-md"
       >
-        {/* Material 3 Card Container */}
-        <div className="card-elevated p-8">
-          
+        <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8">
           {/* Header */}
           <div className="text-center mb-8">
             <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-              className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6 elevation-2"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl"
             >
-              <Dumbbell className="w-8 h-8 text-white" />
+              <span className="text-3xl font-bold text-white">💪</span>
             </motion.div>
             
             <motion.h1
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              className="headline-large text-surface-on-surface mb-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="text-3xl font-bold text-white mb-2"
             >
-              Welcome back
+              Welcome Back
             </motion.h1>
             
             <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              className="body-large text-surface-on-surface-variant"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="text-white/80"
             >
               Sign in to continue your fitness journey
             </motion.p>
@@ -131,14 +138,14 @@ const LoginPage: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4, delay: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <label className="label-large text-surface-on-surface block mb-2">
-                Email address
+              <label className="block text-sm font-medium text-white/90 mb-2">
+                Email Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-surface-on-surface-variant" />
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-white/60" />
                 </div>
                 <input
                   {...register('email', {
@@ -149,12 +156,14 @@ const LoginPage: React.FC = () => {
                     },
                   })}
                   type="email"
-                  className={`input-outlined w-full pl-12 ${errors.email ? 'border-red-500' : ''}`}
+                  className={`block w-full pl-10 pr-3 py-3 border ${
+                    errors.email ? 'border-red-400' : 'border-white/30'
+                  } rounded-xl bg-white/10 backdrop-blur-sm text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
                   placeholder="Enter your email"
                 />
               </div>
               {errors.email && (
-                <p className="label-small text-red-600 mt-1">{errors.email.message}</p>
+                <p className="mt-1 text-sm text-red-400">{errors.email.message}</p>
               )}
             </motion.div>
 
@@ -162,14 +171,14 @@ const LoginPage: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4, delay: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <label className="label-large text-surface-on-surface block mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-surface-on-surface-variant" />
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-white/60" />
                 </div>
                 <input
                   {...register('password', {
@@ -180,38 +189,47 @@ const LoginPage: React.FC = () => {
                     },
                   })}
                   type={showPassword ? 'text' : 'password'}
-                  className={`input-outlined w-full pl-12 pr-12 ${errors.password ? 'border-red-500' : ''}`}
+                  className={`block w-full pl-10 pr-10 py-3 border ${
+                    errors.password ? 'border-red-400' : 'border-white/30'
+                  } rounded-xl bg-white/10 backdrop-blur-sm text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
                   placeholder="Enter your password"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-surface-on-surface-variant" />
+                    <EyeOff className="h-5 w-5 text-white/60 hover:text-white/80 transition-colors" />
                   ) : (
-                    <Eye className="h-5 w-5 text-surface-on-surface-variant" />
+                    <Eye className="h-5 w-5 text-white/60 hover:text-white/80 transition-colors" />
                   )}
                 </button>
               </div>
               {errors.password && (
-                <p className="label-small text-red-600 mt-1">{errors.password.message}</p>
+                <p className="mt-1 text-sm text-red-400">{errors.password.message}</p>
               )}
             </motion.div>
 
-            {/* Forgot Password Link */}
+            {/* Remember Me & Forgot Password */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.6 }}
-              className="text-right"
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="flex items-center justify-between"
             >
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-white/30 rounded bg-white/10"
+                />
+                <span className="ml-2 text-sm text-white/80">Remember me</span>
+              </label>
               <Link
                 to="/forgot-password"
-                className="body-small text-primary hover:underline"
+                className="text-sm text-blue-300 hover:text-blue-200 transition-colors"
               >
-                Forgot your password?
+                Forgot password?
               </Link>
             </motion.div>
 
@@ -219,19 +237,19 @@ const LoginPage: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.7 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
             >
               <button
                 type="submit"
                 disabled={isLoading}
-                className="btn-filled w-full flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-lg text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 active:scale-95"
               >
                 {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 ) : (
                   <>
-                    <span>Sign in</span>
-                    <ArrowRight className="w-5 h-5" />
+                    Sign In
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </>
                 )}
               </button>
@@ -242,16 +260,16 @@ const LoginPage: React.FC = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.8 }}
-            className="relative my-8"
+            transition={{ duration: 0.5, delay: 0.9 }}
+            className="mt-6"
           >
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-outline-variant" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 surface body-small text-surface-on-surface-variant">
-                Or continue with
-              </span>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/30" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white/10 text-white/80">Or continue with</span>
+              </div>
             </div>
           </motion.div>
 
@@ -259,14 +277,15 @@ const LoginPage: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.9 }}
+            transition={{ duration: 0.5, delay: 1.0 }}
+            className="mt-6"
           >
             <button
               onClick={() => handleSocialLogin('google')}
               disabled={isLoading}
-              className="btn-outlined w-full flex items-center justify-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex justify-center items-center py-3 px-4 border border-white/30 rounded-xl shadow-lg text-sm font-medium text-white bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 active:scale-95"
             >
-              <svg className="w-5 h-5" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -284,7 +303,7 @@ const LoginPage: React.FC = () => {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              <span>Continue with Google</span>
+              Continue with Google
             </button>
           </motion.div>
 
@@ -292,14 +311,14 @@ const LoginPage: React.FC = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 1.0 }}
+            transition={{ duration: 0.5, delay: 1.1 }}
             className="text-center mt-8"
           >
-            <p className="body-medium text-surface-on-surface-variant">
+            <p className="text-white/80">
               Don't have an account?{' '}
               <Link
                 to="/register"
-                className="text-primary hover:underline font-medium"
+                className="text-blue-300 hover:text-blue-200 font-medium transition-colors"
               >
                 Sign up
               </Link>

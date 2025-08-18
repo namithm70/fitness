@@ -11,9 +11,7 @@ import {
   Plus,
   Play,
   BookOpen,
-  Users,
-  ArrowUpRight,
-  MoreHorizontal
+  Users
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import HistorySection from '../../components/Progress/HistorySection';
@@ -26,6 +24,7 @@ const DashboardPage: React.FC = () => {
       title: 'Total Workouts',
       value: user?.totalWorkouts || 0,
       icon: <TrendingUp className="w-6 h-6" />,
+      color: 'bg-blue-500',
       change: '+12%',
       changeType: 'positive'
     },
@@ -33,6 +32,7 @@ const DashboardPage: React.FC = () => {
       title: 'Current Streak',
       value: user?.streakDays || 0,
       icon: <Flame className="w-6 h-6" />,
+      color: 'bg-orange-500',
       change: '+3 days',
       changeType: 'positive'
     },
@@ -40,6 +40,7 @@ const DashboardPage: React.FC = () => {
       title: 'Total Time',
       value: `${Math.floor((user?.totalWorkoutTime || 0) / 60)}h`,
       icon: <Clock className="w-6 h-6" />,
+      color: 'bg-green-500',
       change: '+45min',
       changeType: 'positive'
     },
@@ -47,6 +48,7 @@ const DashboardPage: React.FC = () => {
       title: 'Goals Completed',
       value: '3/5',
       icon: <Target className="w-6 h-6" />,
+      color: 'bg-purple-500',
       change: '60%',
       changeType: 'neutral'
     }
@@ -108,24 +110,28 @@ const DashboardPage: React.FC = () => {
       title: 'Start Workout',
       description: 'Begin a new training session',
       icon: <Play className="w-8 h-8" />,
+      color: 'bg-fitness-500',
       href: '/workouts'
     },
     {
       title: 'Log Nutrition',
       description: 'Track your daily food intake',
       icon: <BookOpen className="w-8 h-8" />,
+      color: 'bg-nutrition-500',
       href: '/nutrition'
     },
     {
       title: 'View Progress',
       description: 'Check your fitness journey',
       icon: <TrendingUp className="w-8 h-8" />,
+      color: 'bg-blue-500',
       href: '/progress'
     },
     {
       title: 'Join Community',
       description: 'Connect with other fitness enthusiasts',
       icon: <Users className="w-8 h-8" />,
+      color: 'bg-purple-500',
       href: '/community'
     }
   ];
@@ -176,105 +182,158 @@ const DashboardPage: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
-      
-      {/* Material 3 Hero Section */}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      {/* Welcome Section */}
       <motion.div 
-        className="card-elevated p-8 bg-primary text-white relative overflow-hidden"
+        className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl p-8 text-white shadow-2xl relative overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.6 }}
+        whileHover={{ scale: 1.02 }}
       >
+        {/* Animated background elements */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 animate-pulse"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 -translate-x-12"></div>
+        
         <div className="relative z-10">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h1 className="display-small mb-4">
-              Welcome back, {user?.firstName}! 👋
+            <h1 className="text-4xl font-bold mb-3 flex items-center">
+              Welcome back, {user?.firstName}! 
+              <motion.span 
+                className="ml-3 text-3xl"
+                animate={{ rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}
+              >
+                👋
+              </motion.span>
             </h1>
           </motion.div>
           <motion.p 
-            className="headline-small text-white text-opacity-90 mb-6"
+            className="text-xl text-white/90"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
           >
             Ready to crush your fitness goals today? You're on a{' '}
-            <span className="font-bold text-yellow-300">
+            <motion.span 
+              className="font-bold text-yellow-300 inline-block"
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
+            >
               {user?.streakDays || 0}-day streak
-            </span>!
+            </motion.span>!
           </motion.p>
         </div>
       </motion.div>
 
-      {/* Material 3 Stats Grid */}
+      {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
           <motion.div
             key={stat.title}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.05 }}
-            className="card-elevated p-6 hover:elevation-3 motion-standard cursor-pointer"
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            whileHover={{ 
+              scale: 1.05,
+              y: -5,
+              transition: { duration: 0.2 }
+            }}
+            className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 group cursor-pointer"
           >
-            <div className="flex items-start justify-between mb-4">
-              <div className="p-3 bg-surface-container rounded-2xl">
-                {stat.icon}
-              </div>
-              <button className="p-2 rounded-xl hover:bg-state-layers-hover motion-standard">
-                <MoreHorizontal className="w-5 h-5 text-surface-on-surface-variant" />
-              </button>
-            </div>
-            
-            <div className="space-y-2">
-              <p className="body-medium text-surface-on-surface-variant">{stat.title}</p>
-              <p className="display-small text-surface-on-surface font-normal">{stat.value}</p>
-              <div className="flex items-center space-x-1">
-                <ArrowUpRight className={`w-4 h-4 ${
-                  stat.changeType === 'positive' ? 'text-green-600' : 
-                  stat.changeType === 'negative' ? 'text-red-600' : 'text-surface-on-surface-variant'
-                }`} />
-                <span className={`body-small ${
-                  stat.changeType === 'positive' ? 'text-green-600' : 
-                  stat.changeType === 'negative' ? 'text-red-600' : 'text-surface-on-surface-variant'
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors">{stat.title}</p>
+                <motion.p 
+                  className="text-3xl font-bold text-gray-900 dark:text-white mb-2"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 5 }}
+                >
+                  {stat.value}
+                </motion.p>
+                <p className={`text-xs font-medium flex items-center ${
+                  stat.changeType === 'positive' ? 'text-green-600 dark:text-green-400' : 
+                  stat.changeType === 'negative' ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-400'
                 }`}>
+                  <motion.span
+                    animate={{ x: [0, 2, 0] }}
+                    transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
+                    className="mr-1"
+                  >
+                    {stat.changeType === 'positive' ? '↗' : stat.changeType === 'negative' ? '↘' : '→'}
+                  </motion.span>
                   {stat.change} from last week
-                </span>
+                </p>
               </div>
+              <motion.div 
+                className={`p-4 rounded-xl ${stat.color} text-white shadow-lg group-hover:shadow-xl transition-all duration-300`}
+                whileHover={{ rotate: 5, scale: 1.1 }}
+              >
+                {stat.icon}
+              </motion.div>
             </div>
           </motion.div>
         ))}
       </div>
 
-      {/* Material 3 Quick Actions */}
+      {/* Quick Actions */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.2 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <h2 className="headline-medium text-surface-on-surface mb-6">Quick Actions</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+          <motion.span
+            animate={{ rotate: [0, 5, -5, 0] }}
+            transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
+            className="mr-3"
+          >
+            ⚡
+          </motion.span>
+          Quick Actions
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {quickActions.map((action, index) => (
             <motion.div
               key={action.title}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="motion-standard"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              whileHover={{ 
+                scale: 1.05,
+                y: -8,
+                transition: { duration: 0.2 }
+              }}
+              whileTap={{ scale: 0.95 }}
+              className="h-full"
             >
               <Link to={action.href} className="block h-full">
-                <div className="card-outlined p-6 h-full flex flex-col items-center text-center space-y-4 hover:elevation-2 motion-standard">
-                  <div className="p-4 bg-surface-container rounded-2xl">
-                    {action.icon}
+                <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 text-center group relative overflow-hidden h-full flex flex-col justify-between">
+                  {/* Gradient overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  <div className="relative z-10 flex flex-col items-center h-full gap-3">
+                    <motion.div 
+                      className={`inline-flex p-4 rounded-xl ${action.color} text-white mb-4 shadow-lg group-hover:shadow-xl transition-all duration-300`}
+                      whileHover={{ 
+                        scale: 1.15,
+                        rotate: 5,
+                        transition: { duration: 0.2 }
+                      }}
+                    >
+                      {action.icon}
+                    </motion.div>
+                    <h3 className="font-bold text-gray-900 dark:text-white mb-3 text-lg group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors">{action.title}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">{action.description}</p>
                   </div>
-                  <div className="space-y-2">
-                    <h3 className="title-medium text-surface-on-surface">{action.title}</h3>
-                    <p className="body-small text-surface-on-surface-variant">{action.description}</p>
-                  </div>
+                  
+                  {/* Animated border */}
+                  <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-blue-200 transition-all duration-300"></div>
                 </div>
               </Link>
             </motion.div>
@@ -282,24 +341,33 @@ const DashboardPage: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Material 3 Main Content Grid */}
+      {/* Main Content Grid */}
       <motion.div 
         className="grid grid-cols-1 xl:grid-cols-3 gap-8"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.3 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
       >
-        
         {/* Recent Workouts */}
-        <div className="card-elevated">
-          <div className="flex items-center justify-between p-6 border-b border-outline-variant">
-            <h2 className="title-large text-surface-on-surface">Recent Workouts</h2>
-            <Link to="/workouts" className="btn-text">
-              View all
-              <ArrowUpRight className="w-4 h-4 ml-1" />
+        <motion.div 
+          className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
+          whileHover={{ y: -5 }}
+        >
+          <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center">
+              <motion.span
+                animate={{ rotate: [0, 10, 0] }}
+                transition={{ duration: 1, repeat: Infinity, repeatDelay: 3 }}
+                className="mr-2"
+              >
+                🏋️
+              </motion.span>
+              Recent Workouts
+            </h2>
+            <Link to="/workouts" className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors hover:underline">
+              View all →
             </Link>
           </div>
-          
           <div className="p-6">
             <div className="space-y-4">
               {recentWorkouts.slice(0, 5).map((workout, index) => (
@@ -307,25 +375,35 @@ const DashboardPage: React.FC = () => {
                   key={workout.id}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="flex items-center justify-between p-4 surface-container-high rounded-2xl hover:elevation-1 motion-standard cursor-pointer"
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  whileHover={{ 
+                    scale: 1.02,
+                    x: 5,
+                    transition: { duration: 0.2 }
+                  }}
+                  className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-xl hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 transition-all duration-300 cursor-pointer group"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className={`w-3 h-3 rounded-full ${
-                      workout.completed ? 'bg-green-600' : 'bg-outline-variant'
-                    }`} />
+                    <motion.div 
+                      className={`w-4 h-4 rounded-full ${
+                        workout.completed ? 'bg-green-500' : 'bg-gray-300'
+                      }`}
+                      animate={workout.completed ? { scale: [1, 1.2, 1] } : {}}
+                      transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}
+                    />
                     <div>
-                      <h3 className="title-small text-surface-on-surface">{workout.name}</h3>
-                      <p className="body-small text-surface-on-surface-variant">{workout.date}</p>
+                      <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-800 dark:group-hover:text-blue-400 transition-colors">{workout.name}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">{workout.date}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="body-medium font-medium text-surface-on-surface">{workout.duration}min</p>
-                    <p className="body-small text-surface-on-surface-variant">{workout.calories} cal</p>
+                    <p className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-blue-800 dark:group-hover:text-blue-400 transition-colors">{workout.duration}min</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">{workout.calories} cal</p>
                   </div>
                 </motion.div>
               ))}
               
+              {/* Show more workouts button if there are more than 5 */}
               {recentWorkouts.length > 5 && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -333,33 +411,44 @@ const DashboardPage: React.FC = () => {
                   transition={{ duration: 0.3, delay: 0.4 }}
                   className="text-center pt-2"
                 >
-                  <button className="btn-text">
+                  <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors duration-200">
                     <TrendingUp className="w-4 h-4 mr-2" />
                     View All Workouts ({recentWorkouts.length})
                   </button>
                 </motion.div>
               )}
             </div>
-            
-            <div className="mt-6 pt-4 border-t border-outline-variant">
-              <Link to="/workouts" className="btn-filled w-full flex items-center justify-center space-x-2">
-                <Plus className="w-4 h-4" />
-                <span>Start New Workout</span>
-              </Link>
+            <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link to="/workouts" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Start New Workout
+                </Link>
+              </motion.div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Upcoming Workouts */}
-        <div className="card-elevated">
-          <div className="flex items-center justify-between p-6 border-b border-outline-variant">
-            <h2 className="title-large text-surface-on-surface">Upcoming Workouts</h2>
-            <Link to="/workouts" className="btn-text">
-              Schedule
-              <ArrowUpRight className="w-4 h-4 ml-1" />
+        <motion.div 
+          className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
+          whileHover={{ y: -5 }}
+        >
+          <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-purple-50 dark:from-gray-800 dark:to-purple-900/20">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center">
+              <motion.span
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
+                className="mr-2"
+              >
+                📅
+              </motion.span>
+              Upcoming Workouts
+            </h2>
+            <Link to="/workouts" className="text-purple-600 hover:text-purple-700 text-sm font-medium transition-colors hover:underline">
+              Schedule →
             </Link>
           </div>
-          
           <div className="p-6">
             <div className="space-y-4">
               {upcomingWorkouts.slice(0, 5).map((workout, index) => (
@@ -367,31 +456,43 @@ const DashboardPage: React.FC = () => {
                   key={workout.id}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="flex items-center justify-between p-4 surface-container-high rounded-2xl hover:elevation-1 motion-standard cursor-pointer"
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  whileHover={{ 
+                    scale: 1.02,
+                    x: -5,
+                    transition: { duration: 0.2 }
+                  }}
+                  className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-xl hover:from-purple-50 hover:to-purple-100 dark:hover:from-purple-900/20 dark:hover:to-purple-800/20 transition-all duration-300 cursor-pointer group"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 surface-container rounded-2xl flex items-center justify-center">
-                      <Calendar className="w-6 h-6 text-surface-on-surface" />
-                    </div>
+                    <motion.div 
+                      className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center group-hover:from-purple-200 group-hover:to-purple-300 transition-all duration-300"
+                      whileHover={{ rotate: 5, scale: 1.1 }}
+                    >
+                      <Calendar className="w-6 h-6 text-purple-600" />
+                    </motion.div>
                     <div>
-                      <h3 className="title-small text-surface-on-surface">{workout.name}</h3>
-                      <p className="body-small text-surface-on-surface-variant">{workout.time}</p>
+                      <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-purple-800 dark:group-hover:text-purple-400 transition-colors">{workout.name}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">{workout.time}</p>
                     </div>
                   </div>
-                  <div className="text-right space-y-1">
-                    <p className="body-medium font-medium text-surface-on-surface">{workout.duration}min</p>
-                    <span className={`inline-flex px-3 py-1 rounded-full body-small font-medium ${
-                      workout.difficulty === 'Beginner' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' :
-                      workout.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' :
-                      'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
-                    }`}>
+                  <div className="text-right">
+                    <p className="text-sm font-bold text-gray-900 dark:text-white mb-1 group-hover:text-purple-800 dark:group-hover:text-purple-400 transition-colors">{workout.duration}min</p>
+                    <motion.span 
+                      className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${
+                        workout.difficulty === 'Beginner' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400' :
+                        workout.difficulty === 'Intermediate' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400' :
+                        'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400'
+                      }`}
+                      whileHover={{ scale: 1.05 }}
+                    >
                       {workout.difficulty}
-                    </span>
+                    </motion.span>
                   </div>
                 </motion.div>
               ))}
               
+              {/* Show more workouts button if there are more than 5 */}
               {upcomingWorkouts.length > 5 && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -399,55 +500,80 @@ const DashboardPage: React.FC = () => {
                   transition={{ duration: 0.3, delay: 0.4 }}
                   className="text-center pt-2"
                 >
-                  <button className="btn-text">
+                  <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors duration-200">
                     <Calendar className="w-4 h-4 mr-2" />
                     View All Workouts ({upcomingWorkouts.length})
                   </button>
                 </motion.div>
               )}
             </div>
-            
-            <div className="mt-6 pt-4 border-t border-outline-variant">
-              <Link to="/workouts" className="btn-outlined w-full flex items-center justify-center space-x-2">
-                <Calendar className="w-4 h-4" />
-                <span>Schedule Workout</span>
-              </Link>
+            <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link to="/workouts" className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Schedule Workout
+                </Link>
+              </motion.div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Activity History */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
         >
           <HistorySection />
         </motion.div>
       </motion.div>
 
-      {/* Material 3 Motivation Section */}
+      {/* Motivation Section */}
       <motion.div 
-        className="card-elevated p-8 bg-primary text-white relative overflow-hidden"
+        className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 dark:from-purple-900 dark:via-pink-900 dark:to-orange-900 rounded-2xl p-8 text-white dark:text-white shadow-2xl relative overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.4 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        whileHover={{ scale: 1.02 }}
       >
+        {/* Animated background elements */}
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-orange-500/20 dark:from-purple-900/30 dark:via-pink-900/30 dark:to-orange-900/30 animate-pulse"></div>
+        <div className="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 -translate-x-16"></div>
+        <div className="absolute bottom-0 right-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 translate-x-12"></div>
+        
         <motion.div
           className="text-center relative z-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.6 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <Trophy className="w-16 h-16 mx-auto mb-6" />
-          <h3 className="headline-medium mb-4">You're doing great! 🎉</h3>
-          <p className="body-large text-white text-opacity-90 mb-8 max-w-2xl mx-auto">
+          <motion.div
+            animate={{ 
+              rotate: [0, 5, -5, 0],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+          >
+            <Trophy className="w-16 h-16 mx-auto mb-6 drop-shadow-lg" />
+          </motion.div>
+          <h3 className="text-3xl font-bold mb-4">You're doing great! 🎉</h3>
+          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
             Consistency is the key to success. Keep pushing forward and you'll reach your goals!
           </p>
-          <Link to="/progress" className="btn-outlined border-white text-white hover:bg-white hover:bg-opacity-10">
-            View Progress
-            <TrendingUp className="w-5 h-5 ml-2" />
-          </Link>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Link to="/progress" className="inline-flex items-center bg-white text-purple-600 dark:bg-gray-900 dark:text-white dark:border dark:border-gray-700 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl">
+              View Progress
+              <motion.span
+                animate={{ x: [0, 3, 0] }}
+                transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 1 }}
+              >
+                <TrendingUp className="w-5 h-5 ml-2" />
+              </motion.span>
+            </Link>
+          </motion.div>
         </motion.div>
       </motion.div>
     </div>
