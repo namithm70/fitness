@@ -111,7 +111,7 @@ const NutritionDashboard: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </div>
     );
   }
@@ -119,7 +119,7 @@ const NutritionDashboard: React.FC = () => {
   if (!dashboard) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600">Failed to load nutrition data</p>
+        <p className="text-white/70">Failed to load nutrition data</p>
       </div>
     );
   }
@@ -131,20 +131,20 @@ const NutritionDashboard: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Nutrition Dashboard</h1>
-          <p className="text-gray-600">Track your daily nutrition and meal intake</p>
+          <h1 className="text-3xl font-bold text-white">Nutrition Dashboard</h1>
+          <p className="text-white/80">Track your daily nutrition and meal intake</p>
         </div>
         <div className="flex space-x-3">
           <button 
             onClick={() => setShowFoodSearch(true)}
-            className="btn-secondary flex items-center"
+            className="bg-white/20 text-white hover:bg-white/30 flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200"
           >
             <Search className="w-4 h-4 mr-2" />
             Search Foods
           </button>
           <button 
             onClick={() => setShowMealLog(true)}
-            className="btn-primary flex items-center"
+            className="bg-white text-purple-600 hover:bg-white/90 flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200"
           >
             <Plus className="w-4 h-4 mr-2" />
             Log Meal
@@ -158,21 +158,21 @@ const NutritionDashboard: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="card"
+          className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">Daily Calories</h2>
-            <Target className="w-5 h-5 text-gray-500" />
+            <h2 className="text-xl font-semibold text-white">Daily Calories</h2>
+            <Target className="w-5 h-5 text-white/70" />
           </div>
           <CalorieCircle 
             current={dailyTotals.calories}
             target={nutritionGoal.dailyTargets.calories}
           />
           <div className="mt-4 text-center">
-            <p className={`text-lg font-bold ${getProgressColor(dailyTotals.calories, nutritionGoal.dailyTargets.calories)}`}>
+            <p className="text-lg font-bold text-white">
               {dailyTotals.calories} / {nutritionGoal.dailyTargets.calories} cal
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-white/70">
               {Math.round((dailyTotals.calories / nutritionGoal.dailyTargets.calories) * 100)}% of daily goal
             </p>
           </div>
@@ -183,11 +183,11 @@ const NutritionDashboard: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="card"
+          className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">Macros</h2>
-            <Scale className="w-5 h-5 text-gray-500" />
+            <h2 className="text-xl font-semibold text-white">Macros</h2>
+            <Scale className="w-5 h-5 text-white/70" />
           </div>
           <MacroChart 
             protein={dailyTotals.protein}
@@ -204,11 +204,11 @@ const NutritionDashboard: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="card"
+          className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">Water Intake</h2>
-            <Droplets className="w-5 h-5 text-gray-500" />
+            <h2 className="text-xl font-semibold text-white">Water Intake</h2>
+            <Droplets className="w-5 h-5 text-white/70" />
           </div>
           <WaterTracker 
             current={dailyTotals.water}
@@ -222,9 +222,9 @@ const NutritionDashboard: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="card"
+        className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
       >
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Daily Progress</h2>
+        <h2 className="text-xl font-semibold text-white mb-4">Daily Progress</h2>
         <div className="space-y-4">
           {[
             { label: 'Protein', current: dailyTotals.protein, target: nutritionGoal.dailyTargets.protein, unit: 'g' },
@@ -236,14 +236,14 @@ const NutritionDashboard: React.FC = () => {
           ].map((item) => (
             <div key={item.label} className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-700">{item.label}</span>
-                <span className={`font-medium ${getProgressColor(item.current, item.target)}`}>
+                <span className="text-white/90">{item.label}</span>
+                <span className="font-medium text-white">
                   {item.current} / {item.target} {item.unit}
                 </span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="w-full bg-white/20 rounded-full h-2">
                 <div 
-                  className={`h-2 rounded-full transition-all duration-300 ${getProgressBarColor(item.current, item.target)}`}
+                  className="h-2 rounded-full transition-all duration-300 bg-white"
                   style={{ width: `${Math.min((item.current / item.target) * 100, 100)}%` }}
                 ></div>
               </div>
@@ -257,9 +257,9 @@ const NutritionDashboard: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="card"
+        className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
       >
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Weekly Calories</h2>
+        <h2 className="text-xl font-semibold text-white mb-4">Weekly Calories</h2>
         <WeeklyChart data={weeklyData} target={nutritionGoal.dailyTargets.calories} />
       </motion.div>
 
@@ -268,30 +268,30 @@ const NutritionDashboard: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="card"
+        className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">Recent Meals</h2>
-          <Utensils className="w-5 h-5 text-gray-500" />
+          <h2 className="text-xl font-semibold text-white">Recent Meals</h2>
+          <Utensils className="w-5 h-5 text-white/70" />
         </div>
         {recentMeals.length > 0 ? (
           <div className="space-y-3">
             {recentMeals.map((meal) => (
-              <div key={meal._id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div key={meal._id} className="flex items-center justify-between p-3 bg-white/10 rounded-lg">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Activity className="w-5 h-5 text-blue-600" />
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                    <Activity className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 capitalize">{meal.mealType}</p>
-                    <p className="text-sm text-gray-600">
+                    <p className="font-medium text-white capitalize">{meal.mealType}</p>
+                    <p className="text-sm text-white/70">
                       {new Date(meal.date).toLocaleDateString()} • {meal.entries.length} items
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium text-gray-900">{Math.round(meal.totalNutrition.calories)} cal</p>
-                  <p className="text-sm text-gray-600">
+                  <p className="font-medium text-white">{Math.round(meal.totalNutrition.calories)} cal</p>
+                  <p className="text-sm text-white/70">
                     P: {Math.round(meal.totalNutrition.protein)}g • C: {Math.round(meal.totalNutrition.carbohydrates)}g • F: {Math.round(meal.totalNutrition.fat)}g
                   </p>
                 </div>
@@ -300,11 +300,11 @@ const NutritionDashboard: React.FC = () => {
           </div>
         ) : (
           <div className="text-center py-8">
-            <Activity className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-600">No meals logged yet</p>
+            <Activity className="w-12 h-12 text-white/40 mx-auto mb-3" />
+            <p className="text-white/70">No meals logged yet</p>
             <button 
               onClick={() => setShowMealLog(true)}
-              className="btn-primary mt-3"
+              className="bg-white text-purple-600 hover:bg-white/90 mt-3 px-4 py-2 rounded-lg font-semibold transition-all duration-200"
             >
               Log Your First Meal
             </button>

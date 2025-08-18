@@ -127,7 +127,7 @@ const CommunityDashboard: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </div>
     );
   }
@@ -135,7 +135,7 @@ const CommunityDashboard: React.FC = () => {
   if (!dashboard) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600">Failed to load community dashboard</p>
+        <p className="text-white/70">Failed to load community dashboard</p>
       </div>
     );
   }
@@ -147,20 +147,20 @@ const CommunityDashboard: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Community</h1>
-          <p className="text-gray-600">Connect with fellow fitness enthusiasts</p>
+          <h1 className="text-3xl font-bold text-white">Community</h1>
+          <p className="text-white/80">Connect with fellow fitness enthusiasts</p>
         </div>
         <div className="flex items-center space-x-3">
           <button
             onClick={() => setShowSearch(true)}
-            className="btn-secondary flex items-center"
+            className="bg-white/20 text-white hover:bg-white/30 flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200"
           >
             <Search className="w-4 h-4 mr-2" />
             Search
           </button>
           <button
             onClick={() => setShowNotifications(true)}
-            className="btn-secondary flex items-center relative"
+            className="bg-white/20 text-white hover:bg-white/30 flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200 relative"
           >
             <Bell className="w-4 h-4 mr-2" />
             {userStats.reputation > 0 && (
@@ -171,7 +171,7 @@ const CommunityDashboard: React.FC = () => {
           </button>
           <button
             onClick={() => setShowCreatePost(true)}
-            className="btn-primary flex items-center"
+            className="bg-white text-purple-600 hover:bg-white/90 flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200"
           >
             <Plus className="w-4 h-4 mr-2" />
             New Post
@@ -190,10 +190,10 @@ const CommunityDashboard: React.FC = () => {
           <TrendingSection posts={trendingPosts} />
           
           {/* Active Challenges */}
-          <div className="card">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Active Challenges</h3>
-              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+              <h3 className="text-lg font-semibold text-white">Active Challenges</h3>
+              <button className="text-white/80 hover:text-white text-sm font-medium">
                 View All
               </button>
             </div>
@@ -205,10 +205,10 @@ const CommunityDashboard: React.FC = () => {
           </div>
 
           {/* Recommended Groups */}
-          <div className="card">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Recommended Groups</h3>
-              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+              <h3 className="text-lg font-semibold text-white">Recommended Groups</h3>
+              <button className="text-white/80 hover:text-white text-sm font-medium">
                 View All
               </button>
             </div>
@@ -223,7 +223,7 @@ const CommunityDashboard: React.FC = () => {
         {/* Main Feed */}
         <div className="lg:col-span-2">
           {/* Feed Tabs */}
-          <div className="card mb-6">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg mb-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex space-x-1">
                 {(['feed', 'trending', 'challenges', 'events', 'groups'] as const).map((tab) => (
@@ -232,8 +232,8 @@ const CommunityDashboard: React.FC = () => {
                     onClick={() => setActiveTab(tab)}
                     className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       activeTab === tab
-                        ? 'bg-blue-100 text-blue-700'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                        ? 'bg-white text-purple-600'
+                        : 'text-white/80 hover:text-white hover:bg-white/20'
                     }`}
                   >
                     {getTabIcon(tab)}
@@ -247,7 +247,7 @@ const CommunityDashboard: React.FC = () => {
                 <select
                   value={feedFilters.category}
                   onChange={(e) => setFeedFilters({ ...feedFilters, category: e.target.value })}
-                  className="text-sm border border-gray-300 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="text-sm border border-white/20 bg-white/10 text-white rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-white/50"
                 >
                   <option value="">All Categories</option>
                   <option value="workout">Workout</option>
@@ -261,7 +261,7 @@ const CommunityDashboard: React.FC = () => {
                 <select
                   value={feedFilters.sort}
                   onChange={(e) => setFeedFilters({ ...feedFilters, sort: e.target.value as any })}
-                  className="text-sm border border-gray-300 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="text-sm border border-white/20 bg-white/10 text-white rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-white/50"
                 >
                   <option value="recent">Recent</option>
                   <option value="trending">Trending</option>
@@ -276,13 +276,13 @@ const CommunityDashboard: React.FC = () => {
             {activeTab === 'feed' && (
               <>
                 {posts.length === 0 ? (
-                  <div className="card text-center py-12">
-                    <MessageCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No posts yet</h3>
-                    <p className="text-gray-600 mb-4">Be the first to share your fitness journey!</p>
+                  <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg text-center py-12">
+                    <MessageCircle className="w-16 h-16 text-white/40 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-white mb-2">No posts yet</h3>
+                    <p className="text-white/70 mb-4">Be the first to share your fitness journey!</p>
                     <button
                       onClick={() => setShowCreatePost(true)}
-                      className="btn-primary"
+                      className="bg-white text-purple-600 hover:bg-white/90 px-4 py-2 rounded-lg font-semibold transition-all duration-200"
                     >
                       Create Your First Post
                     </button>
@@ -302,10 +302,10 @@ const CommunityDashboard: React.FC = () => {
             {activeTab === 'trending' && (
               <>
                 {trendingPosts.length === 0 ? (
-                  <div className="card text-center py-12">
-                    <TrendingUp className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No trending posts</h3>
-                    <p className="text-gray-600">Check back later for trending content!</p>
+                  <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg text-center py-12">
+                    <TrendingUp className="w-16 h-16 text-white/40 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-white mb-2">No trending posts</h3>
+                    <p className="text-white/70">Check back later for trending content!</p>
                   </div>
                 ) : (
                   trendingPosts.map((post) => (
@@ -322,11 +322,11 @@ const CommunityDashboard: React.FC = () => {
             {activeTab === 'challenges' && (
               <>
                 {activeChallenges.length === 0 ? (
-                  <div className="card text-center py-12">
-                    <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No active challenges</h3>
-                    <p className="text-gray-600 mb-4">Join challenges to compete with others!</p>
-                    <button className="btn-primary">
+                  <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg text-center py-12">
+                    <Target className="w-16 h-16 text-white/40 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-white mb-2">No active challenges</h3>
+                    <p className="text-white/70 mb-4">Join challenges to compete with others!</p>
+                    <button className="bg-white text-purple-600 hover:bg-white/90 px-4 py-2 rounded-lg font-semibold transition-all duration-200">
                       Create Challenge
                     </button>
                   </div>
@@ -341,11 +341,11 @@ const CommunityDashboard: React.FC = () => {
             {activeTab === 'events' && (
               <>
                 {upcomingEvents.length === 0 ? (
-                  <div className="card text-center py-12">
-                    <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No upcoming events</h3>
-                    <p className="text-gray-600 mb-4">Join events to meet fellow fitness enthusiasts!</p>
-                    <button className="btn-primary">
+                  <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg text-center py-12">
+                    <Calendar className="w-16 h-16 text-white/40 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-white mb-2">No upcoming events</h3>
+                    <p className="text-white/70 mb-4">Join events to meet fellow fitness enthusiasts!</p>
+                    <button className="bg-white text-purple-600 hover:bg-white/90 px-4 py-2 rounded-lg font-semibold transition-all duration-200">
                       Create Event
                     </button>
                   </div>
@@ -360,11 +360,11 @@ const CommunityDashboard: React.FC = () => {
             {activeTab === 'groups' && (
               <>
                 {recommendedGroups.length === 0 ? (
-                  <div className="card text-center py-12">
-                    <GroupIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No recommended groups</h3>
-                    <p className="text-gray-600 mb-4">Join groups to connect with like-minded people!</p>
-                    <button className="btn-primary">
+                  <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg text-center py-12">
+                    <GroupIcon className="w-16 h-16 text-white/40 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-white mb-2">No recommended groups</h3>
+                    <p className="text-white/70 mb-4">Join groups to connect with like-minded people!</p>
+                    <button className="bg-white text-purple-600 hover:bg-white/90 px-4 py-2 rounded-lg font-semibold transition-all duration-200">
                       Create Group
                     </button>
                   </div>
@@ -380,10 +380,10 @@ const CommunityDashboard: React.FC = () => {
 
         {/* Right Sidebar - Upcoming Events */}
         <div className="lg:col-span-1">
-          <div className="card">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Upcoming Events</h3>
-              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+              <h3 className="text-lg font-semibold text-white">Upcoming Events</h3>
+              <button className="text-white/80 hover:text-white text-sm font-medium">
                 View All
               </button>
             </div>

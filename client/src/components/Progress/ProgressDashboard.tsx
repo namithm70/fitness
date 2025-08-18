@@ -68,7 +68,7 @@ const ProgressDashboard: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </div>
     );
   }
@@ -76,7 +76,7 @@ const ProgressDashboard: React.FC = () => {
   if (!dashboard) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600">Failed to load progress data</p>
+        <p className="text-white/70">Failed to load progress data</p>
       </div>
     );
   }
@@ -88,13 +88,13 @@ const ProgressDashboard: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Progress Dashboard</h1>
-          <p className="text-gray-600">Track your fitness journey and achievements</p>
+          <h1 className="text-3xl font-bold text-white">Progress Dashboard</h1>
+          <p className="text-white/80">Track your fitness journey and achievements</p>
         </div>
         <div className="flex space-x-3">
           <button
             onClick={() => setShowGoalModal(true)}
-            className="btn-secondary flex items-center"
+            className="bg-white/20 text-white hover:bg-white/30 flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200"
           >
             <Target className="w-4 h-4 mr-2" />
             Add Goal
@@ -104,7 +104,7 @@ const ProgressDashboard: React.FC = () => {
               setSelectedEntryType('weight');
               setShowProgressEntry(true);
             }}
-            className="btn-primary flex items-center"
+            className="bg-white text-purple-600 hover:bg-white/90 flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200"
           >
             <Plus className="w-4 h-4 mr-2" />
             Log Progress
@@ -123,16 +123,16 @@ const ProgressDashboard: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="card"
+            className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Weight Progress</h2>
+              <h2 className="text-xl font-semibold text-white">Weight Progress</h2>
               <button
                 onClick={() => {
                   setSelectedEntryType('weight');
                   setShowProgressEntry(true);
                 }}
-                className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                className="text-white/80 hover:text-white text-sm font-medium"
               >
                 Add Weight
               </button>
@@ -145,16 +145,16 @@ const ProgressDashboard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="card"
+            className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Body Measurements</h2>
+              <h2 className="text-xl font-semibold text-white">Body Measurements</h2>
               <button
                 onClick={() => {
                   setSelectedEntryType('measurements');
                   setShowProgressEntry(true);
                 }}
-                className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                className="text-white/80 hover:text-white text-sm font-medium"
               >
                 Add Measurements
               </button>
@@ -167,11 +167,11 @@ const ProgressDashboard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="card"
+            className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Workout Frequency</h2>
-              <div className="flex items-center text-sm text-gray-600">
+              <h2 className="text-xl font-semibold text-white">Workout Frequency</h2>
+              <div className="flex items-center text-sm text-white/70">
                 <Activity className="w-4 h-4 mr-1" />
                 Last 30 days
               </div>
@@ -187,7 +187,7 @@ const ProgressDashboard: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="card"
+              className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
             >
               <BMICard bmi={bmi} />
             </motion.div>
@@ -198,13 +198,13 @@ const ProgressDashboard: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
-            className="card"
+            className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Active Goals</h2>
+              <h2 className="text-xl font-semibold text-white">Active Goals</h2>
               <button
                 onClick={() => setShowGoalModal(true)}
-                className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                className="text-white/80 hover:text-white text-sm font-medium"
               >
                 Add Goal
               </button>
@@ -216,11 +216,11 @@ const ProgressDashboard: React.FC = () => {
                 ))
               ) : (
                 <div className="text-center py-6">
-                  <Target className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                  <p className="text-gray-600">No active goals</p>
+                  <Target className="w-12 h-12 text-white/40 mx-auto mb-2" />
+                  <p className="text-white/70">No active goals</p>
                   <button
                     onClick={() => setShowGoalModal(true)}
-                    className="text-blue-600 hover:text-blue-700 text-sm font-medium mt-2"
+                    className="text-white/80 hover:text-white text-sm font-medium mt-2"
                   >
                     Create your first goal
                   </button>
@@ -234,11 +234,11 @@ const ProgressDashboard: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="card"
+            className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Recent Achievements</h2>
-              <Trophy className="w-5 h-5 text-yellow-500" />
+              <h2 className="text-xl font-semibold text-white">Recent Achievements</h2>
+              <Trophy className="w-5 h-5 text-yellow-400" />
             </div>
             <div className="space-y-3">
               {recentAchievements.length > 0 ? (
@@ -247,9 +247,9 @@ const ProgressDashboard: React.FC = () => {
                 ))
               ) : (
                 <div className="text-center py-6">
-                  <Award className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                  <p className="text-gray-600">No achievements yet</p>
-                  <p className="text-sm text-gray-500">Keep working out to earn badges!</p>
+                  <Award className="w-12 h-12 text-white/40 mx-auto mb-2" />
+                  <p className="text-white/70">No achievements yet</p>
+                  <p className="text-sm text-white/60">Keep working out to earn badges!</p>
                 </div>
               )}
             </div>
@@ -262,16 +262,16 @@ const ProgressDashboard: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="card"
+        className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg"
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">Recent Progress Entries</h2>
+          <h2 className="text-xl font-semibold text-white">Recent Progress Entries</h2>
           <button
             onClick={() => {
               setSelectedEntryType('weight');
               setShowProgressEntry(true);
             }}
-            className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+            className="text-white/80 hover:text-white text-sm font-medium"
           >
             View All
           </button>
@@ -279,34 +279,34 @@ const ProgressDashboard: React.FC = () => {
         <div className="space-y-3">
           {recentEntries.length > 0 ? (
             recentEntries.map((entry) => (
-              <div key={entry._id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div key={entry._id} className="flex items-center justify-between p-3 bg-white/10 rounded-lg">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <TrendingUp className="w-5 h-5 text-blue-600" />
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                    <TrendingUp className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 capitalize">{entry.type.replace('-', ' ')}</p>
-                    <p className="text-sm text-gray-600">
+                    <p className="font-medium text-white capitalize">{entry.type.replace('-', ' ')}</p>
+                    <p className="text-sm text-white/70">
                       {new Date(entry.date).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  {entry.weight && <p className="font-medium">{entry.weight} kg</p>}
-                  {entry.notes && <p className="text-sm text-gray-600 truncate max-w-32">{entry.notes}</p>}
+                  {entry.weight && <p className="font-medium text-white">{entry.weight} kg</p>}
+                  {entry.notes && <p className="text-sm text-white/70 truncate max-w-32">{entry.notes}</p>}
                 </div>
               </div>
             ))
           ) : (
             <div className="text-center py-6">
-              <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-600">No progress entries yet</p>
+              <BarChart3 className="w-12 h-12 text-white/40 mx-auto mb-2" />
+              <p className="text-white/70">No progress entries yet</p>
               <button
                 onClick={() => {
                   setSelectedEntryType('weight');
                   setShowProgressEntry(true);
                 }}
-                className="text-blue-600 hover:text-blue-700 text-sm font-medium mt-2"
+                className="text-white/80 hover:text-white text-sm font-medium mt-2"
               >
                 Log your first entry
               </button>

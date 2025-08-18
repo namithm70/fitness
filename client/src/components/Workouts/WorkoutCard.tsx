@@ -77,23 +77,23 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -4 }}
-      className="card hover:shadow-lg transition-all duration-300 cursor-pointer group"
+      className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 hover:bg-white/15 hover:shadow-lg transition-all duration-300 cursor-pointer group"
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className={`p-2 rounded-lg ${typeConfig.bgColor}`}>
-            <Icon className={`w-5 h-5 ${typeConfig.color}`} />
+          <div className="p-2 rounded-lg bg-white/20">
+            <Icon className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-fitness-600 dark:group-hover:text-fitness-400 transition-colors">
+            <h3 className="font-semibold text-white group-hover:text-white/90 transition-colors">
               {workout.name}
             </h3>
             <div className="flex items-center gap-2 mt-1">
-              <span className={`px-2 py-1 rounded-full text-xs font-medium ${difficultyLevelConfig.color}`}>
+              <span className="px-2 py-1 rounded-full text-xs font-medium bg-white/20 text-white">
                 {difficultyLevelConfig.label}
               </span>
-              <span className="text-sm text-gray-500 dark:text-gray-400 capitalize">{workout.type}</span>
+              <span className="text-sm text-white/70 capitalize">{workout.type}</span>
             </div>
           </div>
         </div>
@@ -107,8 +107,8 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
               }}
               className={`p-2 rounded-lg transition-colors ${
                 isBookmarked 
-                  ? 'text-fitness-600 bg-fitness-50 dark:bg-fitness-900/20' 
-                  : 'text-gray-400 dark:text-gray-500 hover:text-fitness-600 dark:hover:text-fitness-400 hover:bg-fitness-50 dark:hover:bg-fitness-900/20'
+                  ? 'text-white bg-white/20' 
+                  : 'text-white/60 hover:text-white hover:bg-white/20'
               }`}
             >
               <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
@@ -120,7 +120,7 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
                 e.stopPropagation();
                 onShare(workout);
               }}
-              className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg transition-colors"
+              className="p-2 text-white/60 hover:text-white hover:bg-white/20 rounded-lg transition-colors"
             >
               <Share2 className="w-4 h-4" />
             </button>
@@ -130,7 +130,7 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
 
       {/* Description */}
       {workout.description && (
-        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+        <p className="text-white/70 text-sm mb-4 line-clamp-2">
           {workout.description}
         </p>
       )}
@@ -139,56 +139,56 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
         <div className="text-center">
           <div className="flex items-center justify-center mb-1">
-            <Clock className="w-4 h-4 text-gray-400 mr-1" />
+            <Clock className="w-4 h-4 text-white/60 mr-1" />
           </div>
-          <div className="text-sm font-medium text-gray-900 dark:text-white">{formatDuration(workout.duration)}</div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">Duration</div>
+          <div className="text-sm font-medium text-white">{formatDuration(workout.duration)}</div>
+          <div className="text-xs text-white/70">Duration</div>
         </div>
         
         <div className="text-center">
           <div className="flex items-center justify-center mb-1">
-            <Dumbbell className="w-4 h-4 text-gray-400 dark:text-gray-500 mr-1" />
+            <Dumbbell className="w-4 h-4 text-white/60 mr-1" />
           </div>
-          <div className="text-sm font-medium text-gray-900 dark:text-white">{workout.exercises.length}</div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">Exercises</div>
+          <div className="text-sm font-medium text-white">{workout.exercises.length}</div>
+          <div className="text-xs text-white/70">Exercises</div>
         </div>
         
         <div className="text-center">
           <div className="flex items-center justify-center mb-1">
-            <TrendingUp className="w-4 h-4 text-gray-400 dark:text-gray-500 mr-1" />
+            <TrendingUp className="w-4 h-4 text-white/60 mr-1" />
           </div>
-          <div className="text-sm font-medium text-gray-900 dark:text-white">{getCaloriesEstimate()}</div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">Calories</div>
+          <div className="text-sm font-medium text-white">{getCaloriesEstimate()}</div>
+          <div className="text-xs text-white/70">Calories</div>
         </div>
         
         <div className="text-center">
           <div className="flex items-center justify-center mb-1">
-            <Target className="w-4 h-4 text-gray-400 dark:text-gray-500 mr-1" />
+            <Target className="w-4 h-4 text-white/60 mr-1" />
           </div>
-          <div className="text-sm font-medium text-gray-900 dark:text-white">
+          <div className="text-sm font-medium text-white">
             {workout.rating ? `${workout.rating.toFixed(1)}★` : 'New'}
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">Rating</div>
+          <div className="text-xs text-white/70">Rating</div>
         </div>
       </div>
 
       {/* Exercise Preview */}
       <div className="mb-4">
-        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Exercises Preview:</h4>
+        <h4 className="text-sm font-medium text-white mb-2">Exercises Preview:</h4>
         <div className="space-y-1">
           {workout.exercises.slice(0, 3).map((exercise, index) => (
             <div key={exercise.id} className="flex items-center justify-between text-sm">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-white/80">
                 {index + 1}. {exercise.name}
               </span>
-              <span className="text-gray-500 dark:text-gray-500">
+              <span className="text-white/60">
                 {exercise.sets}×{exercise.reps}
                 {exercise.weight && ` @${exercise.weight}kg`}
               </span>
             </div>
           ))}
           {workout.exercises.length > 3 && (
-            <div className="text-sm text-gray-500 dark:text-gray-500">
+            <div className="text-sm text-white/60">
               +{workout.exercises.length - 3} more exercises
             </div>
           )}
@@ -201,13 +201,13 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
           {workout.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full"
+              className="px-2 py-1 bg-white/20 text-white/80 text-xs rounded-full"
             >
               {tag}
             </span>
           ))}
           {workout.tags.length > 3 && (
-            <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full">
+            <span className="px-2 py-1 bg-white/20 text-white/80 text-xs rounded-full">
               +{workout.tags.length - 3}
             </span>
           )}
@@ -215,13 +215,13 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
       )}
 
       {/* Actions */}
-      <div className="flex items-center gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+      <div className="flex items-center gap-3 pt-4 border-t border-white/20">
         <button
           onClick={(e) => {
             e.stopPropagation();
             onStart(workout);
           }}
-          className="btn-primary flex items-center flex-1 justify-center"
+          className="bg-white text-purple-600 hover:bg-white/90 flex items-center flex-1 justify-center py-2 px-4 rounded-lg font-semibold transition-all duration-200"
         >
           <Play className="w-4 h-4 mr-2" />
           Start Workout
@@ -233,7 +233,7 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
               e.stopPropagation();
               onEdit(workout);
             }}
-            className="btn-secondary p-2"
+            className="bg-white/20 text-white hover:bg-white/30 p-2 rounded-lg transition-all duration-200"
           >
             <Edit className="w-4 h-4" />
           </button>
@@ -242,11 +242,11 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
 
       {/* Completion Stats */}
       {workout.completedCount && workout.completedCount > 0 && (
-        <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-3 pt-3 border-t border-white/20">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600 dark:text-gray-400">Completed {workout.completedCount} times</span>
+            <span className="text-white/70">Completed {workout.completedCount} times</span>
             {workout.createdAt && (
-              <span className="text-gray-500 dark:text-gray-500">
+              <span className="text-white/60">
                 {new Date(workout.createdAt).toLocaleDateString()}
               </span>
             )}
