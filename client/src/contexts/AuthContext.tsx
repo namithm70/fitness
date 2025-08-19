@@ -70,39 +70,132 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Debug function to manually set loading state
+  const setLoadingManually = (value: boolean) => {
+    console.log('🔧 Manually setting loading to:', value);
+    setLoading(value);
+  };
+
+  // Check localStorage availability
+  const isLocalStorageAvailable = () => {
+    try {
+      const test = '__localStorage_test__';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      console.error('❌ localStorage is not available:', e);
+      return false;
+    }
+  };
+
+  // Safe localStorage operations
+  const safeGetItem = (key: string): string | null => {
+    if (!isLocalStorageAvailable()) return null;
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      console.error('❌ Error reading from localStorage:', e);
+      return null;
+    }
+  };
+
+  const safeSetItem = (key: string, value: string): boolean => {
+    if (!isLocalStorageAvailable()) return false;
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch (e) {
+      console.error('❌ Error writing to localStorage:', e);
+      return false;
+    }
+  };
+
+  const safeRemoveItem = (key: string): boolean => {
+    if (!isLocalStorageAvailable()) return false;
+    try {
+      localStorage.removeItem(key);
+      return true;
+    } catch (e) {
+      console.error('❌ Error removing from localStorage:', e);
+      return false;
+    }
+  };
+
   // Check if user is logged in on app start
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('token');
-      if (token && token !== 'demo-token-' && !token.startsWith('demo-token-')) {
-        try {
-          const response = await api.get('/api/auth/user');
-          setUser(response.data);
-        } catch (error) {
-          console.error('Auth check failed:', error);
-          localStorage.removeItem('token');
-          // Don't set user, let them go to login
+      console.log('🔐 Starting auth check...');
+      
+      if (!isLocalStorageAvailable()) {
+        console.warn('⚠️ localStorage not available, skipping auth check');
+        setLoading(false);
+        return;
+      }
+      
+      const token = safeGetItem('token');
+      console.log('🔑 Token found:', token ? 'Yes' : 'No', token ? `(${token.substring(0, 20)}...)` : '');
+      
+      // Add timeout protection
+      const timeoutId = setTimeout(() => {
+        console.warn('⏰ Auth check timeout, setting loading to false');
+        setLoading(false);
+      }, 5000); // 5 second timeout
+      
+      try {
+        if (token && token !== 'demo-token-' && !token.startsWith('demo-token-')) {
+          console.log('🌐 Attempting to validate token with backend...');
+          try {
+            const response = await api.get('/api/auth/user');
+            console.log('✅ Backend validation successful:', response.data);
+            setUser(response.data);
+          } catch (error) {
+            console.error('❌ Auth check failed:', error);
+            safeRemoveItem('token');
+            // Don't set user, let them go to login
+            setUser(null);
+          }
+        } else if (token && token.startsWith('demo-token-')) {
+          console.log('🎭 Using demo mode with mock user');
+          // Use mock user for demo tokens
+          setUser(mockUser);
+        } else {
+          console.log('🚫 No valid token found, user needs to login');
+          // No token, user needs to login
           setUser(null);
         }
-      } else if (token && token.startsWith('demo-token-')) {
-        // Use mock user for demo tokens
-        setUser(mockUser);
-      } else {
-        // No token, user needs to login
+      } catch (error) {
+        console.error('💥 Unexpected error in checkAuth:', error);
         setUser(null);
+      } finally {
+        clearTimeout(timeoutId);
+        console.log('🏁 Auth check completed, setting loading to false');
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     checkAuth();
   }, []);
+
+  // Add debug functions to window for testing
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    (window as any).debugAuth = {
+      setLoading: setLoadingManually,
+      setUser,
+      getUser: () => user,
+      getLoading: () => loading,
+      clearToken: () => safeRemoveItem('token'),
+      setDemoToken: () => safeSetItem('token', 'demo-token-' + Date.now()),
+      testLocalStorage: isLocalStorageAvailable,
+    };
+  }
 
   const login = async (email: string, password: string) => {
     try {
       const response = await api.post('/api/auth/login', { email, password });
       const { token, user } = response.data;
       
-      localStorage.setItem('token', token);
+      safeSetItem('token', token);
       setUser(user);
       
       toast.success('Welcome back!');
@@ -118,7 +211,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
       
       setUser(demoUser);
-      localStorage.setItem('token', 'demo-token-' + Date.now());
+      safeSetItem('token', 'demo-token-' + Date.now());
       
       toast.success('Welcome! (Demo mode)');
     }
@@ -129,7 +222,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await api.post('/api/auth/register', userData);
       const { token, user } = response.data;
       
-      localStorage.setItem('token', token);
+      safeSetItem('token', token);
       setUser(user);
       
       toast.success('Account created successfully!');
@@ -147,14 +240,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
       
       setUser(demoUser);
-      localStorage.setItem('token', 'demo-token-' + Date.now());
+      safeSetItem('token', 'demo-token-' + Date.now());
       
       toast.success('Account created successfully! (Demo mode)');
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    safeRemoveItem('token');
     setUser(null);
     toast.success('Logged out successfully');
   };
@@ -180,7 +273,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       const { token, user } = response.data;
       
-      localStorage.setItem('token', token);
+      safeSetItem('token', token);
       setUser(user);
       
       toast.success(`Welcome! You've signed in with ${provider}`);
@@ -198,7 +291,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
       
       setUser(demoUser);
-      localStorage.setItem('token', 'demo-token-' + Date.now());
+      safeSetItem('token', 'demo-token-' + Date.now());
       
       toast.success(`Welcome ${socialData.firstName}! (Demo mode)`);
     }

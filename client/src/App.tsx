@@ -23,9 +23,15 @@ const ProfilePage = React.lazy(() => import('./pages/Profile/ProfilePage'));
 const App: React.FC = () => {
   const { user, loading } = useAuth();
 
+  // Debug logging
+  console.log('🚀 App render:', { user: user ? 'User exists' : 'No user', loading });
+
   if (loading) {
+    console.log('⏳ App is loading, showing LoadingSpinner');
     return <LoadingSpinner />;
   }
+
+  console.log('✅ App loading complete, rendering main content');
 
   return (
     <ThemeProvider>

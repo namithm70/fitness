@@ -46,7 +46,7 @@ const CommunityPage: React.FC = () => {
       </div>
       
       {/* Main Content */}
-      <div className="relative z-10 p-6">
+      <div className="relative z-10 p-8">
         <CommunityDashboard />
       </div>
     </div>

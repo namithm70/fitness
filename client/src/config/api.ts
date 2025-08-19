@@ -47,6 +47,8 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.error('API Error:', error);
+    
     if (error.response?.status === 401) {
       // Only redirect if not already on login page and not a demo token
       const token = localStorage.getItem('token');
@@ -63,6 +65,12 @@ api.interceptors.response.use(
         }
       }
     }
+    
+    // For network errors or timeouts, log them but don't redirect
+    if (error.code === 'ECONNABORTED' || error.message === 'Network Error') {
+      console.warn('Network error detected, this might be expected in demo mode');
+    }
+    
     return Promise.reject(error);
   }
 );
