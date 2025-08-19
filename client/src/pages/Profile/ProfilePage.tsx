@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Settings, Edit, Play } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import LoadingSpinner from '../../components/UI/LoadingSpinner';
@@ -74,20 +73,6 @@ const ProfilePage: React.FC = () => {
           {/* Demo mode quick access */}
           <button 
             onClick={() => {
-              const demoUser = {
-                id: 'demo-1',
-                email: 'demo@fitness.com',
-                firstName: 'Demo',
-                lastName: 'User',
-                profilePicture: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face',
-                fitnessLevel: 'intermediate',
-                fitnessGoals: ['weight-loss', 'muscle-gain', 'endurance'],
-                subscription: { type: 'premium' },
-                totalWorkouts: 45,
-                totalWorkoutTime: 2700,
-                streakDays: 7,
-                lastWorkoutDate: new Date()
-              };
               localStorage.setItem('token', 'demo-token-' + Date.now());
               window.location.reload();
             }}
@@ -137,12 +122,6 @@ const ProfilePage: React.FC = () => {
       </div>
     );
   }
-
-  // Safe animation variants
-  const safeVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
 
   return (
     <div className="space-y-6">
