@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { api } from '../config/api';
 
@@ -90,17 +90,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Safe localStorage operations
-  const safeGetItem = (key: string): string | null => {
+  const safeGetItem = useCallback(() => {
     if (!isLocalStorageAvailable()) return null;
     try {
-      return localStorage.getItem(key);
+      return localStorage.getItem('token');
     } catch (e) {
       console.error('❌ Error reading from localStorage:', e);
       return null;
     }
-  };
+  }, []);
 
-  const safeSetItem = (key: string, value: string): boolean => {
+  const safeSetItem = useCallback((key: string, value: string): boolean => {
     if (!isLocalStorageAvailable()) return false;
     try {
       localStorage.setItem(key, value);
@@ -109,18 +109,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('❌ Error writing to localStorage:', e);
       return false;
     }
-  };
+  }, []);
 
-  const safeRemoveItem = (key: string): boolean => {
+  const safeRemoveItem = useCallback(() => {
     if (!isLocalStorageAvailable()) return false;
     try {
-      localStorage.removeItem(key);
+      localStorage.removeItem('token');
       return true;
     } catch (e) {
       console.error('❌ Error removing from localStorage:', e);
       return false;
     }
-  };
+  }, []);
 
   // Check if user is logged in on app start
   useEffect(() => {
@@ -133,7 +133,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return;
       }
       
-      const token = safeGetItem('token');
+      const token = safeGetItem();
       console.log('🔑 Token found:', token ? 'Yes' : 'No', token ? `(${token.substring(0, 20)}...)` : '');
       
       // Add timeout protection
@@ -151,7 +151,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setUser(response.data);
           } catch (error) {
             console.error('❌ Auth check failed:', error);
-            safeRemoveItem('token');
+            safeRemoveItem();
             // Don't set user, let them go to login
             setUser(null);
           }
@@ -184,7 +184,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser,
       getUser: () => user,
       getLoading: () => loading,
-      clearToken: () => safeRemoveItem('token'),
+      clearToken: () => safeRemoveItem(),
       setDemoToken: () => safeSetItem('token', 'demo-token-' + Date.now()),
       testLocalStorage: isLocalStorageAvailable,
     };
@@ -247,7 +247,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    safeRemoveItem('token');
+    safeRemoveItem();
     setUser(null);
     toast.success('Logged out successfully');
   };
