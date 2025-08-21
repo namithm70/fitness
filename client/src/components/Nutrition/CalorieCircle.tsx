@@ -26,7 +26,7 @@ const CalorieCircle: React.FC<CalorieCircleProps> = ({ current, target }) => {
           cx="70"
           cy="70"
           r={radius}
-          stroke="#E5E7EB"
+          stroke="rgba(255,255,255,0.2)"
           strokeWidth="8"
           fill="none"
         />
@@ -46,10 +46,10 @@ const CalorieCircle: React.FC<CalorieCircleProps> = ({ current, target }) => {
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-2xl font-bold text-gray-900">
+          <div className="text-2xl font-bold text-white">
             {Math.round(percentage)}%
           </div>
-          <div className="text-xs text-gray-600">
+          <div className="text-xs text-white/70">
             {current} / {target}
           </div>
         </div>
