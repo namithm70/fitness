@@ -40,16 +40,16 @@ const MacroChart: React.FC<MacroChartProps> = ({
         {/* Protein */}
         <div>
           <div className="flex justify-between text-sm mb-1">
-            <span className="text-gray-700">Protein</span>
-            <span className="font-medium">{protein}g / {proteinTarget}g</span>
+            <span className="text-white font-medium">Protein</span>
+            <span className="font-medium text-white">{protein}g / {proteinTarget}g</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-white/20 rounded-full h-2">
             <div 
               className={`h-2 rounded-full transition-all duration-300 ${getProgressColor(protein, proteinTarget)}`}
               style={{ width: `${Math.min((protein / proteinTarget) * 100, 100)}%` }}
             ></div>
           </div>
-          <div className="text-xs text-gray-500 mt-1">
+          <div className="text-xs text-white/70 mt-1">
             {Math.round(proteinPercentage)}% of calories • {Math.round(proteinCalories)} cal
           </div>
         </div>
@@ -57,16 +57,16 @@ const MacroChart: React.FC<MacroChartProps> = ({
         {/* Carbs */}
         <div>
           <div className="flex justify-between text-sm mb-1">
-            <span className="text-gray-700">Carbs</span>
-            <span className="font-medium">{carbs}g / {carbsTarget}g</span>
+            <span className="text-white font-medium">Carbs</span>
+            <span className="font-medium text-white">{carbs}g / {carbsTarget}g</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-white/20 rounded-full h-2">
             <div 
               className={`h-2 rounded-full transition-all duration-300 ${getProgressColor(carbs, carbsTarget)}`}
               style={{ width: `${Math.min((carbs / carbsTarget) * 100, 100)}%` }}
             ></div>
           </div>
-          <div className="text-xs text-gray-500 mt-1">
+          <div className="text-xs text-white/70 mt-1">
             {Math.round(carbsPercentage)}% of calories • {Math.round(carbsCalories)} cal
           </div>
         </div>
@@ -74,16 +74,16 @@ const MacroChart: React.FC<MacroChartProps> = ({
         {/* Fat */}
         <div>
           <div className="flex justify-between text-sm mb-1">
-            <span className="text-gray-700">Fat</span>
-            <span className="font-medium">{fat}g / {fatTarget}g</span>
+            <span className="text-white font-medium">Fat</span>
+            <span className="font-medium text-white">{fat}g / {fatTarget}g</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-white/20 rounded-full h-2">
             <div 
               className={`h-2 rounded-full transition-all duration-300 ${getProgressColor(fat, fatTarget)}`}
               style={{ width: `${Math.min((fat / fatTarget) * 100, 100)}%` }}
             ></div>
           </div>
-          <div className="text-xs text-gray-500 mt-1">
+          <div className="text-xs text-white/70 mt-1">
             {Math.round(fatPercentage)}% of calories • {Math.round(fatCalories)} cal
           </div>
         </div>
@@ -91,7 +91,7 @@ const MacroChart: React.FC<MacroChartProps> = ({
 
       {/* Macro ratio pie chart */}
       <div className="mt-4">
-        <div className="text-sm font-medium text-gray-700 mb-2">Macro Ratio</div>
+        <div className="text-sm font-medium text-white mb-2">Macro Ratio</div>
         <div className="flex items-center justify-center">
           <div className="relative w-24 h-24">
             <svg className="w-24 h-24 transform -rotate-90" viewBox="0 0 100 100">
@@ -136,15 +136,15 @@ const MacroChart: React.FC<MacroChartProps> = ({
         <div className="flex justify-center space-x-4 mt-3 text-xs">
           <div className="flex items-center">
             <div className="w-3 h-3 bg-blue-500 rounded-full mr-1"></div>
-            <span>Protein</span>
+            <span className="text-white">Protein</span>
           </div>
           <div className="flex items-center">
             <div className="w-3 h-3 bg-green-500 rounded-full mr-1"></div>
-            <span>Carbs</span>
+            <span className="text-white">Carbs</span>
           </div>
           <div className="flex items-center">
             <div className="w-3 h-3 bg-yellow-500 rounded-full mr-1"></div>
-            <span>Fat</span>
+            <span className="text-white">Fat</span>
           </div>
         </div>
       </div>
