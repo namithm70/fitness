@@ -127,10 +127,10 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
   return (
     <div className="relative">
       {children}
-      <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-10">
         <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-2" />
-          <p className="text-gray-600">{text}</p>
+          <Loader2 className="w-8 h-8 animate-spin text-white mx-auto mb-2" />
+          <p className="text-white/90">{text}</p>
         </div>
       </div>
     </div>

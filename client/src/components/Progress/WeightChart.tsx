@@ -9,8 +9,8 @@ const WeightChart: React.FC<WeightChartProps> = ({ data }) => {
   if (data.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600">No weight data available</p>
-        <p className="text-sm text-gray-500">Start logging your weight to see progress</p>
+        <p className="text-white/70">No weight data available</p>
+        <p className="text-sm text-white/60">Start logging your weight to see progress</p>
       </div>
     );
   }
@@ -71,17 +71,17 @@ const WeightChart: React.FC<WeightChartProps> = ({ data }) => {
       {/* Trend Summary */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-600">Trend:</span>
+          <span className="text-sm text-white/70">Trend:</span>
           <span className={`text-sm font-medium ${
-            trend.direction === 'up' ? 'text-red-600' : 
-            trend.direction === 'down' ? 'text-green-600' : 'text-gray-600'
+            trend.direction === 'up' ? 'text-red-400' : 
+            trend.direction === 'down' ? 'text-green-400' : 'text-white/70'
           }`}>
             {trend.direction === 'up' ? '↗' : 
              trend.direction === 'down' ? '↘' : '→'} 
             {trend.change > 0 ? `${trend.change.toFixed(1)} kg` : 'Stable'}
           </span>
         </div>
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-white/70">
           {sortedData.length} entries
         </div>
       </div>
@@ -97,7 +97,7 @@ const WeightChart: React.FC<WeightChartProps> = ({ data }) => {
           {/* Grid lines */}
           <defs>
             <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f3f4f6" strokeWidth="0.5"/>
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5"/>
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
@@ -105,10 +105,10 @@ const WeightChart: React.FC<WeightChartProps> = ({ data }) => {
           {/* Y-axis labels */}
           {weightRange > 0 && (
             <>
-              <text x={padding - 2} y={padding + 4} className="text-xs fill-gray-500" textAnchor="end">
+              <text x={padding - 2} y={padding + 4} className="text-xs fill-white/60" textAnchor="end">
                 {maxWeight.toFixed(1)}
               </text>
-              <text x={padding - 2} y={height - padding - 4} className="text-xs fill-gray-500" textAnchor="end">
+              <text x={padding - 2} y={height - padding - 4} className="text-xs fill-white/60" textAnchor="end">
                 {minWeight.toFixed(1)}
               </text>
             </>
@@ -153,7 +153,7 @@ const WeightChart: React.FC<WeightChartProps> = ({ data }) => {
             <text
               x={width - padding}
               y={padding + 4}
-              className="text-xs fill-gray-700 font-medium"
+              className="text-xs fill-white/90 font-medium"
               textAnchor="end"
             >
               {sortedData[sortedData.length - 1].weight} kg
@@ -163,7 +163,7 @@ const WeightChart: React.FC<WeightChartProps> = ({ data }) => {
       </div>
 
       {/* Date range */}
-      <div className="flex justify-between text-xs text-gray-500">
+      <div className="flex justify-between text-xs text-white/60">
         <span>
           {sortedData[0] && new Date(sortedData[0].date).toLocaleDateString()}
         </span>

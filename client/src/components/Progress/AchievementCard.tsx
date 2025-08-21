@@ -18,7 +18,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ achievement }) => {
       case 'uncommon':
         return 'bg-gradient-to-r from-green-400 to-teal-500 text-white';
       default:
-        return 'bg-gray-100 text-gray-700';
+        return 'bg-white/20 text-white/80 border border-white/30';
     }
   };
 
@@ -36,7 +36,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ achievement }) => {
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+    <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-4 hover:bg-white/15 hover:shadow-lg transition-all duration-200">
       <div className="flex items-start space-x-3">
         {/* Achievement Icon */}
         <div className={`w-12 h-12 rounded-full flex items-center justify-center ${getRarityColor(achievement.rarity)}`}>
@@ -46,7 +46,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ achievement }) => {
         {/* Achievement Details */}
         <div className="flex-1">
           <div className="flex items-center justify-between mb-1">
-            <h3 className="font-semibold text-gray-900 text-sm">{achievement.title}</h3>
+            <h3 className="font-semibold text-white text-sm">{achievement.title}</h3>
             <div className="flex items-center space-x-1">
               {getRarityIcon(achievement.rarity)}
               <span className={`text-xs font-medium px-2 py-1 rounded-full ${getRarityColor(achievement.rarity)}`}>
@@ -55,16 +55,16 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ achievement }) => {
             </div>
           </div>
           
-          <p className="text-xs text-gray-600 mb-2">{achievement.description}</p>
+          <p className="text-xs text-white/70 mb-2">{achievement.description}</p>
           
           {/* Progress */}
           {!achievement.isCompleted && (
             <div className="space-y-1">
-              <div className="flex justify-between text-xs text-gray-600">
+              <div className="flex justify-between text-xs text-white/70">
                 <span>Progress</span>
                 <span>{achievement.progress.current} / {achievement.progress.target} {achievement.criteria.unit}</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-1.5">
+              <div className="w-full bg-white/20 rounded-full h-1.5">
                 <div
                   className="h-1.5 rounded-full transition-all duration-300 bg-blue-500"
                   style={{ width: `${achievement.progress.percentage}%` }}
@@ -75,11 +75,11 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ achievement }) => {
 
           {/* Achievement Date */}
           <div className="flex items-center justify-between mt-2">
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-white/60">
               {new Date(achievement.achievedAt).toLocaleDateString()}
             </span>
             {achievement.points > 0 && (
-              <span className="text-xs font-medium text-blue-600">
+              <span className="text-xs font-medium text-blue-400">
                 +{achievement.points} pts
               </span>
             )}
