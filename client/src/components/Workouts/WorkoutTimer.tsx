@@ -266,26 +266,26 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-8 max-w-md w-full text-center"
+          className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl shadow-2xl p-8 max-w-md w-full text-center text-white"
         >
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Workout Complete!</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <h2 className="text-2xl font-bold text-white mb-2">Workout Complete!</h2>
+          <p className="text-white/80 mb-6">
             Great job! You've completed "{workout.name}"
           </p>
           
           <div className="space-y-3 mb-6">
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Total Time:</span>
-              <span className="font-semibold text-gray-900 dark:text-white">{formatTotalTime(totalTimeSpent)}</span>
+              <span className="text-white/70">Total Time:</span>
+              <span className="font-semibold text-white">{formatTotalTime(totalTimeSpent)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Exercises:</span>
-              <span className="font-semibold text-gray-900 dark:text-white">{workout.exercises.length}</span>
+              <span className="text-white/70">Exercises:</span>
+              <span className="font-semibold text-white">{workout.exercises.length}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Calories Burned:</span>
-              <span className="font-semibold text-gray-900 dark:text-white">~{Math.round(totalTimeSpent / 60 * 8)}</span>
+              <span className="text-white/70">Calories Burned:</span>
+              <span className="font-semibold text-white">~{Math.round(totalTimeSpent / 60 * 8)}</span>
             </div>
           </div>
           
@@ -317,26 +317,26 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden"
+        className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden text-white"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-6 border-b border-white/20">
           <div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">{workout.name}</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <h2 className="text-xl font-bold text-white">{workout.name}</h2>
+            <p className="text-sm text-white/70">
               Exercise {currentExerciseIndex + 1} of {workout.exercises.length}
             </p>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsMuted(!isMuted)}
-              className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg transition-colors"
+              className="p-2 text-white/60 hover:text-white rounded-lg transition-colors"
             >
               {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
             </button>
             <button
               onClick={onClose}
-              className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg transition-colors"
+              className="p-2 text-white/60 hover:text-white rounded-lg transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -344,14 +344,14 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
         </div>
 
         {/* Progress Bar */}
-        <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+        <div className="px-6 py-4 bg-white/5">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Progress</span>
-            <span className="text-sm text-gray-600 dark:text-gray-400">{getProgressPercentage()}%</span>
+            <span className="text-sm font-medium text-white/80">Progress</span>
+            <span className="text-sm text-white/70">{getProgressPercentage()}%</span>
           </div>
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-white/20 rounded-full h-2">
             <motion.div
-              className="bg-fitness-600 h-2 rounded-full"
+              className="bg-fitness-500 h-2 rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${getProgressPercentage()}%` }}
               transition={{ duration: 0.5 }}
@@ -363,14 +363,14 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
         <div className="p-6">
           {currentState === 'ready' ? (
             <div className="text-center py-8">
-              <Timer className="w-16 h-16 text-fitness-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Ready to Start?</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <Timer className="w-16 h-16 text-green-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-2">Ready to Start?</h3>
+              <p className="text-white/80 mb-6">
                 Get ready for your workout. Make sure you have enough space and water nearby.
               </p>
               <button
                 onClick={startWorkout}
-                className="btn-primary flex items-center mx-auto"
+                className="bg-white text-purple-600 hover:bg-white/90 font-semibold px-5 py-3 rounded-lg flex items-center mx-auto shadow-lg transition-colors"
               >
                 <Play className="w-4 h-4 mr-2" />
                 Start Workout
@@ -380,10 +380,10 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
             <div className="space-y-6">
               {/* Current Exercise */}
               <div className="text-center">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-2xl font-bold text-white mb-2">
                   {currentExercise.name}
                 </h3>
-                <div className="flex items-center justify-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex items-center justify-center gap-4 text-sm text-white/70">
                   <span>Set {currentSet} of {currentExercise.sets}</span>
                   <span>•</span>
                   <span>{currentExercise.reps} reps</span>
@@ -399,21 +399,21 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
               {/* Timer Display */}
               <div className="text-center">
                 <div className={`text-6xl font-bold mb-2 ${
-                  currentState === 'rest' ? 'text-blue-600 dark:text-blue-400' : 'text-fitness-600'
+                  currentState === 'rest' ? 'text-blue-300' : 'text-green-400'
                 }`}>
                   {formatTime(timeLeft)}
                 </div>
-                <div className="text-lg text-gray-600 dark:text-gray-400 capitalize">
+                <div className="text-lg text-white/80 capitalize">
                   {currentState === 'rest' ? 'Rest Time' : 'Exercise Time'}
                 </div>
               </div>
 
               {/* Exercise Notes */}
               {currentExercise.notes && (
-                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                <div className="bg-white/10 border border-white/20 p-4 rounded-lg">
                   <div className="flex items-start gap-2">
-                    <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-blue-800 dark:text-blue-200">{currentExercise.notes}</p>
+                    <AlertCircle className="w-5 h-5 text-white/80 mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-white/80">{currentExercise.notes}</p>
                   </div>
                 </div>
               )}
@@ -457,7 +457,7 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
 
               {/* Total Time */}
               {startTime && (
-                <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-center text-sm text-white/70">
                   Total Time: {formatTotalTime(totalTimeSpent)}
                 </div>
               )}
