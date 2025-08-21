@@ -266,7 +266,7 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl shadow-2xl p-8 max-w-md w-full text-center text-white"
+          className="bg-white/15 backdrop-blur-2xl border border-white/30 rounded-xl shadow-2xl p-8 max-w-md w-full text-center text-white"
         >
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-white mb-2">Workout Complete!</h2>
@@ -317,7 +317,7 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ workout, onComplete, onClos
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden text-white"
+        className="bg-white/15 backdrop-blur-2xl border border-white/30 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden text-white"
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/20">
