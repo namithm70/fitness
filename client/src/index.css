@@ -42,8 +42,12 @@
   }
   
   body {
-    @apply bg-gray-50 dark:bg-black text-gray-900 dark:text-white transition-colors duration-300;
+    @apply bg-gray-50 dark:bg-black text-gray-900 dark:text-white transition-colors duration-300 overflow-x-hidden w-full max-w-full;
     font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+  
+  #root {
+    @apply overflow-x-hidden w-full max-w-full;
   }
 }
 

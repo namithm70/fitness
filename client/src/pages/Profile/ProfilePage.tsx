@@ -155,8 +155,8 @@ const ProfilePage: React.FC = () => {
   const renderOverview = () => (
     <div className="space-y-6">
       {/* Profile Info */}
-      <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg">
-        <div className="flex items-center space-x-4 mb-6">
+      <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg overflow-hidden">
+        <div className="flex items-center space-x-4 mb-6 min-w-0">
           <div className="relative">
             <img
               src={user?.profilePicture || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face'}
@@ -167,11 +167,11 @@ const ProfilePage: React.FC = () => {
               <Camera className="w-3 h-3" />
             </button>
           </div>
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold text-white">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-2xl font-bold text-white truncate">
               {user?.firstName} {user?.lastName}
             </h2>
-            <p className="text-white/80">{user?.email}</p>
+            <p className="text-white/80 truncate">{user?.email}</p>
             <p className="text-sm text-white/60">
               Member since {new Date().getFullYear()}
             </p>
@@ -214,7 +214,7 @@ const ProfilePage: React.FC = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-4 text-center">
           <div className="w-12 h-12 bg-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-3">
             <BarChart3 className="w-6 h-6 text-blue-400" />
@@ -247,7 +247,7 @@ const ProfilePage: React.FC = () => {
 
       {/* Recent Activity */}
       <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 min-w-0">
           <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
           <button className="text-white/80 hover:text-white text-sm font-medium">
             View All
@@ -255,20 +255,20 @@ const ProfilePage: React.FC = () => {
         </div>
         <div className="space-y-3">
           {recentActivity.slice(0, 3).map((activity) => (
-            <div key={activity.id} className="flex items-center justify-between p-3 bg-white/10 rounded-lg">
-              <div className="flex items-center space-x-3">
+            <div key={activity.id} className="flex items-center justify-between p-3 bg-white/10 rounded-lg min-w-0">
+              <div className="flex items-center space-x-3 min-w-0">
                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                   {activity.type === 'workout' && <Activity className="w-5 h-5 text-blue-400" />}
                   {activity.type === 'weight' && <BarChart3 className="w-5 h-5 text-green-400" />}
                   {activity.type === 'measurement' && <Target className="w-5 h-5 text-purple-400" />}
                   {activity.type === 'goal' && <Star className="w-5 h-5 text-yellow-400" />}
                 </div>
-                <div>
-                  <p className="font-medium text-white">{activity.title}</p>
-                  <p className="text-sm text-white/70">{activity.time}</p>
+                <div className="min-w-0">
+                  <p className="font-medium text-white truncate">{activity.title}</p>
+                  <p className="text-sm text-white/70 truncate">{activity.time}</p>
                 </div>
               </div>
-              <div className="text-right">
+              <div className="text-right shrink-0">
                 <p className="font-medium text-white">{activity.value || activity.duration}</p>
                 {activity.change && (
                   <p className={`text-sm ${activity.change.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
