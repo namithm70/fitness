@@ -167,6 +167,13 @@ const HistorySection: React.FC = () => {
     const fetchHistory = async () => {
       try {
         setLoading(true);
+        const token = (typeof window !== 'undefined') ? localStorage.getItem('token') : null;
+        if (token && token.startsWith('demo-token-')) {
+          // Demo mode: use mock data instead of hitting backend (avoids CORS)
+          setHistory(generateMockHistory());
+          return;
+        }
+
         const response = await api.get(`/api/activities/user/${user?.id}/history`);
         setHistory(response.data);
       } catch (error) {
