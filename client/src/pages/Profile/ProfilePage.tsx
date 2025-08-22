@@ -65,8 +65,8 @@ const ProfilePage: React.FC = () => {
   // Debug logging
   console.log('ProfilePage render:', { user, loading });
 
-  // Check if user is in demo mode
-  const isDemoMode = user && localStorage.getItem('token')?.startsWith('demo-token-');
+  // Check if user is in demo mode (disabled in production)
+  const isDemoMode = (process.env.NODE_ENV !== 'production') && user && localStorage.getItem('token')?.startsWith('demo-token-');
 
   // Test localStorage functionality
   const testLocalStorage = () => {
@@ -126,17 +126,19 @@ const ProfilePage: React.FC = () => {
             </div>
           )}
           
-          {/* Demo mode quick access */}
-          <button 
-            onClick={() => {
-              localStorage.setItem('token', 'demo-token-' + Date.now());
-              window.location.reload();
-            }}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 flex items-center mx-auto"
-          >
-            <Play className="w-4 h-4 mr-2" />
-            Try Demo Mode
-          </button>
+          {/* Demo mode quick access - only in development */}
+          {process.env.NODE_ENV !== 'production' && (
+            <button 
+              onClick={() => {
+                localStorage.setItem('token', 'demo-token-' + Date.now());
+                window.location.reload();
+              }}
+              className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 flex items-center mx-auto"
+            >
+              <Play className="w-4 h-4 mr-2" />
+              Try Demo Mode
+            </button>
+          )}
           
           {/* Quick test buttons */}
           {process.env.NODE_ENV === 'development' && (
@@ -595,7 +597,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-x-hidden">
-      {/* Demo mode indicator */}
+      {/* Demo mode indicator (hidden in production) */}
       {isDemoMode && (
         <div className="bg-purple-600/20 border border-purple-500/30 rounded-xl p-4 text-center">
           <p className="text-purple-300 text-sm">

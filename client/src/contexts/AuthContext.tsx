@@ -69,6 +69,7 @@ const mockUser: User = {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const isProduction = process.env.NODE_ENV === 'production';
 
   // Debug function to manually set loading state
   const setLoadingManually = (value: boolean) => {
@@ -156,9 +157,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setUser(null);
           }
         } else if (token && token.startsWith('demo-token-')) {
-          console.log('🎭 Using demo mode with mock user');
-          // Use mock user for demo tokens
-          setUser(mockUser);
+          if (isProduction) {
+            console.warn('🚫 Demo token detected in production. Clearing token.');
+            safeRemoveItem();
+            setUser(null);
+          } else {
+            console.log('🎭 Using demo mode with mock user');
+            // Use mock user for demo tokens
+            setUser(mockUser);
+          }
         } else {
           console.log('🚫 No valid token found, user needs to login');
           // No token, user needs to login
@@ -200,19 +207,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       toast.success('Welcome back!');
     } catch (error: any) {
-      console.error('Backend login failed, using demo mode:', error);
-      
-      // For demo purposes, create a demo user
+      console.error('Backend login failed:', error);
+      if (isProduction) {
+        toast.error('Login failed. Please try again.');
+        return;
+      }
+      // Development/demo fallback
       const demoUser: User = {
         ...mockUser,
         email: email,
         firstName: email.split('@')[0] || 'Demo',
         lastName: 'User',
       };
-      
       setUser(demoUser);
       safeSetItem('token', 'demo-token-' + Date.now());
-      
       toast.success('Welcome! (Demo mode)');
     }
   };
@@ -227,9 +235,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       toast.success('Account created successfully!');
     } catch (error: any) {
-      console.error('Backend registration failed, using demo mode:', error);
-      
-      // For demo purposes, create a demo user
+      console.error('Backend registration failed:', error);
+      if (isProduction) {
+        toast.error('Registration failed. Please try again.');
+        return;
+      }
+      // Development/demo fallback
       const demoUser: User = {
         ...mockUser,
         email: userData.email,
@@ -238,10 +249,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         fitnessLevel: userData.fitnessLevel || 'beginner',
         fitnessGoals: userData.fitnessGoals || ['general-fitness'],
       };
-      
       setUser(demoUser);
       safeSetItem('token', 'demo-token-' + Date.now());
-      
       toast.success('Account created successfully! (Demo mode)');
     }
   };
@@ -256,7 +265,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const token = (typeof window !== 'undefined') ? localStorage.getItem('token') : null;
       if (token && token.startsWith('demo-token-')) {
-        // Demo mode: update locally without hitting backend
+        if (isProduction) {
+          toast.error('Demo mode is disabled in production. Please log in.');
+          setUser(null);
+          return;
+        }
+        // Demo mode (development): update locally without hitting backend
         setUser((prev) => prev ? { ...prev, ...userData } as User : prev);
         toast.success('Profile updated (demo mode)');
         return;
@@ -286,9 +300,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       toast.success(`Welcome! You've signed in with ${provider}`);
     } catch (error: any) {
-      console.error('Backend social login failed, using mock user:', error);
-      
-      // For demo purposes, create a user based on Google data
+      console.error('Backend social login failed:', error);
+      if (isProduction) {
+        toast.error('Social login failed. Please try another method.');
+        return;
+      }
+      // Development/demo fallback
       const demoUser: User = {
         ...mockUser,
         id: socialData.id,
@@ -297,10 +314,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         lastName: socialData.lastName,
         profilePicture: socialData.profilePicture,
       };
-      
       setUser(demoUser);
       safeSetItem('token', 'demo-token-' + Date.now());
-      
       toast.success(`Welcome ${socialData.firstName}! (Demo mode)`);
     }
   };
