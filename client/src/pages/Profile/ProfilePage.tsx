@@ -498,7 +498,7 @@ const ProfilePage: React.FC = () => {
 
       {/* Navigation Tabs */}
       <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-2 shadow-lg">
-        <div className="flex space-x-1 overflow-x-auto no-scrollbar px-1">
+        <div className="flex flex-wrap md:flex-nowrap gap-1 md:space-x-1 px-1">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
