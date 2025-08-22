@@ -27,7 +27,7 @@ const NutritionDashboard: React.FC = () => {
   const fetchDashboard = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/nutrition/dashboard');
+      const response = await api.get('/api/nutrition/dashboard');
       setDashboard(response.data);
     } catch (error) {
       console.error('Error fetching nutrition dashboard:', error);

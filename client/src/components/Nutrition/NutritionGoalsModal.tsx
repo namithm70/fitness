@@ -27,7 +27,7 @@ const NutritionGoalsModal: React.FC<NutritionGoalsModalProps> = ({
   const fetchGoals = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/nutrition/goals');
+      const response = await api.get('/api/nutrition/goals');
       setGoals(response.data);
     } catch (error) {
       console.error('Error fetching goals:', error);
@@ -68,7 +68,7 @@ const NutritionGoalsModal: React.FC<NutritionGoalsModalProps> = ({
         isActive: goals.isActive
       };
 
-      await api.put('/nutrition/goals', updateData);
+      await api.put('/api/nutrition/goals', updateData);
       onGoalsUpdated();
       onClose();
     } catch (error) {

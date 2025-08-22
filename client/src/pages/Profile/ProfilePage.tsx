@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Settings, Edit, Play, Camera, Shield, 
   Trophy, Target, BarChart3, Heart, 
@@ -9,9 +9,57 @@ import { useAuth } from '../../contexts/AuthContext';
 import LoadingSpinner from '../../components/UI/LoadingSpinner';
 
 const ProfilePage: React.FC = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState<'overview' | 'achievements' | 'activity' | 'settings' | 'privacy'>('overview');
   const [isEditing, setIsEditing] = useState(false);
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    fitnessLevel: 'beginner',
+    fitnessGoals: [] as string[],
+  });
+
+  const fitnessLevels = [
+    { value: 'beginner', label: 'Beginner' },
+    { value: 'intermediate', label: 'Intermediate' },
+    { value: 'advanced', label: 'Advanced' },
+  ];
+
+  const fitnessGoalsOptions = [
+    'weight-loss',
+    'muscle-gain',
+    'endurance',
+    'general-fitness',
+    'strength',
+    'flexibility',
+  ];
+
+  useEffect(() => {
+    if (user && isEditing) {
+      setFormData({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        fitnessLevel: user.fitnessLevel || 'beginner',
+        fitnessGoals: Array.isArray(user.fitnessGoals) ? user.fitnessGoals : [],
+      });
+    }
+  }, [user, isEditing]);
+
+  const handleProfileSave = async () => {
+    try {
+      setSavingProfile(true);
+      await updateUser({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        fitnessLevel: formData.fitnessLevel as any,
+        fitnessGoals: formData.fitnessGoals,
+      });
+      setIsEditing(false);
+    } finally {
+      setSavingProfile(false);
+    }
+  };
 
   // Debug logging
   console.log('ProfilePage render:', { user, loading });
@@ -154,63 +202,143 @@ const ProfilePage: React.FC = () => {
 
   const renderOverview = () => (
     <div className="space-y-6">
-      {/* Profile Info */}
+      {/* Profile Info / Edit */}
       <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 shadow-lg overflow-hidden">
-        <div className="flex items-center space-x-4 mb-6 min-w-0">
-          <div className="relative">
-            <img
-              src={user?.profilePicture || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face'}
-              alt="Profile"
-              className="w-20 h-20 rounded-full"
-            />
-            <button className="absolute -bottom-1 -right-1 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full transition-all duration-200">
-              <Camera className="w-3 h-3" />
-            </button>
-          </div>
-          <div className="flex-1 min-w-0">
-            <h2 className="text-2xl font-bold text-white truncate">
-              {user?.firstName} {user?.lastName}
-            </h2>
-            <p className="text-white/80 truncate">{user?.email}</p>
-            <p className="text-sm text-white/60">
-              Member since {new Date().getFullYear()}
-            </p>
-            <div className="flex items-center space-x-2 mt-2">
-              <span className="px-2 py-1 bg-purple-600/20 text-purple-300 text-xs rounded-full">
-                {user?.subscription?.type || 'Free'} Plan
-              </span>
-              {isDemoMode && (
-                <span className="px-2 py-1 bg-yellow-600/20 text-yellow-300 text-xs rounded-full">
-                  Demo Mode
-                </span>
-              )}
+        {isEditing ? (
+          <div className="space-y-6">
+            <h2 className="text-xl font-semibold text-white">Edit Profile</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm text-white/80 mb-1">First Name</label>
+                <input
+                  type="text"
+                  value={formData.firstName}
+                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                  className="w-full px-3 py-2 border border-white/20 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-white/80 mb-1">Last Name</label>
+                <input
+                  type="text"
+                  value={formData.lastName}
+                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                  className="w-full px-3 py-2 border border-white/20 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-white/80 mb-1">Fitness Level</label>
+                <select
+                  value={formData.fitnessLevel}
+                  onChange={(e) => setFormData({ ...formData, fitnessLevel: e.target.value })}
+                  className="w-full px-3 py-2 border border-white/20 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 capitalize"
+                >
+                  {fitnessLevels.map((lvl) => (
+                    <option key={lvl.value} value={lvl.value} className="bg-purple-950 capitalize">
+                      {lvl.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm text-white/80 mb-1">Goals</label>
+                <div className="flex flex-wrap gap-2">
+                  {fitnessGoalsOptions.map((goal) => {
+                    const checked = formData.fitnessGoals.includes(goal);
+                    return (
+                      <label key={goal} className="flex items-center space-x-2 text-xs bg-white/10 rounded-lg px-2 py-1">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={(e) => {
+                            const next = e.target.checked
+                              ? [...formData.fitnessGoals, goal]
+                              : formData.fitnessGoals.filter((g) => g !== goal);
+                            setFormData({ ...formData, fitnessGoals: next });
+                          }}
+                        />
+                        <span className="capitalize text-white/90">{goal.replace('-', ' ')}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setIsEditing(false)}
+                className="bg-white/20 text-white hover:bg-white/30 px-4 py-2 rounded-lg font-semibold"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleProfileSave}
+                disabled={savingProfile}
+                className="bg-white text-purple-700 hover:bg-white/90 px-4 py-2 rounded-lg font-semibold disabled:opacity-50"
+              >
+                {savingProfile ? 'Saving...' : 'Save Changes'}
+              </button>
             </div>
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="font-semibold text-white mb-2">Fitness Level</h3>
-            <p className="text-white/80 capitalize">{user?.fitnessLevel || 'Not set'}</p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-white mb-2">Goals</h3>
-            <div className="flex flex-wrap gap-2">
-              {user?.fitnessGoals && user.fitnessGoals.length > 0 ? (
-                user.fitnessGoals.map((goal, index) => (
-                  <span
-                    key={index}
-                    className="px-2 py-1 bg-white/20 text-white text-xs rounded-full"
-                  >
-                    {goal.replace('-', ' ')}
+        ) : (
+          <>
+            <div className="flex items-center space-x-4 mb-6 min-w-0">
+              <div className="relative">
+                <img
+                  src={user?.profilePicture || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face'}
+                  alt="Profile"
+                  className="w-20 h-20 rounded-full"
+                />
+                <button className="absolute -bottom-1 -right-1 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full transition-all duration-200">
+                  <Camera className="w-3 h-3" />
+                </button>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h2 className="text-2xl font-bold text-white truncate">
+                  {user?.firstName} {user?.lastName}
+                </h2>
+                <p className="text-white/80 truncate">{user?.email}</p>
+                <p className="text-sm text-white/60">
+                  Member since {new Date().getFullYear()}
+                </p>
+                <div className="flex items-center space-x-2 mt-2">
+                  <span className="px-2 py-1 bg-purple-600/20 text-purple-300 text-xs rounded-full">
+                    {user?.subscription?.type || 'Free'} Plan
                   </span>
-                ))
-              ) : (
-                <span className="text-white/60 text-sm">No goals set</span>
-              )}
+                  {isDemoMode && (
+                    <span className="px-2 py-1 bg-yellow-600/20 text-yellow-300 text-xs rounded-full">
+                      Demo Mode
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold text-white mb-2">Fitness Level</h3>
+                <p className="text-white/80 capitalize">{user?.fitnessLevel || 'Not set'}</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-white mb-2">Goals</h3>
+                <div className="flex flex-wrap gap-2">
+                  {user?.fitnessGoals && user.fitnessGoals.length > 0 ? (
+                    user.fitnessGoals.map((goal, index) => (
+                      <span
+                        key={index}
+                        className="px-2 py-1 bg-white/20 text-white text-xs rounded-full"
+                      >
+                        {goal.replace('-', ' ')}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-white/60 text-sm">No goals set</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Stats Grid */}

@@ -97,7 +97,7 @@ const MealLogModal: React.FC<MealLogModalProps> = ({
         date: new Date().toISOString()
       };
 
-      await api.post('/nutrition/meals', mealData);
+      await api.post('/api/nutrition/meals', mealData);
       
       // Log nutrition activity
       if (user?.id && entries.length > 0) {
