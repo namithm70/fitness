@@ -27,10 +27,11 @@ app.use(helmet());
 app.use((req, res, next) => {
   // Allow specific origins
   const allowedOrigins = [
+    process.env.CLIENT_URL,
     'https://fitness-ebon-nine.vercel.app',
     'https://fitness-fkct.onrender.com',
     'http://localhost:3000'
-  ];
+  ].filter(Boolean);
   
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
@@ -50,7 +51,7 @@ app.use((req, res, next) => {
 
 // Also keep the cors middleware as backup
 app.use(cors({
-  origin: ['https://fitness-ebon-nine.vercel.app', 'http://localhost:3000'],
+  origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token', 'Origin', 'Accept', 'X-Requested-With']

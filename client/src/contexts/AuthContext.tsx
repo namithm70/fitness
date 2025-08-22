@@ -254,6 +254,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updateUser = async (userData: Partial<User>) => {
     try {
+      const token = (typeof window !== 'undefined') ? localStorage.getItem('token') : null;
+      if (token && token.startsWith('demo-token-')) {
+        // Demo mode: update locally without hitting backend
+        setUser((prev) => prev ? { ...prev, ...userData } as User : prev);
+        toast.success('Profile updated (demo mode)');
+        return;
+      }
+
       const response = await api.put('/api/users/profile', userData);
       setUser(response.data);
       toast.success('Profile updated successfully');
