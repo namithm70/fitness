@@ -182,7 +182,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     checkAuth();
-  }, [safeGetItem, safeRemoveItem]);
+  }, [safeGetItem, safeRemoveItem, isProduction]);
 
   // Add debug functions to window for testing
   if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
