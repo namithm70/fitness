@@ -92,7 +92,10 @@ class InMemoryStorage {
     const allowedFields = [
       'firstName', 'lastName', 'fitnessLevel', 'fitnessGoals', 
       'profilePicture', 'totalWorkouts', 'totalWorkoutTime', 
-      'streakDays', 'lastWorkoutDate', 'isEmailVerified'
+      'streakDays', 'lastWorkoutDate', 'isEmailVerified',
+      'workoutDaysPerWeek', 'preferredWorkoutDuration', 'height',
+      'weight', 'bio', 'preferredWorkoutTypes', 'equipmentAccess',
+      'dietaryPreferences', 'physicalLimitations', 'injuries'
     ];
 
     const validUpdates = {};

@@ -2,6 +2,7 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
+const { InMemoryStorage: inMemoryStorage } = require('../utils/inMemoryStorage');
 
 const router = express.Router();
 
@@ -10,8 +11,18 @@ const router = express.Router();
 // @access  Private
 router.get('/profile', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    res.json(user);
+    const isConnected = req.app.locals.dbConnected;
+    if (isConnected) {
+      const user = await User.findById(req.user.id).select('-password');
+      return res.json(user);
+    }
+
+    // In-memory fallback
+    const user = await inMemoryStorage.findUserById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    return res.json(inMemoryStorage.getUserPublicData(user));
   } catch (error) {
     console.error('Get profile error:', error);
     res.status(500).json({ error: 'Server error' });
@@ -39,27 +50,46 @@ router.put('/profile', [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const user = await User.findById(req.user.id);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+    const isConnected = req.app.locals.dbConnected;
+    if (isConnected) {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Update fields
+      const updateFields = [
+        'firstName', 'lastName', 'fitnessLevel', 'fitnessGoals', 
+        'workoutDaysPerWeek', 'preferredWorkoutDuration', 'height', 
+        'weight', 'bio', 'preferredWorkoutTypes', 'equipmentAccess', 
+        'dietaryPreferences', 'physicalLimitations', 'injuries'
+      ];
+
+      updateFields.forEach(field => {
+        if (req.body[field] !== undefined) {
+          user[field] = req.body[field];
+        }
+      });
+
+      await user.save();
+      return res.json(user);
     }
 
-    // Update fields
-    const updateFields = [
-      'firstName', 'lastName', 'fitnessLevel', 'fitnessGoals', 
-      'workoutDaysPerWeek', 'preferredWorkoutDuration', 'height', 
-      'weight', 'bio', 'preferredWorkoutTypes', 'equipmentAccess', 
+    // In-memory fallback
+    const allowedFields = [
+      'firstName', 'lastName', 'fitnessLevel', 'fitnessGoals',
+      'profilePicture', 'workoutDaysPerWeek', 'preferredWorkoutDuration',
+      'height', 'weight', 'bio', 'preferredWorkoutTypes', 'equipmentAccess',
       'dietaryPreferences', 'physicalLimitations', 'injuries'
     ];
-
-    updateFields.forEach(field => {
-      if (req.body[field] !== undefined) {
-        user[field] = req.body[field];
+    const updates = {};
+    for (const key of allowedFields) {
+      if (req.body[key] !== undefined) {
+        updates[key] = req.body[key];
       }
-    });
-
-    await user.save();
-    res.json(user);
+    }
+    const updatedUser = await inMemoryStorage.updateUser(req.user.id, updates);
+    return res.json(inMemoryStorage.getUserPublicData(updatedUser));
   } catch (error) {
     console.error('Update profile error:', error);
     res.status(500).json({ error: 'Server error' });
