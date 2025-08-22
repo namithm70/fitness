@@ -49,12 +49,13 @@ const ProfilePage: React.FC = () => {
   const handleProfileSave = async () => {
     try {
       setSavingProfile(true);
-      await updateUser({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        fitnessLevel: formData.fitnessLevel as any,
-        fitnessGoals: formData.fitnessGoals,
-      });
+      const payload: any = {};
+      if (formData.firstName && formData.firstName !== user?.firstName) payload.firstName = formData.firstName;
+      if (formData.lastName && formData.lastName !== user?.lastName) payload.lastName = formData.lastName;
+      if (formData.fitnessLevel && formData.fitnessLevel !== user?.fitnessLevel) payload.fitnessLevel = formData.fitnessLevel;
+      if (JSON.stringify(formData.fitnessGoals) !== JSON.stringify(user?.fitnessGoals || [])) payload.fitnessGoals = formData.fitnessGoals;
+
+      await updateUser(payload);
       setIsEditing(false);
     } finally {
       setSavingProfile(false);
