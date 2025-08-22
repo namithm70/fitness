@@ -4,10 +4,9 @@ import axios from 'axios';
 // Prefer REACT_APP_API_URL when provided (including in production).
 // Fallbacks: production backend URL, then localhost for dev.
 const FINAL_API_URL =
-  process.env.REACT_APP_API_URL ||
   (process.env.NODE_ENV === 'production'
     ? 'https://fitness-fkct.onrender.com'
-    : 'http://localhost:5000');
+    : (process.env.REACT_APP_API_URL || 'http://localhost:5000'));
 
 // Debug logging to help troubleshoot
 console.log('Final API URL:', FINAL_API_URL);
