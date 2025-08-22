@@ -70,6 +70,15 @@
     @apply bg-gradient-to-r from-fitness-500 to-nutrition-500 bg-clip-text text-transparent;
   }
   
+  /* Hide scrollbar for overflow containers when desired */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  
   .glass-effect {
     backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.1);
