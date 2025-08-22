@@ -465,7 +465,7 @@ const ProfilePage: React.FC = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-x-hidden">
       {/* Demo mode indicator */}
       {isDemoMode && (
         <div className="bg-purple-600/20 border border-purple-500/30 rounded-xl p-4 text-center">
@@ -498,7 +498,7 @@ const ProfilePage: React.FC = () => {
 
       {/* Navigation Tabs */}
       <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-2 shadow-lg">
-        <div className="flex space-x-1">
+        <div className="flex space-x-1 overflow-x-auto no-scrollbar -mx-1 px-1">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (

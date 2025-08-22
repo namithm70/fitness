@@ -43,7 +43,7 @@ const Layout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex transition-colors duration-300 overflow-x-hidden">
       <SkipToContentLink />
       
       {/* Mobile sidebar overlay */}
@@ -181,7 +181,7 @@ const Layout: React.FC = () => {
         </div>
 
         {/* Page content */}
-        <main id="main-content" className="flex-1 p-4 sm:p-6 lg:p-8">
+        <main id="main-content" className="flex-1 p-4 sm:p-6 lg:p-8 w-full overflow-x-hidden">
           <Outlet />
         </main>
       </div>
