@@ -20,19 +20,19 @@ const io = socketIo(server, {
   }
 });
 
+// CORS configuration - Define allowed origins at top level
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  'https://fitness-ebon-nine.vercel.app',
+  'https://fitness-fkct.onrender.com',
+  'http://localhost:3000'
+].filter(Boolean);
+
 // Middleware
 app.use(helmet());
 
 // CORS configuration - Explicit for Vercel frontend
 app.use((req, res, next) => {
-  // Allow specific origins
-  const allowedOrigins = [
-    process.env.CLIENT_URL,
-    'https://fitness-ebon-nine.vercel.app',
-    'https://fitness-fkct.onrender.com',
-    'http://localhost:3000'
-  ].filter(Boolean);
-  
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
