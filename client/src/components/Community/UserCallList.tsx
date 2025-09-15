@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Video, Users, Search, Filter } from 'lucide-react';
 import { useCalling } from '../../contexts/CallingContext';
@@ -23,28 +23,7 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
     return onlineUsers.some(user => user.id === userId);
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      fetchUsers();
-    }
-  }, [isOpen]);
-
-  // Debounced search effect
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const timeoutId = setTimeout(() => {
-      if (searchTerm.trim()) {
-        fetchUsers(searchTerm);
-      } else {
-        fetchUsers();
-      }
-    }, 300); // 300ms debounce
-
-    return () => clearTimeout(timeoutId);
-  }, [searchTerm, isOpen]);
-
-  const fetchUsers = async (searchQuery: string = '') => {
+  const fetchUsers = useCallback(async (searchQuery: string = '') => {
     setLoading(true);
     try {
       let response;
@@ -84,7 +63,28 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getOnlineStatus]);
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchUsers();
+    }
+  }, [isOpen, fetchUsers]);
+
+  // Debounced search effect
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const timeoutId = setTimeout(() => {
+      if (searchTerm.trim()) {
+        fetchUsers(searchTerm);
+      } else {
+        fetchUsers();
+      }
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, isOpen, fetchUsers]);
 
   const filteredUsers = users.filter(user => {
     // Only apply online filter since search is handled by database
