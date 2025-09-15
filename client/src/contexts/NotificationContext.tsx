@@ -75,7 +75,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     setError(null);
 
     try {
-      const response = await api.get('/notifications', {
+      const response = await api.get('/api/notifications', {
         params: { page, limit: 20, unreadOnly }
       });
 
@@ -98,7 +98,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
 
   const markAsRead = async (notificationId: string) => {
     try {
-      await api.put(`/notifications/${notificationId}/read`);
+      await api.put(`/api/notifications/${notificationId}/read`);
       
       setNotifications(prev => 
         prev.map(notif => 
@@ -117,7 +117,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
 
   const markAllAsRead = async () => {
     try {
-      await api.put('/notifications/read-all');
+      await api.put('/api/notifications/read-all');
       
       setNotifications(prev => 
         prev.map(notif => ({ 
@@ -136,7 +136,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
 
   const deleteNotification = async (notificationId: string) => {
     try {
-      await api.delete(`/notifications/${notificationId}`);
+      await api.delete(`/api/notifications/${notificationId}`);
       
       setNotifications(prev => prev.filter(notif => notif._id !== notificationId));
       
@@ -153,7 +153,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
 
   const createDailyWorkoutSuggestion = useCallback(async () => {
     try {
-      await api.post('/notifications/create-daily-suggestion');
+      await api.post('/api/notifications/create-daily-suggestion');
       // Refresh notifications to show the new suggestion
       await fetchNotifications(1, false);
     } catch (err: any) {
