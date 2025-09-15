@@ -23,22 +23,54 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  const fetchUsers = async () => {
+  // Debounced search effect
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const timeoutId = setTimeout(() => {
+      if (searchTerm.trim()) {
+        fetchUsers(searchTerm);
+      } else {
+        fetchUsers();
+      }
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, isOpen]);
+
+  const fetchUsers = async (searchQuery: string = '') => {
     setLoading(true);
     try {
-      // Fetch real users from API
-      const response = await api.get('/users');
-      const apiUsers = response.data;
-      
-      // Transform API users to CallUser format
-      const callUsers: CallUser[] = apiUsers.map((user: any) => ({
-        id: user._id || user.id,
-        name: user.name || user.username || 'Unknown User',
-        avatar: user.avatar || user.profilePicture,
-        isOnline: user.isOnline || false
-      }));
-      
-      setUsers(callUsers);
+      let response;
+      if (searchQuery.trim()) {
+        // Use search endpoint for specific queries
+        response = await api.get(`/users/search?q=${encodeURIComponent(searchQuery)}&limit=50`);
+        const searchResults = response.data.users || response.data;
+        
+        // Transform search results to CallUser format
+        const callUsers: CallUser[] = searchResults.map((user: any) => ({
+          id: user._id || user.id,
+          name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Unknown User',
+          avatar: user.profilePicture,
+          isOnline: user.isOnline || false
+        }));
+        
+        setUsers(callUsers);
+      } else {
+        // Fetch all users for general display
+        response = await api.get('/users');
+        const apiUsers = response.data;
+        
+        // Transform API users to CallUser format
+        const callUsers: CallUser[] = apiUsers.map((user: any) => ({
+          id: user._id || user.id,
+          name: user.name || 'Unknown User',
+          avatar: user.avatar || user.profilePicture,
+          isOnline: user.isOnline || false
+        }));
+        
+        setUsers(callUsers);
+      }
     } catch (error) {
       console.error('Failed to fetch users:', error);
       // If API fails, show empty list instead of mock data
@@ -49,9 +81,9 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
   };
 
   const filteredUsers = users.filter(user => {
-    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
+    // Only apply online filter since search is handled by database
     const matchesFilter = !filterOnline || user.isOnline;
-    return matchesSearch && matchesFilter;
+    return matchesFilter;
   });
 
   const handleStartCall = async (userId: string, callType: 'audio' | 'video') => {
@@ -105,11 +137,16 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50" />
             <input
               type="text"
-              placeholder="Search users..."
+              placeholder="Search users by name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
             />
+            {loading && searchTerm && (
+              <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+              </div>
+            )}
           </div>
           <button
             onClick={() => setFilterOnline(!filterOnline)}
@@ -135,7 +172,10 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
               <Users className="w-16 h-16 text-white/30 mx-auto mb-4" />
               <p className="text-white/70">
                 {users.length === 0 
-                  ? "No users available for calling" 
+                  ? (searchTerm.trim() 
+                      ? `No users found matching "${searchTerm}"` 
+                      : "No users available for calling"
+                    )
                   : "No users match your search criteria"
                 }
               </p>
