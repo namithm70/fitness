@@ -10,6 +10,14 @@ import {
   CallSettings 
 } from '../types/calling';
 
+// Browser polyfill: some dependencies (readable-stream used by simple-peer)
+// expect a global `process`. Modern bundlers don't provide it by default.
+// Provide a minimal stub to prevent "process is not defined" at runtime.
+// This does NOT expose any sensitive vars; it's just an empty shell.
+if (typeof window !== 'undefined' && !(window as any).process) {
+  (window as any).process = { env: {} } as any;
+}
+
 class WebRTCService {
   private socket: Socket | null = null;
   private peers: { [userId: string]: SimplePeer.Instance } = {};
