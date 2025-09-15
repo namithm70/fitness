@@ -31,31 +31,29 @@ const allowedOrigins = [
 // Middleware
 app.use(helmet());
 
-// CORS configuration - Explicit for Vercel frontend
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
-  
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-auth-token');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
-
-// Also keep the cors middleware as backup
-app.use(cors({
-  origin: allowedOrigins,
+// Robust CORS configuration
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow non-browser requests (no origin) and known frontends
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(null, false);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token', 'Origin', 'Accept', 'X-Requested-With']
-}));
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token', 'Origin', 'Accept', 'X-Requested-With'],
+  optionsSuccessStatus: 200
+};
+
+app.use((req, res, next) => {
+  // Ensure responses vary by Origin for caches/CDNs
+  res.header('Vary', 'Origin');
+  next();
+});
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Trust proxy for rate limiting behind load balancers
 app.set('trust proxy', 1);
