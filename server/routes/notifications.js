@@ -7,6 +7,30 @@ const User = require('../models/User');
 const Workout = require('../models/Workout');
 const inMemoryStorage = require('../utils/inMemoryStorage');
 
+// Helper: select a workout tailored to the user's fitness level.
+async function selectWorkoutForUser(userId) {
+  const difficultyOrder = ['beginner', 'intermediate', 'advanced'];
+
+  // Read user's fitness level if present; default beginner
+  const user = await User.findById(userId).select('fitnessLevel').lean();
+  const level = user?.fitnessLevel || 'beginner';
+  const levelIndex = Math.max(0, difficultyOrder.indexOf(level));
+  const allowedDifficulties = difficultyOrder.slice(0, levelIndex + 1);
+
+  // Try to sample one workout within allowed difficulties
+  let results = await Workout.aggregate([
+    { $match: { difficulty: { $in: allowedDifficulties } } },
+    { $sample: { size: 1 } }
+  ]);
+
+  if (!results || results.length === 0) {
+    // Fallback: sample any workout configured in DB
+    results = await Workout.aggregate([{ $sample: { size: 1 } }]);
+  }
+
+  return results && results.length > 0 ? results[0] : null;
+}
+
 // @route   GET /api/notifications
 // @desc    Get user notifications
 // @access  Private
@@ -275,19 +299,9 @@ router.post('/create-daily-suggestion', auth, async (req, res) => {
     let workout = null;
 
     if (isConnected) {
-      // Get user's fitness level and goals
-      const user = await User.findById(req.user.id).select('fitnessLevel fitnessGoals');
-      
-      // Get random workout based on user's fitness level
-      const workouts = await Workout.find({
-        difficulty: { $lte: user?.fitnessLevel || 'beginner' }
-      }).limit(10);
-      
-      if (workouts.length > 0) {
-        workout = workouts[Math.floor(Math.random() * workouts.length)];
-      }
+      workout = await selectWorkoutForUser(req.user.id);
     } else {
-      // In-memory fallback - create a simple workout suggestion
+      // In-memory fallback – use a lightweight suggestion structure
       workout = {
         _id: `workout_${Date.now()}`,
         name: 'Daily Fitness Challenge',
@@ -298,7 +312,7 @@ router.post('/create-daily-suggestion', auth, async (req, res) => {
     }
 
     if (!workout) {
-      return res.status(500).json({ error: 'No workouts available' });
+      return res.status(404).json({ error: 'No workouts available in database' });
     }
 
     // Create notification
