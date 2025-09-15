@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import { webrtcService } from '../services/webrtcService';
 import { CallState, CallUser, CallPermissions, CallSettings } from '../types/calling';
 import { useAuth } from './AuthContext';
+import { api } from '../config/api';
 
 interface CallingContextType {
   callState: CallState;
@@ -32,7 +33,7 @@ export const CallingProvider: React.FC<CallingProviderProps> = ({ children }) =>
     screenShare: true
   });
   const [callSettings, setCallSettings] = useState<CallSettings>(webrtcService.getCallSettings());
-  const [onlineUsers] = useState<CallUser[]>([]);
+  const [onlineUsers, setOnlineUsers] = useState<CallUser[]>([]);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -49,11 +50,24 @@ export const CallingProvider: React.FC<CallingProviderProps> = ({ children }) =>
     // Set current user when auth context is available
     if (user?.id) {
       webrtcService.setCurrentUser(user.id);
+      // Initial update of online users
+      updateOnlineUsers();
     }
 
     return () => {
       webrtcService.unsubscribeFromCallState(handleCallStateChange);
     };
+  }, [user]);
+
+  // Periodically update online users
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const interval = setInterval(() => {
+      updateOnlineUsers();
+    }, 5000); // Update every 5 seconds
+
+    return () => clearInterval(interval);
   }, [user]);
 
   const checkPermissions = async () => {
@@ -131,6 +145,30 @@ export const CallingProvider: React.FC<CallingProviderProps> = ({ children }) =>
 
   const getOnlineUsers = (): CallUser[] => {
     return onlineUsers;
+  };
+
+  const updateOnlineUsers = async () => {
+    try {
+      const onlineUserIds = webrtcService.getOnlineUsers();
+      if (onlineUserIds.length > 0) {
+        // Fetch user details for online users
+        const response = await api.get('/api/users');
+        const allUsers = response.data;
+        const onlineUsersList = allUsers.filter((user: any) => 
+          onlineUserIds.includes(user._id || user.id)
+        ).map((user: any) => ({
+          id: user._id || user.id,
+          name: user.name || 'Unknown User',
+          avatar: user.avatar || user.profilePicture,
+          isOnline: true
+        }));
+        setOnlineUsers(onlineUsersList);
+      } else {
+        setOnlineUsers([]);
+      }
+    } catch (error) {
+      console.error('Failed to update online users:', error);
+    }
   };
 
   const contextValue: CallingContextType = {

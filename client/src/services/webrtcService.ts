@@ -30,6 +30,7 @@ class WebRTCService {
   };
   private callStateListeners: ((state: CallState) => void)[] = [];
   private currentUserId: string | null = null;
+  private onlineUsers: Set<string> = new Set();
   private callSettings: CallSettings = {
     audioInput: 'default',
     audioOutput: 'default',
@@ -521,15 +522,25 @@ class WebRTCService {
   private handleUserOnline(userId: string) {
     // Update user online status
     console.log(`User ${userId} is online`);
+    this.onlineUsers.add(userId);
   }
 
   private handleUserOffline(userId: string) {
     // Update user offline status
     console.log(`User ${userId} is offline`);
+    this.onlineUsers.delete(userId);
   }
 
   public getCallState(): CallState {
     return this.callState;
+  }
+
+  public getOnlineUsers(): string[] {
+    return Array.from(this.onlineUsers);
+  }
+
+  public isUserOnline(userId: string): boolean {
+    return this.onlineUsers.has(userId);
   }
 
   public updateCallSettings(settings: Partial<CallSettings>) {

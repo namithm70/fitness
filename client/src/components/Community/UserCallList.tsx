@@ -11,11 +11,17 @@ interface UserCallListProps {
 }
 
 const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
-  const { startCall, permissions } = useCalling();
+  const { startCall, permissions, getOnlineUsers } = useCalling();
   const [users, setUsers] = useState<CallUser[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOnline, setFilterOnline] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Helper function to get online status from calling context
+  const getOnlineStatus = (userId: string): boolean => {
+    const onlineUsers = getOnlineUsers();
+    return onlineUsers.some(user => user.id === userId);
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -52,7 +58,7 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
           id: user._id || user.id,
           name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Unknown User',
           avatar: user.profilePicture,
-          isOnline: user.isOnline || false
+          isOnline: getOnlineStatus(user._id || user.id)
         }));
         
         setUsers(callUsers);
@@ -66,7 +72,7 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
           id: user._id || user.id,
           name: user.name || 'Unknown User',
           avatar: user.avatar || user.profilePicture,
-          isOnline: user.isOnline || false
+          isOnline: getOnlineStatus(user._id || user.id)
         }));
         
         setUsers(callUsers);
