@@ -95,7 +95,10 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
     try {
       // Always request permissions before starting call
       console.log('Requesting permissions before call...');
-      const newPermissions = await requestPermissions();
+      const newPermissions = await requestPermissions({
+        audio: true,
+        video: callType === 'video'
+      });
       console.log('Permissions granted:', newPermissions);
       
       // Check if we got the required permissions
@@ -112,9 +115,21 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
       if (success) {
         onClose();
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to start call:', error);
-      alert('Failed to start call. Please check your permissions and try again.');
+      if (error?.message === 'permission-denied') {
+        alert('Microphone/Camera permission was blocked. Click the lock icon in your browser address bar, enable Microphone/Camera for fitness-ebon-nine.vercel.app, then reload.');
+        return;
+      }
+      if (error?.message === 'no-microphone') {
+        alert('No microphone was detected. Please connect a microphone or select one in your system settings, then reload.');
+        return;
+      }
+      if (error?.message === 'no-camera' && callType === 'video') {
+        alert('No camera was detected. Please connect a camera or switch to an audio call.');
+        return;
+      }
+      alert('Failed to start call. Please check your browser site settings for Microphone/Camera and try again.');
     }
   };
 

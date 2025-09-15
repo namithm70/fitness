@@ -128,28 +128,50 @@ class WebRTCService {
     }
   }
 
-  public async requestPermissions(): Promise<CallPermissions> {
+  public async requestPermissions(options?: { audio?: boolean; video?: boolean }): Promise<CallPermissions> {
+    const wantAudio = options?.audio !== false; // default true
+    const wantVideo = options?.video === true;  // default false unless explicitly true
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true
-      });
+      // Probe available devices to provide helpful errors
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const hasMic = devices.some(d => d.kind === 'audioinput');
+      const hasCam = devices.some(d => d.kind === 'videoinput');
+
+      const constraints: MediaStreamConstraints = {
+        audio: wantAudio ? true : false,
+        video: wantVideo ? true : false
+      };
+
+      if (wantAudio && !hasMic) {
+        throw new Error('no-microphone');
+      }
+      if (wantVideo && !hasCam) {
+        throw new Error('no-camera');
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       
       // Stop the stream immediately as we just needed to request permissions
       stream.getTracks().forEach(track => track.stop());
       
       return {
-        camera: true,
-        microphone: true,
+        camera: wantVideo ? true : this.callState.isVideoEnabled,
+        microphone: wantAudio ? true : this.callState.isMuted === false,
         screenShare: true
       };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Permission request failed:', error);
-      return {
-        camera: false,
-        microphone: false,
-        screenShare: false
-      };
+      // Bubble specific markers so UI can guide user to site settings
+      if (error?.name === 'NotAllowedError') {
+        throw new Error('permission-denied');
+      }
+      if (error?.name === 'NotFoundError' || error?.message === 'no-microphone') {
+        throw new Error('no-microphone');
+      }
+      if (error?.message === 'no-camera') {
+        throw new Error('no-camera');
+      }
+      throw error;
     }
   }
 

@@ -14,7 +14,7 @@ interface CallingContextType {
   toggleMute: () => boolean;
   toggleVideo: () => boolean;
   toggleScreenShare: () => Promise<boolean>;
-  requestPermissions: () => Promise<CallPermissions>;
+  requestPermissions: (options?: { audio?: boolean; video?: boolean }) => Promise<CallPermissions>;
   updateCallSettings: (settings: Partial<CallSettings>) => void;
   getOnlineUsers: () => CallUser[];
   isUserOnline: (userId: string) => boolean;
@@ -76,8 +76,8 @@ export const CallingProvider: React.FC<CallingProviderProps> = ({ children }) =>
     setPermissions(currentPermissions);
   };
 
-  const requestPermissions = async (): Promise<CallPermissions> => {
-    const newPermissions = await webrtcService.requestPermissions();
+  const requestPermissions = async (options?: { audio?: boolean; video?: boolean }): Promise<CallPermissions> => {
+    const newPermissions = await webrtcService.requestPermissions(options);
     setPermissions(newPermissions);
     return newPermissions;
   };
