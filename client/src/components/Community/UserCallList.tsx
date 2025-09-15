@@ -239,12 +239,7 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => handleStartCall(user.id, 'audio')}
-                    disabled={!permissions.microphone}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-                      permissions.microphone
-                        ? 'bg-green-500 hover:bg-green-600 text-white'
-                        : 'bg-white/10 text-white/30 cursor-not-allowed'
-                    }`}
+                    className="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-green-500 hover:bg-green-600 text-white"
                     title={user.isOnline ? "Audio Call" : "Audio Call (User is offline - call may not be answered)"}
                   >
                     <Phone className="w-5 h-5" />
@@ -255,12 +250,7 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => handleStartCall(user.id, 'video')}
-                    disabled={!permissions.camera || !permissions.microphone}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-                      permissions.camera && permissions.microphone
-                        ? 'bg-blue-500 hover:bg-blue-600 text-white'
-                        : 'bg-white/10 text-white/30 cursor-not-allowed'
-                    }`}
+                    className="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-blue-500 hover:bg-blue-600 text-white"
                     title={user.isOnline ? "Video Call" : "Video Call (User is offline - call may not be answered)"}
                   >
                     <Video className="w-5 h-5" />
