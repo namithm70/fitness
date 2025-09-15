@@ -273,7 +273,6 @@ router.post('/create-daily-suggestion', auth, async (req, res) => {
 
     // Get daily workout suggestion directly
     let workout = null;
-    const isConnected = req.app.locals.dbConnected;
 
     if (isConnected) {
       // Get user's fitness level and goals
