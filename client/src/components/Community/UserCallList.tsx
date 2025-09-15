@@ -18,10 +18,10 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
 
   // Helper function to get online status from calling context
-  const getOnlineStatus = (userId: string): boolean => {
+  const getOnlineStatus = useCallback((userId: string): boolean => {
     const onlineUsers = getOnlineUsers();
     return onlineUsers.some(user => user.id === userId);
-  };
+  }, [getOnlineUsers]);
 
   const fetchUsers = useCallback(async (searchQuery: string = '') => {
     setLoading(true);
