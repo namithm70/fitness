@@ -16,10 +16,11 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { SkipToContentLink } from '../UI/Accessibility';
-import DarkModeToggle from '../UI/DarkModeToggle';
+import NotificationPanel from '../Community/NotificationPanel';
 
 const Layout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -171,8 +172,11 @@ const Layout: React.FC = () => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <DarkModeToggle />
-              <button className="text-white/80 hover:text-white relative p-2 rounded-lg hover:bg-white/10 transition-all duration-200">
+              <button 
+                onClick={() => setShowNotifications(true)}
+                className="text-white/80 hover:text-white relative p-2 rounded-lg hover:bg-white/10 transition-all duration-200"
+                aria-label="View notifications"
+              >
                 <Bell className="w-6 h-6" />
                 <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full animate-pulse"></span>
               </button>
@@ -185,6 +189,12 @@ const Layout: React.FC = () => {
           <Outlet />
         </main>
       </div>
+
+      {/* Notification Panel */}
+      <NotificationPanel 
+        isOpen={showNotifications} 
+        onClose={() => setShowNotifications(false)} 
+      />
     </div>
   );
 };

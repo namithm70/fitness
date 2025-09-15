@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from './contexts/AuthContext';
-import { ThemeProvider } from './contexts/ThemeContext';
 import { CallingProvider } from './contexts/CallingContext';
 import Layout from './components/Layout/Layout';
 import LoadingSpinner from './components/UI/LoadingSpinner';
@@ -35,9 +34,8 @@ const App: React.FC = () => {
   console.log('✅ App loading complete, rendering main content');
 
   return (
-    <ThemeProvider>
-      <CallingProvider>
-        <ErrorBoundary>
+    <CallingProvider>
+      <ErrorBoundary>
           <Helmet>
             <title>FitLife - Your Fitness Journey Starts Here</title>
             <meta name="description" content="Comprehensive health and fitness website for gym members and fitness enthusiasts" />
@@ -74,7 +72,6 @@ const App: React.FC = () => {
           </Suspense>
         </ErrorBoundary>
       </CallingProvider>
-    </ThemeProvider>
   );
 };
 
