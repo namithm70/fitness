@@ -42,7 +42,7 @@ class WebRTCService {
   };
 
   constructor() {
-    this.initializeSocket();
+    // Don't initialize socket immediately - wait for setCurrentUser
   }
 
   private initializeSocket() {
@@ -50,6 +50,10 @@ class WebRTCService {
     const socketUrl = process.env.NODE_ENV === 'production'
       ? 'https://fitness-fkct.onrender.com'
       : (process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000');
+    
+    console.log('WebRTC Socket URL:', socketUrl);
+    console.log('NODE_ENV:', process.env.NODE_ENV);
+    console.log('REACT_APP_SOCKET_URL:', process.env.REACT_APP_SOCKET_URL);
     
     this.socket = io(socketUrl, {
       transports: ['websocket', 'polling']
@@ -75,6 +79,12 @@ class WebRTCService {
 
   public setCurrentUser(userId: string) {
     this.currentUserId = userId;
+    
+    // Initialize socket if not already done
+    if (!this.socket) {
+      this.initializeSocket();
+    }
+    
     if (this.socket) {
       this.socket.emit('join-calling', { userId });
     }
