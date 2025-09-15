@@ -2,7 +2,6 @@ import SimplePeer from 'simple-peer';
 import { io, Socket } from 'socket.io-client';
 import { 
   CallState, 
-  CallUser, 
   CallOffer, 
   CallAnswer, 
   CallEnd, 

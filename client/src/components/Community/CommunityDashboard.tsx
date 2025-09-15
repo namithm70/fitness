@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   MessageCircle, TrendingUp, Target, Calendar, Users as GroupIcon, 
-  Plus, Search, Bell, Phone, Video
+  Plus, Search, Bell, Phone
 } from 'lucide-react';
 import { CommunityDashboard as CommunityDashboardType, User } from '../../types/community';
 import { api } from '../../config/api';

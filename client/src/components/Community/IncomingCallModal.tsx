@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, PhoneOff, Video, Mic, MicOff } from 'lucide-react';
+import { Phone, PhoneOff, Video, Mic } from 'lucide-react';
 import { useCalling } from '../../contexts/CallingContext';
 
 interface IncomingCallModalProps {

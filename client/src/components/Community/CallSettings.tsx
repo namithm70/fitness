@@ -3,11 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Settings, 
   Mic, 
-  MicOff, 
   Video, 
-  VideoOff, 
-  Volume2, 
-  VolumeX,
   Monitor,
   Wifi,
   WifiOff,
@@ -23,7 +19,6 @@ interface CallSettingsProps {
 
 const CallSettings: React.FC<CallSettingsProps> = ({ isOpen, onClose }) => {
   const { callSettings, updateCallSettings, permissions } = useCalling();
-  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([]);
   const [videoDevices, setVideoDevices] = useState<MediaDeviceInfo[]>([]);
   const [localSettings, setLocalSettings] = useState<CallSettingsType>(callSettings);
@@ -37,7 +32,6 @@ const CallSettings: React.FC<CallSettingsProps> = ({ isOpen, onClose }) => {
   const loadDevices = async () => {
     try {
       const deviceList = await navigator.mediaDevices.enumerateDevices();
-      setDevices(deviceList);
       
       const audioInputs = deviceList.filter(device => device.kind === 'audioinput');
       const audioOutputs = deviceList.filter(device => device.kind === 'audiooutput');

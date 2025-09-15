@@ -32,7 +32,7 @@ export const CallingProvider: React.FC<CallingProviderProps> = ({ children }) =>
     screenShare: true
   });
   const [callSettings, setCallSettings] = useState<CallSettings>(webrtcService.getCallSettings());
-  const [onlineUsers, setOnlineUsers] = useState<CallUser[]>([]);
+  const [onlineUsers] = useState<CallUser[]>([]);
   const { user } = useAuth();
 
   useEffect(() => {
