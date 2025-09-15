@@ -11,7 +11,7 @@ interface UserCallListProps {
 }
 
 const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
-  const { startCall, permissions, getOnlineUsers, requestPermissions, isUserOnline } = useCalling();
+  const { startCall, requestPermissions, isUserOnline } = useCalling();
   const [users, setUsers] = useState<CallUser[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOnline, setFilterOnline] = useState(false);
