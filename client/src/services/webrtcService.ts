@@ -76,6 +76,22 @@ class WebRTCService {
     this.socket.on('user-offline', this.handleUserOffline.bind(this));
   }
 
+  public async ensureConnected(userId: string): Promise<void> {
+    // Initialize socket and join room if needed
+    if (!this.socket) {
+      this.initializeSocket();
+    }
+    if (this.currentUserId !== userId) {
+      this.setCurrentUser(userId);
+    }
+    if (!this.socket) return;
+    if (this.socket.connected) return;
+    await new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('socket-timeout')), 5000);
+      this.socket?.once('connect', () => { clearTimeout(timer); resolve(); });
+    });
+  }
+
   public setCurrentUser(userId: string) {
     this.currentUserId = userId;
     

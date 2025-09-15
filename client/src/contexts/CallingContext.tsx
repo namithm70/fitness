@@ -98,6 +98,8 @@ export const CallingProvider: React.FC<CallingProviderProps> = ({ children }) =>
       }
     }
 
+    // Ensure socket connected and user joined
+    await webrtcService.ensureConnected(user?.id || '');
     return await webrtcService.startCall(userId, callType);
   };
 
