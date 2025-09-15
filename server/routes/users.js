@@ -6,6 +6,48 @@ const { InMemoryStorage: inMemoryStorage } = require('../utils/inMemoryStorage')
 
 const router = express.Router();
 
+// @route   GET /api/users
+// @desc    Get all users (for calling features)
+// @access  Private
+router.get('/', auth, async (req, res) => {
+  try {
+    const isConnected = req.app.locals.dbConnected;
+    if (isConnected) {
+      const users = await User.find({ isPublicProfile: true })
+        .select('firstName lastName profilePicture isOnline lastSeen')
+        .where('_id').ne(req.user.id)
+        .sort({ lastSeen: -1 });
+      
+      const usersWithOnlineStatus = users.map(user => ({
+        _id: user._id,
+        name: `${user.firstName} ${user.lastName}`.trim(),
+        avatar: user.profilePicture,
+        isOnline: user.isOnline || false,
+        lastSeen: user.lastSeen
+      }));
+      
+      return res.json(usersWithOnlineStatus);
+    }
+
+    // In-memory fallback
+    const allUsers = await inMemoryStorage.getAllUsers();
+    const publicUsers = allUsers
+      .filter(user => user.isPublicProfile && user._id !== req.user.id)
+      .map(user => ({
+        _id: user._id,
+        name: `${user.firstName} ${user.lastName}`.trim(),
+        avatar: user.profilePicture,
+        isOnline: user.isOnline || false,
+        lastSeen: user.lastSeen
+      }));
+    
+    return res.json(publicUsers);
+  } catch (error) {
+    console.error('Get users error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // @route   GET /api/users/profile
 // @desc    Get user profile
 // @access  Private

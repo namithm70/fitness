@@ -177,6 +177,9 @@ class WebRTCService {
         participants: [{ id: this.currentUserId, name: 'You', isOnline: true }]
       });
 
+      // Create peer connection for the call
+      this.createPeerConnection(userId, true);
+
       // Send call offer
       const offer: CallOffer = {
         from: { id: this.currentUserId, name: 'You', isOnline: true },
@@ -234,6 +237,12 @@ class WebRTCService {
         };
 
         this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
+        
+        // Create peer connection for answering the call
+        const callerId = this.callState.participants[0]?.id;
+        if (callerId) {
+          this.createPeerConnection(callerId, false);
+        }
         
         this.updateCallState({
           isCallIncoming: false,
@@ -432,10 +441,72 @@ class WebRTCService {
     this.cleanupCall();
   }
 
+  private createPeerConnection(userId: string, isInitiator: boolean) {
+    const peer = new SimplePeer({
+      initiator: isInitiator,
+      trickle: false,
+      stream: this.localStream || undefined,
+      config: {
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          { urls: 'stun:stun1.l.google.com:19302' }
+        ]
+      }
+    });
+
+    peer.on('signal', (data) => {
+      // Send signaling data to the other peer
+      if (this.socket) {
+        this.socket.emit('call-signal', {
+          callId: this.callState.currentCallId,
+          from: this.currentUserId,
+          to: userId,
+          signal: data,
+          type: 'offer'
+        });
+      }
+    });
+
+    peer.on('stream', (stream) => {
+      // Handle incoming stream from remote peer
+      console.log('Received remote stream from', userId);
+      this.updateCallState({
+        remoteStreams: {
+          ...this.callState.remoteStreams,
+          [userId]: stream
+        }
+      });
+    });
+
+    peer.on('connect', () => {
+      console.log('Peer connection established with', userId);
+    });
+
+    peer.on('error', (err) => {
+      console.error('Peer connection error:', err);
+    });
+
+    peer.on('close', () => {
+      console.log('Peer connection closed with', userId);
+      delete this.peers[userId];
+    });
+
+    this.peers[userId] = peer;
+  }
+
   private handleCallSignal(signal: CallSignal) {
     // Handle WebRTC signaling
     if (this.peers[signal.from]) {
       this.peers[signal.from].signal(signal.signal);
+    } else {
+      // Create peer connection if it doesn't exist
+      this.createPeerConnection(signal.from, false);
+      // Signal will be handled by the peer's signal event
+      setTimeout(() => {
+        if (this.peers[signal.from]) {
+          this.peers[signal.from].signal(signal.signal);
+        }
+      }, 100);
     }
   }
 
