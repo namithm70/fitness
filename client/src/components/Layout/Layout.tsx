@@ -17,11 +17,13 @@ import {
 import { useAuth } from '../../contexts/AuthContext';
 import { SkipToContentLink } from '../UI/Accessibility';
 import NotificationPanel from '../Community/NotificationPanel';
+import { useNotifications } from '../../contexts/NotificationContext';
 
 const Layout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const { user, logout } = useAuth();
+  const { unreadCount } = useNotifications();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -178,7 +180,13 @@ const Layout: React.FC = () => {
                 aria-label="View notifications"
               >
                 <Bell className="w-6 h-6" />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full animate-pulse"></span>
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full animate-pulse flex items-center justify-center">
+                    <span className="text-xs text-white font-bold">
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  </span>
+                )}
               </button>
             </div>
           </div>

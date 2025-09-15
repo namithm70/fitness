@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from './contexts/AuthContext';
 import { CallingProvider } from './contexts/CallingContext';
+import { NotificationProvider } from './contexts/NotificationContext';
 import Layout from './components/Layout/Layout';
 import LoadingSpinner from './components/UI/LoadingSpinner';
 import ErrorBoundary from './components/UI/ErrorBoundary';
@@ -35,7 +36,8 @@ const App: React.FC = () => {
 
   return (
     <CallingProvider>
-      <ErrorBoundary>
+      <NotificationProvider>
+        <ErrorBoundary>
           <Helmet>
             <title>FitLife - Your Fitness Journey Starts Here</title>
             <meta name="description" content="Comprehensive health and fitness website for gym members and fitness enthusiasts" />
@@ -71,7 +73,8 @@ const App: React.FC = () => {
             </Routes>
           </Suspense>
         </ErrorBoundary>
-      </CallingProvider>
+      </NotificationProvider>
+    </CallingProvider>
   );
 };
 

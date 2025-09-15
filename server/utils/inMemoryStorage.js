@@ -7,6 +7,8 @@ class InMemoryStorage {
     this.users = new Map();
     this.nextUserId = 1;
     this.tokens = new Map(); // Store valid tokens
+    this.notifications = new Map();
+    this.nextNotificationId = 1;
   }
 
   async createUser(userData) {
@@ -262,11 +264,84 @@ class InMemoryStorage {
     };
   }
 
+  // Notification methods
+  async addNotification(notificationData) {
+    const notification = {
+      _id: `notif_${this.nextNotificationId}`,
+      ...notificationData,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    
+    this.notifications.set(notification._id, notification);
+    this.nextNotificationId++;
+    return notification;
+  }
+
+  async getAllNotifications() {
+    return Array.from(this.notifications.values());
+  }
+
+  async getNotificationsByUser(userId, options = {}) {
+    const { limit = 20, skip = 0, unreadOnly = false } = options;
+    
+    let notifications = Array.from(this.notifications.values())
+      .filter(notif => notif.recipient === userId);
+    
+    if (unreadOnly) {
+      notifications = notifications.filter(notif => !notif.isRead);
+    }
+    
+    notifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    
+    return notifications.slice(skip, skip + limit);
+  }
+
+  async markNotificationAsRead(notificationId, userId) {
+    const notification = this.notifications.get(notificationId);
+    if (notification && notification.recipient === userId) {
+      notification.isRead = true;
+      notification.readAt = new Date();
+      notification.updatedAt = new Date();
+      return notification;
+    }
+    return null;
+  }
+
+  async markAllNotificationsAsRead(userId) {
+    const notifications = Array.from(this.notifications.values())
+      .filter(notif => notif.recipient === userId && !notif.isRead);
+    
+    notifications.forEach(notif => {
+      notif.isRead = true;
+      notif.readAt = new Date();
+      notif.updatedAt = new Date();
+    });
+    
+    return notifications.length;
+  }
+
+  async deleteNotification(notificationId, userId) {
+    const notification = this.notifications.get(notificationId);
+    if (notification && notification.recipient === userId) {
+      this.notifications.delete(notificationId);
+      return true;
+    }
+    return false;
+  }
+
+  async getUnreadCount(userId) {
+    return Array.from(this.notifications.values())
+      .filter(notif => notif.recipient === userId && !notif.isRead).length;
+  }
+
   // Clear all data (for testing)
   clear() {
     this.users.clear();
     this.tokens.clear();
+    this.notifications.clear();
     this.nextUserId = 1;
+    this.nextNotificationId = 1;
   }
 }
 

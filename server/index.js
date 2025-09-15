@@ -101,6 +101,7 @@ const progressRoutes = require('./routes/progress');
 const communityRoutes = require('./routes/community');
 const gymRoutes = require('./routes/gyms');
 const activityRoutes = require('./routes/activities');
+const notificationRoutes = require('./routes/notifications');
 
 // API routes
 app.use('/api/auth', authRoutes);
@@ -111,6 +112,7 @@ app.use('/api/progress', progressRoutes);
 app.use('/api/community', communityRoutes);
 app.use('/api/gyms', gymRoutes);
 app.use('/api/activities', activityRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Health check endpoint
 app.get('/api/health', async (req, res) => {
