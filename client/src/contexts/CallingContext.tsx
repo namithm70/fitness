@@ -102,7 +102,8 @@ export const CallingProvider: React.FC<CallingProviderProps> = ({ children }) =>
     // Ensure socket connected and user joined
     const myUserId2 = (user as any)?.id || (user as any)?._id || '';
     await webrtcService.ensureConnected(myUserId2);
-    return await webrtcService.startCall(userId, callType);
+    const callerName = `${(user as any)?.firstName || ''} ${(user as any)?.lastName || ''}`.trim() || (user as any)?.name || 'Unknown';
+    return await webrtcService.startCall(userId, callType, callerName);
   };
 
   const answerCall = async (callId: string, accepted: boolean): Promise<boolean> => {

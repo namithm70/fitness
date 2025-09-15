@@ -191,7 +191,12 @@ class WebRTCService {
     }
   }
 
-  public async startCall(userId: string, callType: 'audio' | 'video'): Promise<boolean> {
+  public async startCall(
+    userId: string,
+    callType: 'audio' | 'video',
+    callerName?: string,
+    calleeName?: string
+  ): Promise<boolean> {
     if (!this.socket || !this.currentUserId) {
       throw new Error('Socket not connected or user not set');
     }
@@ -229,8 +234,8 @@ class WebRTCService {
 
       // Send call offer
       const offer: CallOffer = {
-        from: { id: this.currentUserId, name: 'You', isOnline: true },
-        to: { id: userId, name: 'User', isOnline: true },
+        from: { id: this.currentUserId as string, name: callerName || 'Unknown', isOnline: true },
+        to: { id: userId, name: calleeName || 'Unknown', isOnline: true },
         callType,
         callId,
         timestamp: Date.now()
