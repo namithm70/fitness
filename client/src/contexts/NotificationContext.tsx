@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { api } from '../config/api';
 import { useAuth } from './AuthContext';
 
@@ -68,7 +68,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
 
-  const fetchNotifications = async (page: number = 1, unreadOnly: boolean = false) => {
+  const fetchNotifications = useCallback(async (page: number = 1, unreadOnly: boolean = false) => {
     if (!user) return;
 
     setLoading(true);
@@ -94,7 +94,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   const markAsRead = async (notificationId: string) => {
     try {
@@ -151,7 +151,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     }
   };
 
-  const createDailyWorkoutSuggestion = async () => {
+  const createDailyWorkoutSuggestion = useCallback(async () => {
     try {
       await api.post('/notifications/create-daily-suggestion');
       // Refresh notifications to show the new suggestion
@@ -160,7 +160,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
       console.error('Failed to create daily workout suggestion:', err);
       setError(err.response?.data?.error || 'Failed to create daily workout suggestion');
     }
-  };
+  }, [fetchNotifications]);
 
   const refreshNotifications = async () => {
     await fetchNotifications(1, false);
@@ -177,7 +177,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
       setNotifications([]);
       setUnreadCount(0);
     }
-  }, [user]);
+  }, [user, fetchNotifications, createDailyWorkoutSuggestion]);
 
   // Auto-refresh notifications every 30 seconds
   useEffect(() => {
@@ -188,7 +188,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     }, 30000);
 
     return () => clearInterval(interval);
-  }, [user]);
+  }, [user, fetchNotifications]);
 
   const contextValue: NotificationContextType = {
     notifications,

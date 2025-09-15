@@ -9,7 +9,6 @@ import {
   MessageCircle, 
   Trophy, 
   Calendar,
-  Clock,
   ExternalLink
 } from 'lucide-react';
 import { useNotifications } from '../../contexts/NotificationContext';
