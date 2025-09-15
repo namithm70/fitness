@@ -160,7 +160,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
       console.error('Failed to create daily workout suggestion:', err);
       setError(err.response?.data?.error || 'Failed to create daily workout suggestion');
     }
-  }, [fetchNotifications]);
+  }, [fetchNotifications]); // Force rebuild to ensure latest changes are deployed
 
   const refreshNotifications = async () => {
     await fetchNotifications(1, false);
