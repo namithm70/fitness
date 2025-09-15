@@ -41,9 +41,6 @@ class WebRTCService {
     autoGainControl: true
   };
 
-  constructor() {
-    // Don't initialize socket immediately - wait for setCurrentUser
-  }
 
   private initializeSocket() {
     // Use the same URL logic as the API configuration
