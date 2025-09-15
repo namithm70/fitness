@@ -33,13 +33,9 @@ app.use(helmet());
 
 // Robust CORS configuration
 const corsOptions = {
-  origin: (origin, callback) => {
-    // Allow non-browser requests (no origin) and known frontends
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    return callback(null, false);
-  },
+  // Temporarily allow all origins to unblock preflights from Vercel
+  // (we still set Vary: Origin so caches are safe)
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token', 'Origin', 'Accept', 'X-Requested-With'],
