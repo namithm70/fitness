@@ -49,8 +49,9 @@ export const CallingProvider: React.FC<CallingProviderProps> = ({ children }) =>
     checkPermissions();
 
     // Set current user when auth context is available
-    if (user?.id) {
-      webrtcService.setCurrentUser(user.id);
+    const myUserId = (user as any)?.id || (user as any)?._id;
+    if (myUserId) {
+      webrtcService.setCurrentUser(myUserId);
       // Initial update of online users
       updateOnlineUsers();
     }
@@ -62,7 +63,7 @@ export const CallingProvider: React.FC<CallingProviderProps> = ({ children }) =>
 
   // Periodically update online users
   useEffect(() => {
-    if (!user?.id) return;
+    if (!((user as any)?.id || (user as any)?._id)) return;
 
     const interval = setInterval(() => {
       updateOnlineUsers();
@@ -99,7 +100,8 @@ export const CallingProvider: React.FC<CallingProviderProps> = ({ children }) =>
     }
 
     // Ensure socket connected and user joined
-    await webrtcService.ensureConnected(user?.id || '');
+    const myUserId2 = (user as any)?.id || (user as any)?._id || '';
+    await webrtcService.ensureConnected(myUserId2);
     return await webrtcService.startCall(userId, callType);
   };
 
