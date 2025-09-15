@@ -11,7 +11,7 @@ interface UserCallListProps {
 }
 
 const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
-  const { startCall, permissions, getOnlineUsers } = useCalling();
+  const { startCall, permissions, getOnlineUsers, requestPermissions } = useCalling();
   const [users, setUsers] = useState<CallUser[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOnline, setFilterOnline] = useState(false);
@@ -94,6 +94,16 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
 
   const handleStartCall = async (userId: string, callType: 'audio' | 'video') => {
     try {
+      // Ensure required permissions just-in-time
+      if (callType === 'video') {
+        if (!permissions.camera || !permissions.microphone) {
+          await requestPermissions();
+        }
+      } else {
+        if (!permissions.microphone) {
+          await requestPermissions();
+        }
+      }
       const success = await startCall(userId, callType);
       if (success) {
         onClose();
