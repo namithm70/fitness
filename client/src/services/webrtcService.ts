@@ -14,6 +14,7 @@ class WebRTCService {
   private socket: Socket | null = null;
   private peers: { [userId: string]: SimplePeer.Instance } = {};
   private localStream: MediaStream | null = null;
+  private remoteAudioElements: { [userId: string]: HTMLAudioElement } = {};
   private callState: CallState = {
     isInCall: false,
     isCallActive: false,
@@ -217,6 +218,8 @@ class WebRTCService {
       };
 
       this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
+      // Ensure local audio is not muted by default
+      this.localStream.getAudioTracks().forEach(t => (t.enabled = true));
       
       const callId = `call_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       
@@ -346,6 +349,15 @@ class WebRTCService {
       peer.destroy();
     });
     this.peers = {};
+
+    // Remove remote audio elements
+    Object.values(this.remoteAudioElements).forEach(a => {
+      try {
+        a.srcObject = null;
+        a.remove();
+      } catch {}
+    });
+    this.remoteAudioElements = {};
 
     // Reset call state
     this.updateCallState({
@@ -531,6 +543,22 @@ class WebRTCService {
           [userId]: stream
         }
       });
+
+      try {
+        if (!this.remoteAudioElements[userId]) {
+          const audio = document.createElement('audio');
+          audio.autoplay = true;
+          ;(audio as any).playsInline = true;
+          audio.style.display = 'none';
+          audio.srcObject = stream as any;
+          document.body.appendChild(audio);
+          this.remoteAudioElements[userId] = audio;
+        } else {
+          this.remoteAudioElements[userId].srcObject = stream as any;
+        }
+      } catch (e) {
+        console.warn('Failed to attach remote audio element', e);
+      }
     });
 
     peer.on('connect', () => {
