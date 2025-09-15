@@ -41,7 +41,7 @@ const CommunityDashboard: React.FC = () => {
   const fetchDashboard = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/community/dashboard');
+      const response = await api.get('/api/community/dashboard');
       setDashboard(response.data);
     } catch (error) {
       console.error('Error fetching dashboard:', error);

@@ -34,7 +34,7 @@ const ProgressEntryModal: React.FC<ProgressEntryModalProps> = ({
     setLoading(true);
 
     try {
-      await api.post('/progress/entries', formData);
+      await api.post('/api/progress/entries', formData);
       
       // Log progress activity
       if (user?.id) {

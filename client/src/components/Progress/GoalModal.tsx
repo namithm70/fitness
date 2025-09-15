@@ -31,7 +31,7 @@ const GoalModal: React.FC<GoalModalProps> = ({
     setLoading(true);
 
     try {
-      await api.post('/progress/goals', formData);
+      await api.post('/api/progress/goals', formData);
       onGoalCreated();
     } catch (error) {
       console.error('Error creating goal:', error);

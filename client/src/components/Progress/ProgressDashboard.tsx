@@ -30,7 +30,7 @@ const ProgressDashboard: React.FC = () => {
   const fetchDashboard = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/progress/dashboard');
+      const response = await api.get('/api/progress/dashboard');
       setDashboard(response.data);
     } catch (error) {
       console.error('Error fetching progress dashboard:', error);

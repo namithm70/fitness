@@ -44,7 +44,7 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
       let response;
       if (searchQuery.trim()) {
         // Use search endpoint for specific queries
-        response = await api.get(`/users/search?q=${encodeURIComponent(searchQuery)}&limit=50`);
+        response = await api.get(`/api/users/search?q=${encodeURIComponent(searchQuery)}&limit=50`);
         const searchResults = response.data.users || response.data;
         
         // Transform search results to CallUser format
@@ -58,7 +58,7 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
         setUsers(callUsers);
       } else {
         // Fetch all users for general display
-        response = await api.get('/users');
+        response = await api.get('/api/users');
         const apiUsers = response.data;
         
         // Transform API users to CallUser format
