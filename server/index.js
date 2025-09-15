@@ -164,6 +164,57 @@ io.on('connection', (socket) => {
     }
   });
 
+  // WebRTC Calling functionality
+  socket.on('join-calling', (data) => {
+    if (data && data.userId) {
+      socket.join(`calling-${data.userId}`);
+      socket.userId = data.userId;
+      console.log(`User ${data.userId} joined calling room`);
+      
+      // Notify other users that this user is online
+      socket.broadcast.emit('user-online', data.userId);
+    }
+  });
+
+  // Handle call offers
+  socket.on('call-offer', (offer) => {
+    if (offer && offer.to && offer.from) {
+      console.log(`Call offer from ${offer.from.id} to ${offer.to.id}`);
+      socket.to(`calling-${offer.to.id}`).emit('call-offer', offer);
+    }
+  });
+
+  // Handle call answers
+  socket.on('call-answer', (answer) => {
+    if (answer && answer.callId) {
+      console.log(`Call answer for ${answer.callId}: ${answer.accepted ? 'accepted' : 'declined'}`);
+      // Find the caller and send the answer
+      const callerSocket = Array.from(io.sockets.sockets.values())
+        .find(s => s.userId && s.rooms.has(`calling-${answer.callId.split('_')[1]}`));
+      
+      if (callerSocket) {
+        callerSocket.emit('call-answer', answer);
+      }
+    }
+  });
+
+  // Handle call end
+  socket.on('call-end', (callEnd) => {
+    if (callEnd && callEnd.callId) {
+      console.log(`Call ended: ${callEnd.callId}, reason: ${callEnd.reason}`);
+      // Notify all participants about call end
+      io.emit('call-end', callEnd);
+    }
+  });
+
+  // Handle WebRTC signaling
+  socket.on('call-signal', (signal) => {
+    if (signal && signal.to && signal.from) {
+      console.log(`WebRTC signal from ${signal.from} to ${signal.to}`);
+      socket.to(`calling-${signal.to}`).emit('call-signal', signal);
+    }
+  });
+
   // Handle errors
   socket.on('error', (error) => {
     console.error('Socket error:', error);
@@ -172,9 +223,14 @@ io.on('connection', (socket) => {
   socket.on('disconnect', (reason) => {
     console.log('User disconnected:', socket.id, 'Reason:', reason);
     
+    // Notify other users that this user is offline
+    if (socket.userId) {
+      socket.broadcast.emit('user-offline', socket.userId);
+    }
+    
     // Clean up any user-specific data
     socket.rooms.forEach(room => {
-      if (room.startsWith('user-')) {
+      if (room.startsWith('user-') || room.startsWith('calling-')) {
         socket.leave(room);
       }
     });

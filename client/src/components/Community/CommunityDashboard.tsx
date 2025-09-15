@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   MessageCircle, TrendingUp, Target, Calendar, Users as GroupIcon, 
-  Plus, Search, Bell
+  Plus, Search, Bell, Phone, Video
 } from 'lucide-react';
 import { CommunityDashboard as CommunityDashboardType, User } from '../../types/community';
 import { api } from '../../config/api';
@@ -14,6 +14,10 @@ import SearchModal from './SearchModal';
 import NotificationPanel from './NotificationPanel';
 import UserStats from './UserStats';
 import TrendingSection from './TrendingSection';
+import UserCallList from './UserCallList';
+import IncomingCallModal from './IncomingCallModal';
+import ActiveCallInterface from './ActiveCallInterface';
+import { useCalling } from '../../contexts/CallingContext';
 
 const CommunityDashboard: React.FC = () => {
   const [dashboard, setDashboard] = useState<CommunityDashboardType | null>(null);
@@ -21,11 +25,14 @@ const CommunityDashboard: React.FC = () => {
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showCallList, setShowCallList] = useState(false);
   const [activeTab, setActiveTab] = useState<'feed' | 'trending' | 'challenges' | 'events' | 'groups'>('feed');
   const [feedFilters, setFeedFilters] = useState({
     category: '',
     sort: 'recent' as 'recent' | 'trending' | 'popular'
   });
+  
+  const { callState } = useCalling();
 
   useEffect(() => {
     fetchDashboard();
@@ -157,6 +164,13 @@ const CommunityDashboard: React.FC = () => {
           >
             <Search className="w-5 h-5 mr-3" />
             Search
+          </button>
+          <button
+            onClick={() => setShowCallList(true)}
+            className="bg-white/20 text-white hover:bg-white/30 flex items-center justify-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105"
+          >
+            <Phone className="w-5 h-5 mr-3" />
+            Call
           </button>
           <button
             onClick={() => setShowNotifications(true)}
@@ -417,6 +431,28 @@ const CommunityDashboard: React.FC = () => {
         <NotificationPanel
           isOpen={showNotifications}
           onClose={() => setShowNotifications(false)}
+        />
+      )}
+
+      {showCallList && (
+        <UserCallList
+          isOpen={showCallList}
+          onClose={() => setShowCallList(false)}
+        />
+      )}
+
+      {/* Call Modals */}
+      {callState.isCallIncoming && (
+        <IncomingCallModal
+          isOpen={callState.isCallIncoming}
+          onClose={() => {}}
+        />
+      )}
+
+      {callState.isCallActive && (
+        <ActiveCallInterface
+          isOpen={callState.isCallActive}
+          onClose={() => {}}
         />
       )}
     </div>
