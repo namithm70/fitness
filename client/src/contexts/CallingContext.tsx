@@ -17,6 +17,7 @@ interface CallingContextType {
   requestPermissions: () => Promise<CallPermissions>;
   updateCallSettings: (settings: Partial<CallSettings>) => void;
   getOnlineUsers: () => CallUser[];
+  isUserOnline: (userId: string) => boolean;
 }
 
 const CallingContext = createContext<CallingContextType | undefined>(undefined);
@@ -147,6 +148,10 @@ export const CallingProvider: React.FC<CallingProviderProps> = ({ children }) =>
     return onlineUsers;
   };
 
+  const isUserOnline = (userId: string): boolean => {
+    return webrtcService.isUserOnline(userId);
+  };
+
   const updateOnlineUsers = async () => {
     try {
       const onlineUserIds = webrtcService.getOnlineUsers();
@@ -183,7 +188,8 @@ export const CallingProvider: React.FC<CallingProviderProps> = ({ children }) =>
     toggleScreenShare,
     requestPermissions,
     updateCallSettings,
-    getOnlineUsers
+    getOnlineUsers,
+    isUserOnline
   };
 
   return (

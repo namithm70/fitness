@@ -11,7 +11,7 @@ interface UserCallListProps {
 }
 
 const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
-  const { startCall, permissions, getOnlineUsers, requestPermissions } = useCalling();
+  const { startCall, permissions, getOnlineUsers, requestPermissions, isUserOnline } = useCalling();
   const [users, setUsers] = useState<CallUser[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOnline, setFilterOnline] = useState(false);
@@ -19,9 +19,8 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
 
   // Helper function to get online status from calling context
   const getOnlineStatus = useCallback((userId: string): boolean => {
-    const onlineUsers = getOnlineUsers();
-    return onlineUsers.some(user => user.id === userId);
-  }, [getOnlineUsers]);
+    return isUserOnline(userId);
+  }, [isUserOnline]);
 
   const fetchUsers = useCallback(async (searchQuery: string = '') => {
     setLoading(true);
@@ -94,22 +93,28 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
 
   const handleStartCall = async (userId: string, callType: 'audio' | 'video') => {
     try {
-      // Ensure required permissions just-in-time
-      if (callType === 'video') {
-        if (!permissions.camera || !permissions.microphone) {
-          await requestPermissions();
-        }
-      } else {
-        if (!permissions.microphone) {
-          await requestPermissions();
-        }
+      // Always request permissions before starting call
+      console.log('Requesting permissions before call...');
+      const newPermissions = await requestPermissions();
+      console.log('Permissions granted:', newPermissions);
+      
+      // Check if we got the required permissions
+      if (callType === 'video' && (!newPermissions.camera || !newPermissions.microphone)) {
+        alert('Camera and microphone permissions are required for video calls');
+        return;
       }
+      if (callType === 'audio' && !newPermissions.microphone) {
+        alert('Microphone permission is required for audio calls');
+        return;
+      }
+      
       const success = await startCall(userId, callType);
       if (success) {
         onClose();
       }
     } catch (error) {
       console.error('Failed to start call:', error);
+      alert('Failed to start call. Please check your permissions and try again.');
     }
   };
 
