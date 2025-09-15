@@ -188,15 +188,9 @@ io.on('connection', (socket) => {
 
   // Handle call answers
   socket.on('call-answer', (answer) => {
-    if (answer && answer.callId) {
-      console.log(`Call answer for ${answer.callId}: ${answer.accepted ? 'accepted' : 'declined'}`);
-      // Find the caller and send the answer
-      const callerSocket = Array.from(io.sockets.sockets.values())
-        .find(s => s.userId && s.rooms.has(`calling-${answer.callId.split('_')[1]}`));
-      
-      if (callerSocket) {
-        callerSocket.emit('call-answer', answer);
-      }
+    if (answer && answer.callId && answer.to) {
+      console.log(`Call answer for ${answer.callId}: ${answer.accepted ? 'accepted' : 'declined'} -> to ${answer.to}`);
+      socket.to(`calling-${answer.to}`).emit('call-answer', answer);
     }
   });
 

@@ -220,10 +220,13 @@ class WebRTCService {
       throw new Error('Socket not connected or user not set');
     }
 
+    // Route answer back to caller using current participants[0] (the caller)
+    const callerId = this.callState.participants[0]?.id as string;
     const answer: CallAnswer = {
       callId,
       accepted,
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      to: callerId
     };
 
     this.socket.emit('call-answer', answer);
