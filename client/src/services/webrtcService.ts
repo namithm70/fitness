@@ -44,6 +44,7 @@ class WebRTCService {
 
   private initializeSocket() {
     // Use the same URL logic as the API configuration
+    // Force rebuild to ensure latest changes are deployed
     const socketUrl = process.env.NODE_ENV === 'production'
       ? 'https://fitness-fkct.onrender.com'
       : (process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000');
