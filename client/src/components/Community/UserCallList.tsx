@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Phone, Video, Users, Search, Filter } from 'lucide-react';
 import { useCalling } from '../../contexts/CallingContext';
 import { CallUser } from '../../types/calling';
+import { api } from '../../config/api';
 
 interface UserCallListProps {
   isOpen: boolean;
@@ -25,43 +26,23 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      // Mock data - in real app, fetch from API
-      const mockUsers: CallUser[] = [
-        {
-          id: '1',
-          name: 'John Doe',
-          avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
-          isOnline: true
-        },
-        {
-          id: '2',
-          name: 'Jane Smith',
-          avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face',
-          isOnline: true
-        },
-        {
-          id: '3',
-          name: 'Mike Johnson',
-          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
-          isOnline: false
-        },
-        {
-          id: '4',
-          name: 'Sarah Wilson',
-          avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
-          isOnline: true
-        },
-        {
-          id: '5',
-          name: 'Alex Brown',
-          avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face',
-          isOnline: false
-        }
-      ];
+      // Fetch real users from API
+      const response = await api.get('/users');
+      const apiUsers = response.data;
       
-      setUsers(mockUsers);
+      // Transform API users to CallUser format
+      const callUsers: CallUser[] = apiUsers.map((user: any) => ({
+        id: user._id || user.id,
+        name: user.name || user.username || 'Unknown User',
+        avatar: user.avatar || user.profilePicture,
+        isOnline: user.isOnline || false
+      }));
+      
+      setUsers(callUsers);
     } catch (error) {
       console.error('Failed to fetch users:', error);
+      // If API fails, show empty list instead of mock data
+      setUsers([]);
     } finally {
       setLoading(false);
     }
@@ -152,7 +133,12 @@ const UserCallList: React.FC<UserCallListProps> = ({ isOpen, onClose }) => {
           ) : filteredUsers.length === 0 ? (
             <div className="text-center py-12">
               <Users className="w-16 h-16 text-white/30 mx-auto mb-4" />
-              <p className="text-white/70">No users found</p>
+              <p className="text-white/70">
+                {users.length === 0 
+                  ? "No users available for calling" 
+                  : "No users match your search criteria"
+                }
+              </p>
             </div>
           ) : (
             filteredUsers.map((user) => (
