@@ -271,18 +271,36 @@ router.post('/create-daily-suggestion', auth, async (req, res) => {
       });
     }
 
-    // Get daily workout suggestion
-    const workoutResponse = await fetch(`${req.protocol}://${req.get('host')}/api/notifications/daily-workout`, {
-      headers: {
-        'x-auth-token': req.headers['x-auth-token']
+    // Get daily workout suggestion directly
+    let workout = null;
+    const isConnected = req.app.locals.dbConnected;
+
+    if (isConnected) {
+      // Get user's fitness level and goals
+      const user = await User.findById(req.user.id).select('fitnessLevel fitnessGoals');
+      
+      // Get random workout based on user's fitness level
+      const workouts = await Workout.find({
+        difficulty: { $lte: user?.fitnessLevel || 'beginner' }
+      }).limit(10);
+      
+      if (workouts.length > 0) {
+        workout = workouts[Math.floor(Math.random() * workouts.length)];
       }
-    });
-    
-    if (!workoutResponse.ok) {
-      return res.status(500).json({ error: 'Failed to generate workout suggestion' });
+    } else {
+      // In-memory fallback - create a simple workout suggestion
+      workout = {
+        _id: `workout_${Date.now()}`,
+        name: 'Daily Fitness Challenge',
+        difficulty: 'beginner',
+        duration: 30,
+        description: 'A quick 30-minute workout to keep you active today!'
+      };
     }
-    
-    const { workout } = await workoutResponse.json();
+
+    if (!workout) {
+      return res.status(500).json({ error: 'No workouts available' });
+    }
 
     // Create notification
     const notificationData = {
