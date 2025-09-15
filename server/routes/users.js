@@ -12,11 +12,17 @@ const router = express.Router();
 router.get('/', auth, async (req, res) => {
   try {
     const isConnected = req.app.locals.dbConnected;
+    console.log('Database connected:', isConnected);
+    console.log('Current user ID:', req.user.id);
+    
     if (isConnected) {
       const users = await User.find({ isPublicProfile: true })
         .select('firstName lastName profilePicture isOnline lastSeen')
         .where('_id').ne(req.user.id)
         .sort({ lastSeen: -1 });
+      
+      console.log('Found users:', users.length);
+      console.log('Users:', users.map(u => ({ name: `${u.firstName} ${u.lastName}`, id: u._id })));
       
       const usersWithOnlineStatus = users.map(user => ({
         _id: user._id,
@@ -170,6 +176,8 @@ router.get('/search', auth, async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
+    console.log('Search query:', { q, fitnessLevel, location, userId: req.user.id });
+
     let query = { isPublicProfile: true, _id: { $ne: req.user.id } };
 
     if (q) {
@@ -179,6 +187,8 @@ router.get('/search', auth, async (req, res) => {
         { bio: { $regex: q, $options: 'i' } }
       ];
     }
+
+    console.log('MongoDB query:', JSON.stringify(query, null, 2));
 
     if (fitnessLevel) {
       query.fitnessLevel = fitnessLevel;
@@ -195,6 +205,9 @@ router.get('/search', auth, async (req, res) => {
       .sort({ totalWorkouts: -1 });
 
     const total = await User.countDocuments(query);
+
+    console.log('Search results:', users.length, 'users found');
+    console.log('Search result users:', users.map(u => ({ name: `${u.firstName} ${u.lastName}`, id: u._id })));
 
     res.json({
       users,
