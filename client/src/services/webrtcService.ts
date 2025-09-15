@@ -386,7 +386,18 @@ class WebRTCService {
 
     // Update peer connections
     Object.values(this.peers).forEach(peer => {
-      peer.replaceTrack(newVideoTrack || newAudioTrack, this.localStream!);
+      if (newVideoTrack) {
+        const oldVideoTrack = this.localStream!.getVideoTracks()[0];
+        if (oldVideoTrack) {
+          peer.replaceTrack(oldVideoTrack, newVideoTrack, this.localStream!);
+        }
+      }
+      if (newAudioTrack) {
+        const oldAudioTrack = this.localStream!.getAudioTracks()[0];
+        if (oldAudioTrack) {
+          peer.replaceTrack(oldAudioTrack, newAudioTrack, this.localStream!);
+        }
+      }
     });
 
     this.localStream = newStream;
